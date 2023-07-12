@@ -1,4 +1,4 @@
-package com.chocolate.tic_tac_toe.ui.theme
+package com.chocolate.tic_tac_toe.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
