@@ -21,7 +21,7 @@ fun GameScreenContent() {
         ImageForBackground()
         Column(modifier = Modifier.background(color = DarkBackground)) {
 
-            playersContent()
+            PlayersContent()
             LazyVerticalGridDemoContent()
         }
 
