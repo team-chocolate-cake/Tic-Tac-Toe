@@ -38,7 +38,7 @@ fun playersContent() {
         Row(
             modifier = Modifier
                 .height(214.dp)
-                .fillMaxWidth()
+                .fillMaxWidth().padding(top=76.dp)
                 .padding(horizontal = 16.dp), Arrangement.SpaceEvenly
         ) {
             Column(
@@ -58,19 +58,19 @@ fun playersContent() {
                 Text(
                     text = "Abooodex3x",
                     style = MaterialTheme.typography.titleMedium,
-                    color = color.darkOnPrimary
+                    color = color.darkOnBackground87
                 )
 
                 Text(
-                    text = "o",
-                    color = color.darkSecondary,
-                    style = MaterialTheme.typography.titleMedium
+                    text = "X",
+                    color = color.darkOnSecondary,
+                    style = MaterialTheme.typography.titleLarge
                 )
                 Row {
                     Text(
                         text = "300",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = TicTacCustomColors.current.darkOnPrimary
+                        color = TicTacCustomColors.current.darkOnBackground87
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Image(
@@ -107,19 +107,19 @@ fun playersContent() {
                 Text(
                     text = "Abooodex3x",
                     style = MaterialTheme.typography.titleMedium,
-                    color = color.darkOnPrimary
+                    color = color.darkOnBackground87
                 )
 
                 Text(
-                    text = "o",
+                    text = "O",
                     color = color.darkSecondary,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleLarge
                 )
                 Row {
                     Text(
                         text = "300",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = TicTacCustomColors.current.darkOnPrimary
+                        color = TicTacCustomColors.current.darkOnBackground87
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Image(
