@@ -23,7 +23,6 @@ import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkCard
 import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkOnCard
 import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkSecondary
 
-@Preview
 @Composable
 fun LazyVerticalGridDemo() {
     LazyVerticalGrid(
@@ -56,4 +55,10 @@ fun LazyVerticalGridDemo() {
             }
         }
     }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun LazyVerticalGridDemoPreview(){
+    LazyVerticalGridDemo()
 }
