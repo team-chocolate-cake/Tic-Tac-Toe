@@ -25,7 +25,7 @@ import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkSecondary
 
 @Composable
 fun LazyVerticalGridDemoScreen() {
-    playersContent()
+    LazyVerticalGridDemoContent()
 }
 
 @Composable
