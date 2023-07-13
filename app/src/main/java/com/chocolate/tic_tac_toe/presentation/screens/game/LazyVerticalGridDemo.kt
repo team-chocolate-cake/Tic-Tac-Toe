@@ -24,16 +24,21 @@ import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkOnCard
 import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkSecondary
 
 @Composable
-fun LazyVerticalGridDemo() {
+fun LazyVerticalGridDemoScreen() {
+    playersContent()
+}
+
+@Composable
+fun LazyVerticalGridDemoContent() {
     LazyVerticalGrid(
         modifier = Modifier
-            .padding(top = 40.dp, start = 16.dp, end = 16.dp)
+            .padding(top = 38.dp, start = 16.dp, end = 16.dp)
             .wrapContentSize()
             .background(
                 color = DarkCard,
                 shape = RoundedCornerShape(size = 16.dp)
             ),
-        columns = GridCells.Fixed(count = 3), // adaptive size
+        columns = GridCells.Fixed(count = 3),
         verticalArrangement = Arrangement.spacedBy(space = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
         contentPadding = PaddingValues(all = 12.dp)
@@ -59,6 +64,6 @@ fun LazyVerticalGridDemo() {
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun LazyVerticalGridDemoPreview(){
-    LazyVerticalGridDemo()
+fun LazyVerticalGridDemoPreview() {
+    LazyVerticalGridDemoContent()
 }
