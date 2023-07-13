@@ -32,5 +32,5 @@ fun GameScreenContent() {
 @Preview
 @Composable
 fun GameScreenPreview() {
-
+    GameScreen()
 }

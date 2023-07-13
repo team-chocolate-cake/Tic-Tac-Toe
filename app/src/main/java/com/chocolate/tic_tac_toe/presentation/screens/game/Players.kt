@@ -17,12 +17,12 @@ import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacToeTheme
 
 @Composable
 fun Players() {
-    playersContent()
+    PlayersContent()
 }
 
 
 @Composable
-fun playersContent() {
+fun PlayersContent() {
     TicTacToeTheme() {
         val color = TicTacCustomColors.current
 
@@ -52,6 +52,6 @@ fun playersContent() {
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun playersPreview() {
+fun PlayersPreview() {
     Players()
 }
