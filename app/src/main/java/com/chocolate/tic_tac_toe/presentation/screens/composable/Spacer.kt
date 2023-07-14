@@ -39,10 +39,6 @@ fun SpacerHorizontal4() {
     Spacer(modifier = Modifier.width(4.dp))
 }
 
-@Composable
-fun SpacerHorizontalMinus8() {
-    Spacer(modifier = Modifier.width(( - 8).dp))
-}
 //endregion
 
 
