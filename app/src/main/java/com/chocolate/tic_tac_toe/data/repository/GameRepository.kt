@@ -1,4 +1,4 @@
-package com.chocolate.tic_tac_toe.domain
+package com.chocolate.tic_tac_toe.data.repository
 
 
 interface GameRepository {
