@@ -1,4 +1,4 @@
-package com.chocolate.tic_tac_toe.presentation.ui.theme
+package com.chocolate.tic_tac_toe.presentation.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
@@ -22,6 +22,7 @@ val DarkSecondary = Color(0xFFE9C03C)
 val DarkOnSecondary = Color(0xFFD83554)
 val DarkOnCard = Color(0xFF302263)
 val DarkCard = Color(0xFF624ABD)
+val DarkCard87 = Color(0xDE624ABD)
 val DarkOnBorder = Color(0xDECDC0E2)
 
 @Immutable
