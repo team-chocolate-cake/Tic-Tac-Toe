@@ -6,10 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.chocolate.tic_tac_toe.presentation.screens.game.components.PlayersContent
 import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkBackground
 
 @Composable
-fun GameScreen() {
+fun GameScreen( viewModel: GameViewModel = hiltViewModel()) {
     GameScreenContent()
 }
 

@@ -1,4 +1,4 @@
-package com.chocolate.tic_tac_toe.presentation.screens.game
+package com.chocolate.tic_tac_toe.presentation.screens.game.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
