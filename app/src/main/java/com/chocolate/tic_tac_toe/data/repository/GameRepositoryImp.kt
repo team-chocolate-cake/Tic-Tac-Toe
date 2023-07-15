@@ -15,4 +15,8 @@ class GameRepositoryImp @Inject constructor(
     // region Player
 
     // endregion
+    override fun updateBoard(board: List<List<String>>, key: String) {
+        firebaseSessionDatabase.updateBoard(board, key)
+    }
+
 }
