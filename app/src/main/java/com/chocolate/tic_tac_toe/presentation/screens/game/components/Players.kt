@@ -36,7 +36,7 @@ fun PlayersContent(
             player = oPLayer,
             image = R.drawable.avatar_batman,
             colorType = color.darkSecondary,
-            border = if (turn == "O") BorderStroke(2.dp, color.darkOnBorder) else null,
+            border = if (turn == oPLayer.id) BorderStroke(2.dp, color.darkOnBorder) else null,
         )
 
         Text(
@@ -49,7 +49,7 @@ fun PlayersContent(
             player = xPLayer,
             image = R.drawable.clown,
             colorType = color.darkOnSecondary,
-            border = if (turn == "X") BorderStroke(2.dp, color.darkOnBorder) else null,
+            border = if (turn == xPLayer.id) BorderStroke(2.dp, color.darkOnBorder) else null,
         )
 
     }

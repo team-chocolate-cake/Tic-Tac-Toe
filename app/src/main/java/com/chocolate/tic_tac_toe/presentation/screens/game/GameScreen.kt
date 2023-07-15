@@ -44,8 +44,8 @@ fun GameScreenContent(
         Column(modifier = Modifier.background(color = DarkBackground)) {
             PlayersContent(
                 turn = state.turn,
-                xPLayer = state.xPlayers,
-                oPLayer = state.oPlayers,
+                xPLayer = state.xPlayer,
+                oPLayer = state.oPlayer,
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 32.dp)
             )
             LazyVerticalGridDemoContent(

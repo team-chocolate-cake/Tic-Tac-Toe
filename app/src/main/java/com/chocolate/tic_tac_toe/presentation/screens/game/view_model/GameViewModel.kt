@@ -58,7 +58,7 @@ class GameViewModel @Inject constructor(
     private fun updateTurn() {
         _state.update {
             it.copy(
-                turn = if (it.turn == "X") "O" else "X"
+                turn = if (it.turn == it.oPlayer.id) it.oPlayer.id else it.xPlayer.id
             )
         }
         viewModelScope.launch {
