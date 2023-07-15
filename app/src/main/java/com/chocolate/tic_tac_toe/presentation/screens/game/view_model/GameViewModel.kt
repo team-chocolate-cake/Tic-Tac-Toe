@@ -1,5 +1,6 @@
 package com.chocolate.tic_tac_toe.presentation.screens.game.view_model
 
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chocolate.tic_tac_toe.data.repository.GameRepository
@@ -15,21 +16,19 @@ import javax.inject.Inject
 class GameViewModel @Inject constructor(
     private val gameRepository: GameRepository,
 ) : ViewModel() {
-    private val _gameUiState = MutableStateFlow<GameUiState?>(null)
-    val gameUiState = _gameUiState.asStateFlow()
 
     init {
-        getBoard()
+        updateBoard()
     }
 
-    private fun getBoard() {
-        viewModelScope.launch {
-            gameRepository.getBoard(key).collect { session ->
-                val board = session?.board
-                val updatedGameUiState = GameUiState(board = board ?: emptyList())
-                _gameUiState.value = updatedGameUiState
-            }
-        }
+    private fun updateBoard() {
+        gameRepository.updateBoard(
+            listOf(listOf("X", "O", "X"), listOf("X", "O", "X"), listOf("X", "O", "X")),
+            key
+        )
     }
 
+    companion object {
+        private const val key = "-N_OIaJqsm7zT_Ik3TPp"
+    }
 }
