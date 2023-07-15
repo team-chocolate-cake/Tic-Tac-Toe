@@ -19,15 +19,7 @@ class GameViewModel @Inject constructor(
     val gameUiState = _gameUiState.asStateFlow()
 
     init {
-        updateBoard()
         getBoard()
-    }
-
-    private fun updateBoard() {
-        gameRepository.updateBoard(
-            listOf(listOf("X", "O", "X"), listOf("X", "O", "X"), listOf("X", "O", "X")),
-            key
-        )
     }
 
     private fun getBoard() {
@@ -40,7 +32,4 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    companion object {
-        private const val key = "-N_OIaJqsm7zT_Ik3TPp"
-    }
 }
