@@ -16,9 +16,12 @@ import javax.inject.Inject
 class GameViewModel @Inject constructor(
     private val gameRepository: GameRepository,
 ) : ViewModel() {
+    private val _gameUiState = MutableStateFlow<GameUiState?>(null)
+    val gameUiState = _gameUiState.asStateFlow()
 
     init {
         updateBoard()
+        getBoard()
     }
 
     private fun updateBoard() {
@@ -26,6 +29,17 @@ class GameViewModel @Inject constructor(
             listOf(listOf("X", "O", "X"), listOf("X", "O", "X"), listOf("X", "O", "X")),
             key
         )
+    }
+
+
+    private fun getBoard() {
+        viewModelScope.launch {
+            gameRepository.getBoard(key).collect { session ->
+                val board = session?.board
+                val updatedGameUiState = GameUiState(board = board ?: emptyList())
+                _gameUiState.value = updatedGameUiState
+            }
+        }
     }
 
     companion object {
