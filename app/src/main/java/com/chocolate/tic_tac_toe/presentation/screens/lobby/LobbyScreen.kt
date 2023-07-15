@@ -6,6 +6,7 @@ import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,11 +24,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chocolate.tic_tac_toe.R
 import com.chocolate.tic_tac_toe.presentation.screens.composable.ButtonApp
+import com.chocolate.tic_tac_toe.presentation.screens.composable.PlayerImage
+import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerHorizontal8
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical12
+import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical16
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical24
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical8
 import com.chocolate.tic_tac_toe.presentation.screens.composable.TikTakToeScaffold
 import com.chocolate.tic_tac_toe.presentation.screens.lobby.components.PlayerContent
+import com.chocolate.tic_tac_toe.presentation.screens.lobby.components.PlayerContentHeader
 import com.chocolate.tic_tac_toe.presentation.screens.lobby.components.TopThreePlayers
 import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground38
 import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground87
@@ -51,14 +56,14 @@ fun LobbyContent() {
                     state = scrollState, orientation = Orientation.Vertical
                 )
         ) {
-            Header()
-            SpacerVertical24()
+
+            PlayerContentHeader()
+            SpacerVertical8()
             TopThreePlayers()
             SpacerVertical24()
             Players()
             SpacerVertical24()
-            ButtonApp(text = "Create Game"
-                , onClick = { })
+            ButtonApp(text = "Create Game", onClick = { })
 
         }
     }
@@ -80,59 +85,4 @@ private fun Players() {
             SpacerVertical12()
         }
     }
-}
-
-
-
-
-    @Composable
-    fun Header() {
-        Column() {
-            PlayerImage()
-        }
-        Column() {
-            PlayerDetails("jinana",3500)
-        }
-    }
-
-
-
-
-    @Composable
-    fun PlayerDetails(name:String,score:Int){
-        Row() {
-            Text(text = "player name $name"
-                , modifier = Modifier.padding(start = 8.dp)
-                ,style = TextStyle(
-                    color =DarkOnBackground87 ,
-                    fontSize = 14.sp,
-                    fontFamily = fingerPaintFamily))
-        }
-        Row() {
-            Column() {
-                Text(text = "player score $score"
-                    , modifier = Modifier.padding(start = 8.dp)
-                    ,style = TextStyle(
-                        color =DarkOnBackground38 ,
-                        fontSize = 14.sp,
-                        fontFamily = fingerPaintFamily))
-            }
-            
-            Column() {
-                Image(painter = painterResource(id = R.drawable.ic_fire),
-                    contentDescription =""
-                , modifier = Modifier.size(12.dp)
-                        .padding(start = 4.dp))
-            }
-
-        }
-}
-
-@Composable
-fun PlayerImage(){
-    Image(painter = painterResource(id = R.drawable.avatar),
-        contentDescription =""
-        , modifier = Modifier
-            .clip(CircleShape)
-            .size(36.dp))
 }

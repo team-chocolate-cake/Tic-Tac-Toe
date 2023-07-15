@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,7 +20,10 @@ import com.chocolate.tic_tac_toe.R
 import com.chocolate.tic_tac_toe.presentation.screens.composable.PlayerImage
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerHorizontal4
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerHorizontal8
+import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical4
 import com.chocolate.tic_tac_toe.presentation.theme.DarkCard87
+import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground38
+import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground60
 import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground87
 
 @Composable
@@ -67,5 +71,52 @@ fun PlayerContent(
 
         }
 
+    }
+}
+
+
+
+
+@Composable
+fun PlayerContentHeader(
+    playerName: String = "moon",
+    playerImage: Int = 0,
+    playerScore: Int = 300,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        PlayerImage()
+        SpacerHorizontal8()
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = playerName,
+                maxLines = 1,
+                style = MaterialTheme.typography.bodySmall,
+                color = DarkOnBackground87,
+            )
+            SpacerVertical4()
+
+            Row {
+                Text(
+                    text = playerScore.toString(),
+                    modifier = Modifier.padding(start = 4.dp,end = 4.dp),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = DarkOnBackground38,
+                )
+                SpacerHorizontal4()
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_fire),
+                    contentDescription = "",
+                )
+
+            }
+        }
     }
 }
