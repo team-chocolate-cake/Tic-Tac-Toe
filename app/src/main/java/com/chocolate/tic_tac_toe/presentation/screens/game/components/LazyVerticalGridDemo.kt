@@ -1,7 +1,7 @@
 package com.chocolate.tic_tac_toe.presentation.screens.game.components
 
-import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,31 +11,32 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.chocolate.tic_tac_toe.presentation.screens.game.GameUiState
+import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameUiState
 import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkCard
 import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkOnCard
+import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkOnSecondary
 import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkSecondary
+import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacToeTheme
+
 
 @Composable
-fun LazyVerticalGridDemoScreen(gameUiState: GameUiState) {
-    LazyVerticalGridDemoContent(board = gameUiState.board)
-}
-
-@Composable
-fun LazyVerticalGridDemoContent(board: List<List<String>>) {
+fun LazyVerticalGridDemoContent(
+    state: GameUiState,
+    onClickBox: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     LazyVerticalGrid(
-        modifier = Modifier
-            .padding(top = 38.dp, start = 16.dp, end = 16.dp)
-            .wrapContentSize()
+        modifier = modifier
             .background(
                 color = DarkCard,
                 shape = RoundedCornerShape(size = 16.dp)
@@ -45,28 +46,44 @@ fun LazyVerticalGridDemoContent(board: List<List<String>>) {
         horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
         contentPadding = PaddingValues(all = 12.dp)
     ) {
-        items(board) { index ->
+        itemsIndexed(state.board) { index, item ->
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .size(100.dp)
-                    .background(color = DarkOnCard, shape = RoundedCornerShape(size = 8.dp)),
-                contentAlignment = Alignment.Center
+                    .background(color = DarkOnCard, shape = RoundedCornerShape(size = 8.dp))
+                    .clickable {
+                        if (state.turn == state.playerId) {
+                            onClickBox(index)
+                        }
+                    },
+                contentAlignment = Alignment.Center,
             ) {
-                Log.e("TAG", "LazyVerticalGridDemoContent: $board")
                 Text(
-                    text = "$board",
+                    text = item,
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontSize = 64.sp
-                    ), color = DarkSecondary
+                    ),
+                    color = if (item == "X") DarkOnSecondary else DarkSecondary
                 )
             }
         }
     }
 }
 
-//@Preview(showBackground = true, showSystemUi = true)
-//@Composable
-//fun LazyVerticalGridDemoPreview() {
-//    LazyVerticalGridDemoContent(board = )
-//}
+@Preview
+@Composable
+fun DemoContent() {
+    TicTacToeTheme() {
+        LazyVerticalGridDemoContent(
+            state = GameUiState(
+                board = listOf(
+                    "X", "O", "X",
+                    "O", "X", "O",
+                    "X", "O", "X"
+                ),
+            ),
+            onClickBox = {}
+        )
+    }
+}
+

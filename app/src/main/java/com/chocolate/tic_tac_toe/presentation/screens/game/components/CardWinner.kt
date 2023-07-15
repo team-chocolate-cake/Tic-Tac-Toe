@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,74 +29,73 @@ import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacCustomColors
 import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacToeTheme
 
 @Composable
-fun CardWinnerContent(score: Int, type: String, image: Int, colorType: Color) {
-    TicTacToeTheme() {
-        val color = TicTacCustomColors.current
-        Column(
+fun CardWinnerContent(
+    score: Int,
+    image: Int,
+) {
+    val color = TicTacCustomColors.current
+    Column(
+        modifier = Modifier
+            .clip(RoundedCornerShape(24.dp))
+            .background(color.darkCard)
+            .padding(vertical = 24.dp, horizontal = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Image(
             modifier = Modifier
-                .padding(horizontal = 12.dp)
-                .fillMaxWidth()
-                .wrapContentSize()
-                .clip(RoundedCornerShape(16.dp))
-                .background(color.darkCard), horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Image(
-                modifier = Modifier
-                    .width(149.5.dp)
-                    .height(162.75003.dp),
-                painter = painterResource(id = image),
-                contentDescription = null,
+                .width(155.dp)
+                .height(168.dp),
+            painter = painterResource(id = image),
+            contentDescription = null,
+        )
+        Text(
+            text = "You Win!",
+            style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
+            color = color.darkOnBackground87,
+            maxLines = 1,
+
             )
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Text(
-                    text = "You Win!",
-                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
-                    color = color.darkOnBackground87,
-                    maxLines = 1,
+        Text(
+            text = "+$score Score",
+            style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
+            color = color.darkOnBackground87,
+            maxLines = 1,
+            modifier = Modifier.padding(horizontal = 82.dp)
+        )
 
-                    )
-                Text(
-                    text = "$score Score",
-                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
-                    color = color.darkOnBackground87,
-                    maxLines = 1,
-                    modifier = Modifier.padding(horizontal = 82.dp)
-                )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Text(
-                        text = type,
-                        style = MaterialTheme.typography.titleLarge.copy(fontSize = 64.sp),
-                        color = colorType,
-                        maxLines = 1,
-                        modifier = Modifier.padding(start = 28.dp, end = 182.dp, bottom = 28.dp)
-
-                    )
-                    Text(
-                        text = type,
-                        style = MaterialTheme.typography.titleLarge.copy(fontSize = 64.sp),
-                        color = colorType,
-                        maxLines = 1,
-                        modifier = Modifier.padding(end = 28.dp, bottom = 28.dp)
-                    )
-                }
-            }
-
-
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = "X",
+                style = MaterialTheme.typography.titleLarge.copy(fontSize = 64.sp),
+                color = color.darkOnSecondary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                text = "O",
+                style = MaterialTheme.typography.titleLarge.copy(fontSize = 64.sp),
+                color = color.darkSecondary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
     }
-
 }
 
-@Preview(showSystemUi = true)
+
+@Preview
 @Composable
 fun CardWinnerPreview() {
-    CardWinnerContent(20, "X", R.drawable.avatar_batman, DarkOnSecondary)
-
+    TicTacToeTheme() {
+        CardWinnerContent(
+            score = 100,
+            image = R.drawable.avatar_batman,
+            )
+    }
 }

@@ -6,11 +6,15 @@ import kotlinx.coroutines.flow.Flow
 
 interface GameRepository {
     // region Session
+    suspend fun createSession(session:Session)
+    suspend fun updateBoard(board: List<String>, sessionId: String)
 
-    fun updateBoard(board: List<List<String>>, key: String)
+    suspend fun updateTurn(turn: String, sessionId: String)
+
+    suspend fun getSession(key: String): Flow<Session>
 
     // endregion
-    fun getBoard(key: String): Flow<Session?>
+
     // region Player
     // endregion
 }

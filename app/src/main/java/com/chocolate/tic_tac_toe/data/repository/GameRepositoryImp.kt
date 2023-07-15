@@ -10,19 +10,27 @@ class GameRepositoryImp @Inject constructor(
     private val firebaseSessionDatabase: FirebaseSessionDatabase,
     private val firebasePlayerDatabase: FirebasePlayerDatabase
 ) : GameRepository {
-    // region Session
 
+    // region Session
+    override suspend fun createSession(session:Session) {
+        firebaseSessionDatabase.createSession(session)
+    }
     // endregion
 
     // region Player
 
     // endregion
-    override fun updateBoard(board: List<List<String>>, key: String) {
-        firebaseSessionDatabase.updateBoard(board, key)
+    override suspend fun updateBoard(board: List<String>, sessionId: String) {
+        firebaseSessionDatabase.updateBoard(board, sessionId)
     }
 
-    override fun getBoard(key: String): Flow<Session?> {
-        return firebaseSessionDatabase.getBoard(key)
+    override suspend fun updateTurn(turn: String, sessionId: String) {
+        firebaseSessionDatabase.updateTurn(turn, sessionId)
+    }
+
+
+    override suspend fun getSession(key: String): Flow<Session> {
+        return firebaseSessionDatabase.getSession(key)
     }
 
 }

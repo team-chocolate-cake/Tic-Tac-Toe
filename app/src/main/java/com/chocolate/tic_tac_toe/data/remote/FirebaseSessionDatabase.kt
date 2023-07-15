@@ -1,5 +1,6 @@
 package com.chocolate.tic_tac_toe.data.remote
 
+import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.model.Session
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -8,22 +9,28 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Named
 
 class FirebaseSessionDatabase @Inject constructor(
     @Named("sessions") private val sessionDatabaseReference: DatabaseReference,
 ) {
-    fun updateBoard(board: List<List<String>>, key: String) {
-        sessionDatabaseReference.child(key).child("board").setValue(board)
+    suspend fun updateBoard(board: List<String>, sessionId: String) {
+        sessionDatabaseReference.child(sessionId).child("board").setValue(board).await()
     }
 
-    fun getBoard(key: String): Flow<Session?> = callbackFlow {
-        val boardRef = sessionDatabaseReference.child(key).child("board")
+    suspend fun updateTurn(turn: String, sessionId: String) {
+        sessionDatabaseReference.child(sessionId).child("turn").setValue(turn).await()
+    }
+
+    suspend fun getSession(sessionId: String): Flow<Session> = callbackFlow {
+        val boardRef = sessionDatabaseReference.child(sessionId)
+
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val session = snapshot.getValue(Session::class.java)
-                trySend(session)
+                trySend(session!!)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -32,5 +39,9 @@ class FirebaseSessionDatabase @Inject constructor(
         }
         boardRef.addValueEventListener(valueEventListener)
         awaitClose { boardRef.removeEventListener(valueEventListener) }
+    }
+
+    suspend fun createSession(session: Session) {
+        sessionDatabaseReference.child(session.id.toString()).setValue(session).await()
     }
 }

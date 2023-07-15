@@ -3,7 +3,7 @@ package com.chocolate.tic_tac_toe.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.Text
+import com.chocolate.tic_tac_toe.presentation.screens.game.GameScreen
 import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacToeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -13,6 +13,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TicTacToeTheme {
+                GameScreen()
             }
         }
     }
