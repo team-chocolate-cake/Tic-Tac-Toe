@@ -1,12 +1,10 @@
-package com.chocolate.tic_tac_toe.presentation.screens.game
+package com.chocolate.tic_tac_toe.presentation.screens.game.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -43,56 +41,61 @@ fun CardWinnerContent(score: Int, type: String, image: Int, colorType: Color) {
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Image(
-                modifier = Modifier.width(149.5.dp)
+                modifier = Modifier
+                    .width(149.5.dp)
                     .height(162.75003.dp),
                 painter = painterResource(id = image),
                 contentDescription = null,
             )
-Column( horizontalAlignment = Alignment.CenterHorizontally,
-    verticalArrangement = Arrangement.SpaceEvenly) {
-    Text(
-        text = "You Win!",
-        style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
-        color = color.darkOnBackground87,
-        maxLines = 1,
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(
+                    text = "You Win!",
+                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
+                    color = color.darkOnBackground87,
+                    maxLines = 1,
 
-    )
-    Text(
-        text = "$score Score",
-        style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
-        color = color.darkOnBackground87,
-        maxLines = 1,
-        modifier = Modifier.padding(horizontal = 82.dp)
-    )
-    Row(verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly) {
-        Text(
-            text = type,
-            style = MaterialTheme.typography.titleLarge.copy(fontSize = 64.sp),
-            color = colorType,
-            maxLines = 1,
-            modifier = Modifier.padding(start = 28.dp,end = 182.dp,bottom = 28.dp )
+                    )
+                Text(
+                    text = "$score Score",
+                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
+                    color = color.darkOnBackground87,
+                    maxLines = 1,
+                    modifier = Modifier.padding(horizontal = 82.dp)
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Text(
+                        text = type,
+                        style = MaterialTheme.typography.titleLarge.copy(fontSize = 64.sp),
+                        color = colorType,
+                        maxLines = 1,
+                        modifier = Modifier.padding(start = 28.dp, end = 182.dp, bottom = 28.dp)
 
-        )
-        Text(
-            text = type,
-            style = MaterialTheme.typography.titleLarge.copy(fontSize = 64.sp),
-            color = colorType,
-            maxLines = 1,
-            modifier = Modifier.padding(end =28.dp,bottom = 28.dp )
-        )
-    }
-}
-
-
+                    )
+                    Text(
+                        text = type,
+                        style = MaterialTheme.typography.titleLarge.copy(fontSize = 64.sp),
+                        color = colorType,
+                        maxLines = 1,
+                        modifier = Modifier.padding(end = 28.dp, bottom = 28.dp)
+                    )
+                }
             }
+
+
         }
+    }
 
 }
 
 @Preview(showSystemUi = true)
 @Composable
 fun CardWinnerPreview() {
-    CardWinnerContent(20,"X",R.drawable.avatar_batman, DarkOnSecondary)
+    CardWinnerContent(20, "X", R.drawable.avatar_batman, DarkOnSecondary)
 
 }
