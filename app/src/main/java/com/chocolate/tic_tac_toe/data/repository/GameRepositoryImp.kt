@@ -22,6 +22,10 @@ class GameRepositoryImp @Inject constructor(
     override  fun getPlayers(): Flow<List<Player?>> {
         return firebasePlayerDatabase.getPlayers()
     }
+
+    override suspend fun getPlayerById(id: String): Flow<Player?> {
+        return firebasePlayerDatabase.getPlayerById(id = id)
+    }
     //endregion
 
     // endregion

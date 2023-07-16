@@ -15,9 +15,9 @@ class FirebasePlayerDatabase @Inject constructor(
     @Named("players") private val firebaseDatabase: DatabaseReference
 ) {
 
-     fun getPlayers(): Flow<List<Player?>> = callbackFlow {
+    fun getPlayers(): Flow<List<Player?>> = callbackFlow {
 
-        val valueEventListener =  object : ValueEventListener {
+        val valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val players = snapshot.children.map {
                     it.getValue(Player::class.java)
@@ -31,6 +31,24 @@ class FirebasePlayerDatabase @Inject constructor(
         }
 
         firebaseDatabase.addValueEventListener(valueEventListener)
-        awaitClose { firebaseDatabase.removeEventListener(valueEventListener)  }
+        awaitClose { firebaseDatabase.removeEventListener(valueEventListener) }
+    }
+
+
+    suspend fun getPlayerById(id: String): Flow<Player?> = callbackFlow {
+
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val player = snapshot.getValue(Player::class.java)
+                trySend(player)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                close(error.toException())
+            }
+        }
+
+        firebaseDatabase.addValueEventListener(valueEventListener)
+        awaitClose { firebaseDatabase.removeEventListener(valueEventListener) }
     }
 }
