@@ -1,4 +1,4 @@
-package com.chocolate.tic_tac_toe.presentation.ui.theme
+package com.chocolate.tic_tac_toe.presentation.theme
 
 import android.annotation.SuppressLint
 import android.app.Activity

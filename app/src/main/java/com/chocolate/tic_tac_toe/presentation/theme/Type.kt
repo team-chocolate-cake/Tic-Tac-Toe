@@ -1,4 +1,4 @@
-package com.chocolate.tic_tac_toe.presentation.ui.theme
+package com.chocolate.tic_tac_toe.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -49,7 +49,7 @@ val Typography = Typography(
         fontFamily = fingerPaintFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
-        lineHeight = 16.sp,
+        lineHeight = 20.sp,
     ),
     labelLarge = TextStyle(
         fontFamily = fingerPaintFamily,
