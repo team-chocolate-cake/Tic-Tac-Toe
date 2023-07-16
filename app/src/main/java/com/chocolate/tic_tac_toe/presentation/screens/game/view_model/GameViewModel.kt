@@ -3,6 +3,7 @@ package com.chocolate.tic_tac_toe.presentation.screens.game.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chocolate.tic_tac_toe.domain.model.GameState
 import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.usecase.GetSessionDataUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.UpdateGameStateUseCase
@@ -58,6 +59,15 @@ class GameViewModel @Inject constructor(
             )
         }
     }
+     fun onClose(){
+
+     }
+     fun onPlayAgain(){
+         viewModelScope.launch {
+             updateGameState.onPlayAgain(SESSION_ID)
+
+         }
+    }
 
 
 
@@ -74,6 +84,7 @@ class GameViewModel @Inject constructor(
 
     companion object {
         private const val SESSION_ID = "1689509501310"
-        private const val PLAYER_ID = "1689509501316"
+        private const val PLAYER_ID = "1689509501314"
+
     }
 }

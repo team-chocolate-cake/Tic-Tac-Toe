@@ -35,8 +35,8 @@ fun GameScreen(
     GameScreenContent(
         state = state,
         onClickBox = viewModel::updateGameState,
-/*        onClickClose = viewModel::onClose,
-        onClickPlayAgain = viewModel::onPlayAgain,*/
+        onClickClose = viewModel::onClose,
+        onClickPlayAgain = viewModel::onPlayAgain,
     )
 }
 
@@ -66,7 +66,7 @@ fun GameScreenContent(
                     )
                 }
 
-                GameState.PLAYER_X_WON, GameState.PLAYER_O_WON -> {
+                GameState.PLAYER_X_WON, GameState.PLAYER_O_WON-> {
                     WinnerCard(
                         player = if (state.gameState == GameState.PLAYER_X_WON) state.xPlayer else state.oPlayer,
                         image = R.drawable.clown,

@@ -31,4 +31,11 @@ class UpdateGameStateUseCase @Inject constructor(
         gameRepository.updateBoard(updatedBoard, sessionId)
         gameRepository.updateTurn(updatedTurn, sessionId)
     }
+
+    suspend fun onPlayAgain(sessionId:String){
+        gameRepository.updateBoard(listOf("","","","","","","","",""), sessionId)
+        gameRepository.updateGameState( GameState.IN_PROGRESS,sessionId)
+        gameRepository .updateWinPositions(emptyList(),sessionId)
+
+    }
 }

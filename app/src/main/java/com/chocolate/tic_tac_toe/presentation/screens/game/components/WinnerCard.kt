@@ -74,7 +74,7 @@ fun WinnerCard(
         ) {
             Text(
                 modifier = Modifier.clickable {
-                    onClickCLose()
+                    //onClickCLose()
                 },
                 text = "X",
                 style = MaterialTheme.typography.titleLarge.copy(fontSize = 64.sp),
