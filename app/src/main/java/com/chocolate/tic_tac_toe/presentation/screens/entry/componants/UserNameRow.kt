@@ -7,23 +7,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.chocolate.tic_tac_toe.R
-import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkOnBackground60
 import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkOnCard
+import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacCustomColors
+import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacToeTheme
 
 @Composable
 fun UserNameRow(text: String, onNameChange: (String) -> Unit) {
 
+    val colors = TicTacCustomColors.current
     Row(
         Modifier
             .padding(24.dp)
@@ -38,10 +37,8 @@ fun UserNameRow(text: String, onNameChange: (String) -> Unit) {
             modifier = Modifier
                 .padding(12.dp)
                 .fillMaxWidth(0.8f),
-            textStyle = TextStyle(
-                fontFamily = FontFamily(Font(R.font.fingerpaint_regular)),
-                fontSize = 14.sp,
-                color = DarkOnBackground60
+            textStyle = MaterialTheme.typography.bodyMedium.copy(
+                color = colors.darkOnBackground60
             ),
             singleLine = true
         )
@@ -50,10 +47,17 @@ fun UserNameRow(text: String, onNameChange: (String) -> Unit) {
                 .rotate(-90f)
                 .padding(12.dp),
             text = "<",
-            fontFamily = FontFamily(Font(R.font.fingerpaint_regular)),
-            fontSize = 24.sp,
-            color = DarkOnBackground60
+            style = MaterialTheme.typography.bodyLarge,
+            color = colors.darkOnBackground38
         )
 
+    }
+}
+
+@Preview
+@Composable
+fun UserNameRowPreview() {
+    TicTacToeTheme {
+        UserNameRow(text = "test", onNameChange = {})
     }
 }

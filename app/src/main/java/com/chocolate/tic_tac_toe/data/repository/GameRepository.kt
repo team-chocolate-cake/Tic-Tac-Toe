@@ -8,7 +8,7 @@ interface GameRepository {
     // endregion
 
     // region Player
-    fun createPlayer(player: Player): String
-    fun updatePlayerName(name: String)
+    suspend fun createPlayer(player: Player)
+    suspend fun getPlayerData(): Player?
     // endregion
 }
