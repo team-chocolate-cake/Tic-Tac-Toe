@@ -36,7 +36,7 @@ class CheckGameStateUseCase @Inject constructor(
                     }
 
                     "O" -> {
-                        gameRepository.updateGameState(GameState.PLAYER_X_WON, sessionId)
+                        gameRepository.updateGameState(GameState.PLAYER_O_WON, sessionId)
                     }
 
                     else -> throw IllegalStateException("Invalid player")

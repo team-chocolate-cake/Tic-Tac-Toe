@@ -24,13 +24,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chocolate.tic_tac_toe.R
+import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameUiState
 import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkOnSecondary
 import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacCustomColors
 import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacToeTheme
 
 @Composable
-fun CardWinnerContent(
-    score: Int,
+fun WinnerCard(
+    player: GameUiState.Player,
     image: Int,
 ) {
     val color = TicTacCustomColors.current
@@ -50,14 +51,14 @@ fun CardWinnerContent(
             contentDescription = null,
         )
         Text(
-            text = "You Win!",
+            text = "${player.name} Won!",
             style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
             color = color.darkOnBackground87,
             maxLines = 1,
 
             )
         Text(
-            text = "+$score Score",
+            text = "+${player.score} Score",
             style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
             color = color.darkOnBackground87,
             maxLines = 1,
@@ -93,9 +94,14 @@ fun CardWinnerContent(
 @Composable
 fun CardWinnerPreview() {
     TicTacToeTheme() {
-        CardWinnerContent(
-            score = 100,
+        WinnerCard(
+            player = GameUiState.Player(
+                id = "1",
+                name = "Player 1",
+                symbol = "X",
+                score = 1,
+            ),
             image = R.drawable.avatar_batman,
-            )
+        )
     }
 }
