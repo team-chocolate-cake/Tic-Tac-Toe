@@ -16,6 +16,8 @@ interface GameRepository {
 
     suspend fun getSession(key: String): Flow<Session>
 
+    suspend fun updateWinPositions(positions: List<Int>, sessionId: String)
+
     // endregion
 
     // region Player

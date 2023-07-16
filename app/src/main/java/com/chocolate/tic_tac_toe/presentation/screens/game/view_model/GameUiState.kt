@@ -5,6 +5,7 @@ data class GameUiState(
     val oPlayer: Player = Player(),
     val turn: String = "",
     val playerId: String = "",
+    val winPositions: List<Int> = emptyList(),
     val board: List<String> = emptyList()
 ) {
     data class Player(

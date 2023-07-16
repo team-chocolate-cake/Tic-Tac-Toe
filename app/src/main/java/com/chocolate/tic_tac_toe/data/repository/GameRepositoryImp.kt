@@ -38,4 +38,8 @@ class GameRepositoryImp @Inject constructor(
         return firebaseSessionDatabase.getSession(key)
     }
 
+    override suspend fun updateWinPositions(positions: List<Int>, sessionId: String) {
+        firebaseSessionDatabase.updateWinPositions(positions, sessionId)
+    }
+
 }

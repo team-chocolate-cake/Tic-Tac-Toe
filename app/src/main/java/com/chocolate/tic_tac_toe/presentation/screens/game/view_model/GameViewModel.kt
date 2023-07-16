@@ -36,7 +36,8 @@ class GameViewModel @Inject constructor(
                         oPlayer = session.oplayer!!.toPlayerUiState(),
                         turn = session.turn!!,
                         playerId = PLAYER_ID,
-                        board = session.board ?: emptyList()
+                        board = session.board ?: emptyList(),
+                        winPositions = session.winPositions ?: emptyList()
                     )
                 }
             }
@@ -69,7 +70,7 @@ class GameViewModel @Inject constructor(
 
 
     companion object {
-        private const val SESSION_ID = "1689506560157"
-        private const val PLAYER_ID = "1689506560162"
+        private const val SESSION_ID = "1689509501310"
+        private const val PLAYER_ID = "1689509501316"
     }
 }

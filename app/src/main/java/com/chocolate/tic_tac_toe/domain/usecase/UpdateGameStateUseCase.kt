@@ -18,32 +18,17 @@ class UpdateGameStateUseCase @Inject constructor(
         sessionId: String,
     ) {
         val updatedBoard = board.toMutableList().also {
-            it[index] = value
+            if (it[index] == "") {
+                it[index] = value
+            } else {
+                return
+            }
         }
 
         val updatedTurn = if (turn == xPlayerId) oPlayerId else xPlayerId
 
-        when (checkGameState(updatedBoard)) {
-            GameState.IN_PROGRESS -> {
-                gameRepository.updateBoard(updatedBoard, sessionId)
-                gameRepository.updateTurn(updatedTurn, sessionId)
-            }
-
-            GameState.PLAYER_X_WON -> {
-                gameRepository.updateBoard(updatedBoard, sessionId)
-                gameRepository.updateGameState(GameState.PLAYER_X_WON, sessionId)
-            }
-
-            GameState.PLAYER_O_WON -> {
-                gameRepository.updateBoard(updatedBoard, sessionId)
-                gameRepository.updateGameState(GameState.PLAYER_O_WON, sessionId)
-            }
-
-            GameState.DRAW -> {
-                gameRepository.updateBoard(updatedBoard, sessionId)
-                gameRepository.updateGameState(GameState.DRAW, sessionId)
-            }
-        }
-
+        checkGameState(updatedBoard, sessionId)
+        gameRepository.updateBoard(updatedBoard, sessionId)
+        gameRepository.updateTurn(updatedTurn, sessionId)
     }
 }

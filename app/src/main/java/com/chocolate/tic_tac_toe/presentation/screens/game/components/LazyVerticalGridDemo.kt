@@ -50,12 +50,20 @@ fun LazyVerticalGridDemoContent(
             Box(
                 modifier = Modifier
                     .size(100.dp)
-                    .background(color = DarkOnCard, shape = RoundedCornerShape(size = 8.dp))
+                    .background(
+                        color = if (
+                            state.winPositions.isNotEmpty() &&
+                            state.winPositions.contains(index)
+                        ) {
+                            if (item == "X") DarkSecondary else DarkOnSecondary
+                        } else DarkCard,
+                        shape = RoundedCornerShape(size = 8.dp)
+                    )
                     .clickable {
                         if (state.turn == state.playerId) {
-                            if (state.playerId == state.xPlayer.id){
+                            if (state.playerId == state.xPlayer.id) {
                                 onClickBox(index, state.xPlayer.symbol)
-                            }else{
+                            } else {
                                 onClickBox(index, state.oPlayer.symbol)
                             }
                         }
