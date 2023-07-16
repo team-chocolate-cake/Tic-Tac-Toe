@@ -56,7 +56,7 @@ fun LazyVerticalGridDemoContent(
                             state.winPositions.contains(index)
                         ) {
                             if (item == "X") DarkSecondary else DarkOnSecondary
-                        } else DarkCard,
+                        } else DarkOnCard,
                         shape = RoundedCornerShape(size = 8.dp)
                     )
                     .clickable {

@@ -24,18 +24,19 @@ class CheckGameStateUseCase @Inject constructor(
             listOf(2, 4, 6)
         )
 
-        var state = GameState.IN_PROGRESS
 
         winningPositions.forEach { positions ->
             val (a, b, c) = positions
             if (board[a] != "" && board[a] == board[b] && board[a] == board[c]) {
-                state = when (board[a]) {
+                when (board[a]) {
                     "X" -> {
-                        GameState.PLAYER_X_WON
+                        gameRepository.updateGameState(
+                            GameState.PLAYER_X_WON, sessionId
+                        )
                     }
 
                     "O" -> {
-                        GameState.PLAYER_O_WON
+                        gameRepository.updateGameState(GameState.PLAYER_X_WON, sessionId)
                     }
 
                     else -> throw IllegalStateException("Invalid player")
@@ -45,12 +46,11 @@ class CheckGameStateUseCase @Inject constructor(
 
         }
 
-        state = if (board.contains("")) {
+        if (board.contains("")) {
             GameState.IN_PROGRESS
         } else {
-            GameState.DRAW
+            gameRepository.updateGameState(GameState.DRAW, sessionId)
         }
 
-        gameRepository.updateGameState(state, sessionId)
     }
 }
