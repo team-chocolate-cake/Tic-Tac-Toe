@@ -79,6 +79,7 @@ dependencies {
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.31.0-alpha"
 
     // RealTime Database
     implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
