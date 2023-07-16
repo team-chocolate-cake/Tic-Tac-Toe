@@ -15,20 +15,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ButtonApp(text: String, onClick: () -> Unit) {
+fun <T>ButtonApp(text: String, onClick: (T) -> Unit) {
     Button(
-        onClick = onClick,
+        onClick = { onClick },
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick }
             .clip(CircleShape)
             .padding(vertical = 12.dp)
-            .background(brush = Brush.horizontalGradient(
-                colors = listOf(
-                    Color(0xff9c3be4),
-                    Color(0xff9d39d3),
-                    Color(0xffb82f89)
-                ))
+            .background(
+                brush = Brush.horizontalGradient(
+                    colors = listOf(
+                        Color(0xff9c3be4),
+                        Color(0xff9d39d3),
+                        Color(0xffb82f89)
+                    )
+                )
             ),
     ) {
         Text(

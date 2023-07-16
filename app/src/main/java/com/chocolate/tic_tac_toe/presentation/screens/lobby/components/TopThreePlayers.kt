@@ -15,10 +15,13 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.chocolate.tic_tac_toe.R
 import com.chocolate.tic_tac_toe.presentation.screens.composable.PlayerImage
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical4
+import com.chocolate.tic_tac_toe.presentation.screens.lobby.viewmodel.PlayerUiState
 import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground87
 
 @Composable
-fun TopThreePlayers() {
+fun TopThreePlayers(
+    players: List<PlayerUiState>,
+) {
     Box(modifier = Modifier.fillMaxWidth()) {
         ConstraintLayout(
             modifier = Modifier
@@ -37,10 +40,14 @@ fun TopThreePlayers() {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    PlayerImage(size = 88, borderWidth = 2)
+                    PlayerImage(
+                        imageUrl = players[PLAYER_TOW_INDEX].imageUrl,
+                        size = 88,
+                        borderWidth = 2
+                    )
                     SpacerVertical4()
                     Text(
-                        text = "kno",
+                        text = players[PLAYER_TOW_INDEX].name,
                         style = MaterialTheme.typography.titleSmall,
                         color = DarkOnBackground87
                     )
@@ -57,10 +64,14 @@ fun TopThreePlayers() {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    PlayerImage(size = 88, borderWidth = 2)
+                    PlayerImage(
+                        imageUrl = players[PLAYER_THREE_INDEX].imageUrl,
+                        size = 88,
+                        borderWidth = 2
+                    )
                     SpacerVertical4()
                     Text(
-                        text = "jhon",
+                        text = players[PLAYER_THREE_INDEX].name,
                         style = MaterialTheme.typography.titleSmall,
                         color = DarkOnBackground87
                     )
@@ -86,10 +97,14 @@ fun TopThreePlayers() {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    PlayerImage(size = 125, borderWidth = 2)
+                    PlayerImage(
+                        imageUrl = players[PLAYER_ONE_INDEX].imageUrl,
+                        size = 125,
+                        borderWidth = 2
+                    )
                     SpacerVertical4()
                     Text(
-                        text = "moon",
+                        text = players[PLAYER_ONE_INDEX].name,
                         style = MaterialTheme.typography.titleSmall,
                         color = DarkOnBackground87
                     )
@@ -99,3 +114,7 @@ fun TopThreePlayers() {
         }
     }
 }
+
+private const val PLAYER_ONE_INDEX = 0
+private const val PLAYER_TOW_INDEX = 1
+private const val PLAYER_THREE_INDEX = 2

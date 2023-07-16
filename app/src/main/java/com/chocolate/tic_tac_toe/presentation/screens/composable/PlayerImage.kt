@@ -11,12 +11,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.chocolate.tic_tac_toe.R
 import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBorder
 
 @Composable
-fun PlayerImage(imageId: Int = R.drawable.player1  , size: Int = 36 ,borderWidth: Int = 1){
-    Image(painter = painterResource(id = imageId), contentDescription ="" ,
+fun PlayerImage(imageUrl: String = ""  , size: Int = 36 ,borderWidth: Int = 1){
+    Image(painter = rememberAsyncImagePainter(imageUrl), contentDescription ="" ,
     modifier = Modifier
         .size(size.dp).fillMaxSize()
         .clip(CircleShape)

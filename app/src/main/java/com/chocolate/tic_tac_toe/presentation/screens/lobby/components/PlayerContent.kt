@@ -17,10 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.chocolate.tic_tac_toe.R
+import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.presentation.screens.composable.PlayerImage
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerHorizontal4
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerHorizontal8
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical4
+import com.chocolate.tic_tac_toe.presentation.screens.lobby.viewmodel.PlayerUiState
 import com.chocolate.tic_tac_toe.presentation.theme.DarkCard87
 import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground38
 import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground60
@@ -28,10 +30,8 @@ import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground87
 
 @Composable
 fun PlayerContent(
-    playerName: String = "moon",
-    playerImage: Int = 0,
-    playerScore: Int = 300,
-    onClickPlayer: (()-> Unit)? = null,
+    player: PlayerUiState,
+    onClickPlayer: ((String) -> Unit)? = null,
 ) {
     Row(
         modifier = Modifier
@@ -45,10 +45,10 @@ fun PlayerContent(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            PlayerImage(size = 42)
+            PlayerImage(imageUrl = player.imageUrl, size = 42)
             SpacerHorizontal8()
             Text(
-                text = playerName,
+                text = player.name,
                 maxLines = 1,
                 style = MaterialTheme.typography.bodySmall,
                 color = DarkOnBackground87,
@@ -57,7 +57,7 @@ fun PlayerContent(
 
         Row {
             Text(
-                text = playerScore.toString(),
+                text = player.score.toString(),
                 modifier = Modifier.padding(end = 4.dp),
                 style = MaterialTheme.typography.bodySmall,
                 color = DarkOnBackground87,
@@ -75,27 +75,23 @@ fun PlayerContent(
 }
 
 
-
-
 @Composable
 fun PlayerContentHeader(
-    playerName: String = "moon",
-    playerImage: Int = 0,
-    playerScore: Int = 300,
+    player: PlayerUiState,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        PlayerImage()
+        PlayerImage(imageUrl = player.imageUrl)
         SpacerHorizontal8()
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = playerName,
+                text = player.name,
                 maxLines = 1,
                 style = MaterialTheme.typography.bodySmall,
                 color = DarkOnBackground87,
@@ -104,8 +100,8 @@ fun PlayerContentHeader(
 
             Row {
                 Text(
-                    text = playerScore.toString(),
-                    modifier = Modifier.padding(start = 4.dp,end = 4.dp),
+                    text = player.score.toString(),
+                    modifier = Modifier.padding(start = 4.dp, end = 4.dp),
                     style = MaterialTheme.typography.bodySmall,
                     color = DarkOnBackground38,
                 )
@@ -115,7 +111,6 @@ fun PlayerContentHeader(
                     painter = painterResource(id = R.drawable.ic_fire),
                     contentDescription = "",
                 )
-
             }
         }
     }

@@ -1,51 +1,55 @@
 package com.chocolate.tic_tac_toe.presentation.screens.lobby
 
-import androidx.compose.foundation.Image
+import android.annotation.SuppressLint
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.chocolate.tic_tac_toe.R
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.chocolate.tic_tac_toe.domain.model.Session
 import com.chocolate.tic_tac_toe.presentation.screens.composable.ButtonApp
-import com.chocolate.tic_tac_toe.presentation.screens.composable.PlayerImage
-import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerHorizontal8
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical12
-import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical16
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical24
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical8
 import com.chocolate.tic_tac_toe.presentation.screens.composable.TikTakToeScaffold
 import com.chocolate.tic_tac_toe.presentation.screens.lobby.components.PlayerContent
 import com.chocolate.tic_tac_toe.presentation.screens.lobby.components.PlayerContentHeader
 import com.chocolate.tic_tac_toe.presentation.screens.lobby.components.TopThreePlayers
-import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground38
+import com.chocolate.tic_tac_toe.presentation.screens.lobby.viewmodel.LobbyUiState
+import com.chocolate.tic_tac_toe.presentation.screens.lobby.viewmodel.LobbyViewModel
+import com.chocolate.tic_tac_toe.presentation.screens.lobby.viewmodel.PlayerUiState
 import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground87
-import com.chocolate.tic_tac_toe.presentation.theme.fingerPaintFamily
 
-@Preview(showSystemUi = true)
+@SuppressLint("SuspiciousIndentation")
 @Composable
-fun LobbyScreen() {
-    LobbyContent()
+fun LobbyScreen(
+    viewModel: LobbyViewModel = hiltViewModel()
+) {
+    val state by viewModel.state.collectAsState()
+
+    LobbyContent(
+        state = state,
+        onClickCreateSession = viewModel::onClickCreateSession,
+        navigateToGameScreen = viewModel::navigateToGameScreen,
+    )
 }
 
 @Composable
-fun LobbyContent() {
+fun LobbyContent(
+    state: LobbyUiState,
+    onClickCreateSession: (Session) -> Unit,
+    navigateToGameScreen: (String) -> Unit,
+) {
     TikTakToeScaffold {
         val scrollState = rememberScrollState()
         Column(
@@ -57,13 +61,14 @@ fun LobbyContent() {
                 )
         ) {
 
-            PlayerContentHeader()
+            if (state.player != null)
+            PlayerContentHeader(player = state.player)
             SpacerVertical8()
-            TopThreePlayers()
+            TopThreePlayers(players = state.players)
             SpacerVertical24()
-            Players()
+            Players(players = state.players , onClickPlayer = navigateToGameScreen)
             SpacerVertical24()
-            ButtonApp(text = "Create Game", onClick = { })
+            ButtonApp(text = "Create Game", onClick =  onClickCreateSession )
 
         }
     }
@@ -71,7 +76,10 @@ fun LobbyContent() {
 
 
 @Composable
-private fun Players() {
+private fun Players(
+    players: List<PlayerUiState>,
+    onClickPlayer: (String) -> Unit
+) {
     Text(
         text = "Players",
         style = MaterialTheme.typography.bodyLarge,
@@ -79,9 +87,8 @@ private fun Players() {
     )
     SpacerVertical8()
     LazyColumn() {
-        items(5) {
-
-            PlayerContent()
+        items(players) {
+            PlayerContent(player = it ,onClickPlayer = onClickPlayer)
             SpacerVertical12()
         }
     }
