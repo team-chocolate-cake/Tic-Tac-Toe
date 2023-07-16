@@ -21,7 +21,7 @@ import com.chocolate.tic_tac_toe.presentation.screens.composable.ButtonApp
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical12
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical24
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical8
-import com.chocolate.tic_tac_toe.presentation.screens.composable.TikTakToeScaffold
+import com.chocolate.tic_tac_toe.presentation.screens.composable.TikTacToeScaffold
 import com.chocolate.tic_tac_toe.presentation.screens.lobby.components.PlayerContent
 import com.chocolate.tic_tac_toe.presentation.screens.lobby.components.PlayerContentHeader
 import com.chocolate.tic_tac_toe.presentation.screens.lobby.components.TopThreePlayers
@@ -50,7 +50,7 @@ fun LobbyContent(
     onClickCreateSession: (Session) -> Unit,
     navigateToGameScreen: (String) -> Unit,
 ) {
-    TikTakToeScaffold {
+    TikTacToeScaffold {
         val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
