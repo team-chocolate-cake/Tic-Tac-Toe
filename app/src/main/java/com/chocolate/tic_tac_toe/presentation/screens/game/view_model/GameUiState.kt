@@ -10,7 +10,7 @@ data class GameUiState(
     data class Player(
         val id: String = "",
         val name: String = "",
-        val type: String = "",
+        val symbol: String = "",
         val score: Int = 0,
     )
 }

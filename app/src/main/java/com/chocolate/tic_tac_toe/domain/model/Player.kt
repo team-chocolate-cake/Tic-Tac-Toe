@@ -4,6 +4,6 @@ data class Player(
     val id: String? = null,
     val name: String? = null,
     val score: Int? = null,
-    val type: String? = null,
+    val symbol: String? = null,
     val createdSessionId: String? = null,
 )

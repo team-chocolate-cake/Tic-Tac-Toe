@@ -32,7 +32,7 @@ import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacToeTheme
 @Composable
 fun LazyVerticalGridDemoContent(
     state: GameUiState,
-    onClickBox: (Int) -> Unit,
+    onClickBox: (Int, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
@@ -53,7 +53,11 @@ fun LazyVerticalGridDemoContent(
                     .background(color = DarkOnCard, shape = RoundedCornerShape(size = 8.dp))
                     .clickable {
                         if (state.turn == state.playerId) {
-                            onClickBox(index)
+                            if (state.playerId == state.xPlayer.id){
+                                onClickBox(index, state.xPlayer.symbol)
+                            }else{
+                                onClickBox(index, state.oPlayer.symbol)
+                            }
                         }
                     },
                 contentAlignment = Alignment.Center,
@@ -82,7 +86,7 @@ fun DemoContent() {
                     "X", "O", "X"
                 ),
             ),
-            onClickBox = {}
+            onClickBox = { _, _ -> }
         )
     }
 }

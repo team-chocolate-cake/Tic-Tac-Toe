@@ -72,7 +72,7 @@ fun CardPlayer(
             )
 
             Text(
-                text = player.type,
+                text = player.symbol,
                 color = colorType,
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontSize = 30.sp

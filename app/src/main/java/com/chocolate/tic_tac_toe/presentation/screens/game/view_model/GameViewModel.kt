@@ -3,8 +3,9 @@ package com.chocolate.tic_tac_toe.presentation.screens.game.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chocolate.tic_tac_toe.data.repository.GameRepository
 import com.chocolate.tic_tac_toe.domain.model.Player
+import com.chocolate.tic_tac_toe.domain.usecase.GetSessionDataUseCase
+import com.chocolate.tic_tac_toe.domain.usecase.UpdateGameStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,19 +16,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
-    private val gameRepository: GameRepository,
+    private val getSessionData: GetSessionDataUseCase,
+    private val updateGameState: UpdateGameStateUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(GameUiState())
     val state = _state.asStateFlow()
 
     init {
-        getSession()
+        getSessionData()
     }
 
-    private fun getSession() {
+    private fun getSessionData() {
         viewModelScope.launch {
-            gameRepository.getSession(SESSION_ID).collect { session ->
+            getSessionData(SESSION_ID).collect { session ->
                 _state.update {
                     it.copy(
                         xPlayer = session.xplayer!!.toPlayerUiState(),
@@ -41,43 +43,33 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    fun updateBoard(index: Int) {
-        _state.update {
-            it.copy(
-                board = it.board.toMutableList().apply {
-                    this[index] = if (it.turn == it.oPlayer.id) "O" else "X"
-                }
+    fun updateGameState(index: Int, value: String) {
+        viewModelScope.launch {
+            updateGameState(
+                _state.value.board,
+                index,
+                value,
+                _state.value.turn,
+                _state.value.xPlayer.id,
+                _state.value.oPlayer.id,
+                SESSION_ID
             )
         }
-        viewModelScope.launch {
-            gameRepository.updateBoard(_state.value.board, SESSION_ID)
-        }
-        updateTurn()
     }
 
-    private fun updateTurn() {
-        _state.update {
-            it.copy(
-                turn = if (it.turn == it.oPlayer.id) it.oPlayer.id else it.xPlayer.id
-            )
-        }
-        viewModelScope.launch {
-            gameRepository.updateTurn(_state.value.turn, SESSION_ID)
-        }
-    }
 
     private fun Player.toPlayerUiState(): GameUiState.Player {
         return GameUiState.Player(
             id = this.id!!,
             name = this.name!!,
             score = this.score!!,
-            type = this.type!!
+            symbol = this.symbol!!
         )
     }
 
 
     companion object {
-        private const val SESSION_ID = "-N_PUYtRbaOphbvrjnin"
-        private const val PLAYER_ID = "1689455042896"
+        private const val SESSION_ID = "1689506560157"
+        private const val PLAYER_ID = "1689506560162"
     }
 }

@@ -30,14 +30,14 @@ fun GameScreen(
 
     GameScreenContent(
         state = state,
-        onClickBox = viewModel::updateBoard
+        onClickBox = viewModel::updateGameState
     )
 }
 
 @Composable
 fun GameScreenContent(
     state: GameUiState,
-    onClickBox: (Int) -> Unit
+    onClickBox: (Int, String) -> Unit
 ) {
     Box {
         ImageForBackground()
@@ -50,9 +50,7 @@ fun GameScreenContent(
             )
             LazyVerticalGridDemoContent(
                 state = state,
-                onClickBox = { index ->
-                    onClickBox(index)
-                },
+                onClickBox = onClickBox,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
         }

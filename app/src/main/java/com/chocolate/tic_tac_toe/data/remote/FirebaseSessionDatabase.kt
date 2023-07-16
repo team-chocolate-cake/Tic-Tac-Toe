@@ -1,5 +1,6 @@
 package com.chocolate.tic_tac_toe.data.remote
 
+import com.chocolate.tic_tac_toe.domain.model.GameState
 import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.model.Session
 import com.google.firebase.database.DataSnapshot
@@ -43,5 +44,9 @@ class FirebaseSessionDatabase @Inject constructor(
 
     suspend fun createSession(session: Session) {
         sessionDatabaseReference.child(session.id.toString()).setValue(session).await()
+    }
+
+    suspend fun updateGameState(gameState: GameState, sessionId: String) {
+        sessionDatabaseReference.child(sessionId).child("state").setValue(gameState).await()
     }
 }

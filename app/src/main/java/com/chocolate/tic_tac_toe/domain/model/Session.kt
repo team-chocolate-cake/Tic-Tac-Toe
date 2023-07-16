@@ -7,6 +7,6 @@ data class Session(
     val board: List<String>? = null,
     val turn: String? = null,
     val winner: Player? = null,
-    val state: Boolean? = null,
+    val state: GameState? = GameState.IN_PROGRESS,
     val playerRequest: Player? = null
 )
