@@ -1,10 +1,13 @@
 package com.chocolate.tic_tac_toe.presentation.screens.game.view_model
 
+import com.chocolate.tic_tac_toe.domain.model.GameState
+
 data class GameUiState(
     val xPlayer: Player = Player(),
     val oPlayer: Player = Player(),
     val turn: String = "",
     val playerId: String = "",
+    val gameState: GameState = GameState.IN_PROGRESS,
     val winPositions: List<Int> = emptyList(),
     val board: List<String> = emptyList()
 ) {

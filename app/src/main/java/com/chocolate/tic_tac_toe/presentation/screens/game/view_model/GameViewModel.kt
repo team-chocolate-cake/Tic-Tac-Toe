@@ -36,6 +36,7 @@ class GameViewModel @Inject constructor(
                         oPlayer = session.oplayer!!.toPlayerUiState(),
                         turn = session.turn!!,
                         playerId = PLAYER_ID,
+                        gameState = session.state!!,
                         board = session.board ?: emptyList(),
                         winPositions = session.winPositions ?: emptyList()
                     )
