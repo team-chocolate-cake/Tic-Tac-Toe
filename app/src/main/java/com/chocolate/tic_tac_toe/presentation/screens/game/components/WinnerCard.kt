@@ -2,6 +2,7 @@ package com.chocolate.tic_tac_toe.presentation.screens.game.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,16 +23,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chocolate.tic_tac_toe.R
+import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameUiState
 import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacCustomColors
 import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacToeTheme
 
 @Composable
-fun CardDrawContent(
+fun WinnerCard(
+    player: GameUiState.Player,
     image: Int,
+    onClickCLose: () -> Unit,
+    onClickPlayAgain: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val color = TicTacCustomColors.current
     Column(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(24.dp))
             .background(color.darkCard)
             .padding(vertical = 24.dp, horizontal = 32.dp),
@@ -46,12 +52,19 @@ fun CardDrawContent(
             contentDescription = null,
         )
         Text(
-            text = "Draw Game!",
+            text = "${player.name} Won!",
             style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
             color = color.darkOnBackground87,
             maxLines = 1,
 
             )
+        Text(
+            text = "+${player.score} Score",
+            style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
+            color = color.darkOnBackground87,
+            maxLines = 1,
+            modifier = Modifier.padding(horizontal = 82.dp)
+        )
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -60,6 +73,9 @@ fun CardDrawContent(
                 .fillMaxWidth()
         ) {
             Text(
+                modifier = Modifier.clickable {
+                    onClickCLose()
+                },
                 text = "X",
                 style = MaterialTheme.typography.titleLarge.copy(fontSize = 64.sp),
                 color = color.darkOnSecondary,
@@ -67,6 +83,9 @@ fun CardDrawContent(
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
+                modifier = Modifier.clickable {
+                    onClickPlayAgain()
+                },
                 text = "O",
                 style = MaterialTheme.typography.titleLarge.copy(fontSize = 64.sp),
                 color = color.darkSecondary,
@@ -77,12 +96,21 @@ fun CardDrawContent(
     }
 }
 
+
 @Preview
 @Composable
-fun CardPreview() {
-    TicTacToeTheme() {
-        CardDrawContent(
+fun CardWinnerPreview() {
+    TicTacToeTheme {
+        WinnerCard(
+            player = GameUiState.Player(
+                id = "1",
+                name = "Player 1",
+                symbol = "X",
+                score = 1,
+            ),
             image = R.drawable.avatar_batman,
+            onClickCLose = {},
+            onClickPlayAgain = {},
         )
     }
 }

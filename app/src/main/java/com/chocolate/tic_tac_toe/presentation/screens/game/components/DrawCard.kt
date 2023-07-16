@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,26 +16,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chocolate.tic_tac_toe.R
-import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameUiState
-import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkOnSecondary
 import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacCustomColors
 import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacToeTheme
 
 @Composable
-fun WinnerCard(
-    player: GameUiState.Player,
+fun DrawCard(
     image: Int,
+    modifier: Modifier = Modifier,
 ) {
     val color = TicTacCustomColors.current
     Column(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(24.dp))
             .background(color.darkCard)
             .padding(vertical = 24.dp, horizontal = 32.dp),
@@ -51,19 +47,12 @@ fun WinnerCard(
             contentDescription = null,
         )
         Text(
-            text = "${player.name} Won!",
+            text = "Draw Game!",
             style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
             color = color.darkOnBackground87,
             maxLines = 1,
 
             )
-        Text(
-            text = "+${player.score} Score",
-            style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
-            color = color.darkOnBackground87,
-            maxLines = 1,
-            modifier = Modifier.padding(horizontal = 82.dp)
-        )
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -89,18 +78,11 @@ fun WinnerCard(
     }
 }
 
-
 @Preview
 @Composable
-fun CardWinnerPreview() {
+fun CardPreview() {
     TicTacToeTheme() {
-        WinnerCard(
-            player = GameUiState.Player(
-                id = "1",
-                name = "Player 1",
-                symbol = "X",
-                score = 1,
-            ),
+        DrawCard(
             image = R.drawable.avatar_batman,
         )
     }

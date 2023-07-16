@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -15,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.chocolate.tic_tac_toe.R
 import com.chocolate.tic_tac_toe.domain.model.GameState
+import com.chocolate.tic_tac_toe.presentation.screens.game.components.DrawCard
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.ImageForBackground
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.LazyVerticalGridDemoContent
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.PlayersContent
@@ -34,14 +34,18 @@ fun GameScreen(
 
     GameScreenContent(
         state = state,
-        onClickBox = viewModel::updateGameState
+        onClickBox = viewModel::updateGameState,
+/*        onClickClose = viewModel::onClose,
+        onClickPlayAgain = viewModel::onPlayAgain,*/
     )
 }
 
 @Composable
 fun GameScreenContent(
     state: GameUiState,
-    onClickBox: (Int, String) -> Unit
+    onClickBox: (Int, String) -> Unit,
+    onClickClose : () -> Unit = {},
+    onClickPlayAgain : () -> Unit = {},
 ) {
     Box {
         ImageForBackground()
@@ -52,35 +56,38 @@ fun GameScreenContent(
                 oPLayer = state.oPlayer,
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 32.dp)
             )
+
             when (state.gameState) {
-                GameState.IN_PROGRESS ->
+                GameState.IN_PROGRESS -> {
                     LazyVerticalGridDemoContent(
                         state = state,
                         onClickBox = onClickBox,
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
+                }
 
-                GameState.PLAYER_X_WON -> {
+                GameState.PLAYER_X_WON, GameState.PLAYER_O_WON -> {
                     WinnerCard(
-                        player =
-                        state.xPlayer, image = R.drawable.clown
+                        player = if (state.gameState == GameState.PLAYER_X_WON) state.xPlayer else state.oPlayer,
+                        image = R.drawable.clown,
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        onClickCLose = { onClickClose() },
+                        onClickPlayAgain = { onClickPlayAgain() }
                     )
                 }
 
-                GameState.PLAYER_O_WON -> {
-                    WinnerCard(
-                        player =
-                        state.oPlayer, image = R.drawable.avatar_batman
+                else -> {
+                    DrawCard(
+                        image = R.drawable.avatar_batman,
+                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
-                }
-
-                GameState.DRAW -> {
-
                 }
             }
+
         }
     }
 }
+
 
 @Preview
 @Composable

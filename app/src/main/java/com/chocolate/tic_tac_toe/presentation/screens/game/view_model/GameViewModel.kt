@@ -60,6 +60,8 @@ class GameViewModel @Inject constructor(
     }
 
 
+
+
     private fun Player.toPlayerUiState(): GameUiState.Player {
         return GameUiState.Player(
             id = this.id!!,
