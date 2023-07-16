@@ -65,7 +65,6 @@ class GameViewModel @Inject constructor(
      fun onPlayAgain(){
          viewModelScope.launch {
              updateGameState.onPlayAgain(SESSION_ID)
-
          }
     }
 
@@ -84,7 +83,6 @@ class GameViewModel @Inject constructor(
 
     companion object {
         private const val SESSION_ID = "1689509501310"
-        private const val PLAYER_ID = "1689509501314"
-
+        private const val PLAYER_ID = "1689509501316"
     }
 }
