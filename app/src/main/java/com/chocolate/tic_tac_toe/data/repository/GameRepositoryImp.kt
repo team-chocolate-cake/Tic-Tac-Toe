@@ -3,6 +3,7 @@ package com.chocolate.tic_tac_toe.data.repository
 import com.chocolate.tic_tac_toe.data.local.StorePlayerId
 import com.chocolate.tic_tac_toe.data.remote.FirebasePlayerDatabase
 import com.chocolate.tic_tac_toe.data.remote.FirebaseSessionDatabase
+import com.chocolate.tic_tac_toe.domain.model.GameState
 import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.model.Session
 import kotlinx.coroutines.flow.Flow
@@ -21,8 +22,17 @@ class GameRepositoryImp @Inject constructor(
     // endregion
 
     // region Player
-    override suspend fun createPlayer(player: Player) {
+    override suspend fun createPlayer(player: Player): Boolean {
         val playerId = storePlayerData.getPlayerId()
+        return if (playerId == null) {
+            val isCreated = firebasePlayerDatabase.createPlayer(player)
+            storePlayerData.savePlayerId(player.id)
+            isCreated
+        } else {
+            firebasePlayerDatabase.updatePlayerName(playerId, player.name)
+        }
+    }
+
     override  fun getPlayers(): Flow<List<Player?>> {
         return firebasePlayerDatabase.getPlayers()
     }
@@ -31,14 +41,6 @@ class GameRepositoryImp @Inject constructor(
         return firebasePlayerDatabase.getPlayerById(id = id)
     }
     //endregion
-
-        if (playerId == null) {
-            firebasePlayerDatabase.createPlayer(player)
-            storePlayerData.savePlayerId(player.id!!)
-        } else {
-            firebasePlayerDatabase.updatePlayerName(playerId, player.name!!)
-        }
-    }
 
     override suspend fun getPlayerData(): Player? {
         val playerId = storePlayerData.getPlayerId()

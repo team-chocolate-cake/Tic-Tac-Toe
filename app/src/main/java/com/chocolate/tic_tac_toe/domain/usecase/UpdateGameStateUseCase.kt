@@ -13,8 +13,7 @@ class UpdateGameStateUseCase @Inject constructor(
         index: Int,
         value: String,
         turn: String,
-        xPlayerId: String,
-        oPlayerId: String,
+        playersId: Set<String>,
         sessionId: String,
     ) {
         val updatedBoard = board.toMutableList().also {
@@ -25,7 +24,7 @@ class UpdateGameStateUseCase @Inject constructor(
             }
         }
 
-        val updatedTurn = if (turn == xPlayerId) oPlayerId else xPlayerId
+        val updatedTurn = if (turn == playersId.first()) playersId.first() else playersId.last()
 
         checkGameState(updatedBoard, sessionId)
         gameRepository.updateBoard(updatedBoard, sessionId)

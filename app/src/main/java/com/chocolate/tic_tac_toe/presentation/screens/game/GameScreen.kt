@@ -9,9 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.chocolate.tic_tac_toe.R
 import com.chocolate.tic_tac_toe.domain.model.GameState
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.DrawCard
@@ -21,13 +23,14 @@ import com.chocolate.tic_tac_toe.presentation.screens.game.components.PlayersCon
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.WinnerCard
 import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameUiState
 import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameViewModel
-import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkBackground
-import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacToeTheme
+import com.chocolate.tic_tac_toe.presentation.theme.DarkBackground
+import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun GameScreen(
-    viewModel: GameViewModel = hiltViewModel()
+    viewModel: GameViewModel = hiltViewModel(),
+    navController: NavController,
 ) {
 
     val state by viewModel.state.collectAsState()
@@ -44,16 +47,16 @@ fun GameScreen(
 fun GameScreenContent(
     state: GameUiState,
     onClickBox: (Int, String) -> Unit,
-    onClickClose : () -> Unit = {},
-    onClickPlayAgain : () -> Unit = {},
+    onClickClose: () -> Unit = {},
+    onClickPlayAgain: () -> Unit = {},
 ) {
     Box {
         ImageForBackground()
         Column(modifier = Modifier.background(color = DarkBackground)) {
             PlayersContent(
                 turn = state.turn,
-                xPLayer = state.xPlayer,
-                oPLayer = state.oPlayer,
+                xPLayer = state.players.first(),
+                oPLayer = state.players.last(),
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 32.dp)
             )
 
@@ -66,9 +69,12 @@ fun GameScreenContent(
                     )
                 }
 
-                GameState.PLAYER_X_WON, GameState.PLAYER_O_WON-> {
+                GameState.PLAYER_X_WON, GameState.PLAYER_O_WON -> {
                     WinnerCard(
-                        player = if (state.gameState == GameState.PLAYER_X_WON) state.xPlayer else state.oPlayer,
+                        player =
+                        if (state.gameState == GameState.PLAYER_X_WON)
+                            state.players.first()
+                        else state.players.last(),
                         image = R.drawable.clown,
                         modifier = Modifier.padding(horizontal = 16.dp),
                         onClickCLose = { onClickClose() },
@@ -93,6 +99,8 @@ fun GameScreenContent(
 @Composable
 fun GameScreenPreview() {
     TicTacToeTheme {
-        GameScreen()
+        GameScreen(
+            navController = NavController(LocalContext.current)
+        )
     }
 }

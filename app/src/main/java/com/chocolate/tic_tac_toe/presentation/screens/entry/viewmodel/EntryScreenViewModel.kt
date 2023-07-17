@@ -3,8 +3,8 @@ package com.chocolate.tic_tac_toe.presentation.screens.entry.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chocolate.tic_tac_toe.domain.usecases.CreatePlayerUseCase
-import com.chocolate.tic_tac_toe.domain.usecases.GetPlayerDataUseCase
+import com.chocolate.tic_tac_toe.domain.usecase.CreatePlayerUseCase
+import com.chocolate.tic_tac_toe.domain.usecase.GetPlayerDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,8 +26,10 @@ class EntryScreenViewModel @Inject constructor(
     }
 
     fun createPlayer() {
+        _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             createPlayer(_state.value.playerName)
+            _state.update { it.copy(isLoading = false) }
         }
     }
 

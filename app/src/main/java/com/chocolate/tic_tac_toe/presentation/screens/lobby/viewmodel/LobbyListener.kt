@@ -5,6 +5,6 @@ import com.chocolate.tic_tac_toe.domain.model.Session
 
 interface LobbyListener  {
     fun onClickPlayer(sessionId: String)
-    fun onClickCreateSession(session:Session)
+    fun onClickCreateSession()
     fun navigateToGameScreen(sessionID: String)
 }

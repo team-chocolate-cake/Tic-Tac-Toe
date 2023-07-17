@@ -25,8 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chocolate.tic_tac_toe.R
-import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacCustomColors
-import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacToeTheme
+import com.chocolate.tic_tac_toe.presentation.theme.TicTacCustomColors
+import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 
 @Composable
 fun DrawCard(

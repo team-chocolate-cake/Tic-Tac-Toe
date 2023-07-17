@@ -2,16 +2,14 @@ package com.chocolate.tic_tac_toe.presentation.screens.lobby.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chocolate.tic_tac_toe.domain.model.Session
+import com.chocolate.tic_tac_toe.domain.usecase.CreateSessionUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.lobby.GetPlayerByIdUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.lobby.GetPlayersUseCase
-import com.chocolate.tic_tac_toe.domain.usecase.session.CreateSessionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.jetbrains.annotations.ApiStatus.Internal
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,11 +24,11 @@ class LobbyViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     init {
-        getPlayer(id = "1689525625724")
+        getPlayer(id = ID)
         getPlayers()
     }
 
-    fun getPlayer(id: String) {
+    private fun getPlayer(id: String) {
         viewModelScope.launch {
             getPlayerUseCase(id = id).collect { player ->
                 _state.update {
@@ -44,15 +42,14 @@ class LobbyViewModel @Inject constructor(
         }
     }
 
-    fun getPlayers() {
-
+    private fun getPlayers() {
         viewModelScope.launch {
             getPlayersUseCase().collect { players ->
                 _state.update {
                     it.copy(
                         players = players.map { players ->
                             playerUiStateMapper.map(players!!)
-                        }.sortedBy { player ->
+                        }.sortedByDescending { player ->
                             player.score
                         },
                         isLoading = false,
@@ -67,10 +64,10 @@ class LobbyViewModel @Inject constructor(
 
     }
 
-    override fun onClickCreateSession(session: Session) {
+    override fun onClickCreateSession() {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            createSessionUseCase(session)
+            createSessionUseCase()
             _state.update { it.copy(isLoading = false) }
         }
 
@@ -78,6 +75,10 @@ class LobbyViewModel @Inject constructor(
 
     override fun navigateToGameScreen(sessionID: String) {
 
+    }
+
+    companion object {
+        private const val ID = "1689552385460"
     }
 
 

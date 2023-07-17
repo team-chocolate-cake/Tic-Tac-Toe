@@ -1,4 +1,4 @@
-package com.chocolate.tic_tac_toe.domain.usecases
+package com.chocolate.tic_tac_toe.domain.usecase
 
 import com.chocolate.tic_tac_toe.data.repository.GameRepository
 import com.chocolate.tic_tac_toe.domain.model.Player
@@ -7,7 +7,7 @@ import javax.inject.Inject
 class CreatePlayerUseCase @Inject constructor(
     private val gameRepository: GameRepository
 ) {
-    suspend operator fun invoke(name: String) {
+    suspend operator fun invoke(name: String): Boolean {
         val playerId = System.currentTimeMillis().toString()
 
         val player = Player(
@@ -16,6 +16,6 @@ class CreatePlayerUseCase @Inject constructor(
             previewsNames = listOf(name),
             score = 0,
         )
-        gameRepository.createPlayer(player)
+       return gameRepository.createPlayer(player)
     }
 }

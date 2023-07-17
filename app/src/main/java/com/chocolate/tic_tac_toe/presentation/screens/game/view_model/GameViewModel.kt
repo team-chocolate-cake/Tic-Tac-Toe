@@ -3,7 +3,6 @@ package com.chocolate.tic_tac_toe.presentation.screens.game.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chocolate.tic_tac_toe.domain.model.GameState
 import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.usecase.GetSessionDataUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.UpdateGameStateUseCase
@@ -17,8 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
-    private val getSessionData: GetSessionDataUseCase,
-    private val updateGameState: UpdateGameStateUseCase,
+    private val getSessionDataUseCase: GetSessionDataUseCase,
+    private val updateGameStateUseCase: UpdateGameStateUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(GameUiState())
@@ -30,16 +29,15 @@ class GameViewModel @Inject constructor(
 
     private fun getSessionData() {
         viewModelScope.launch {
-            getSessionData(SESSION_ID).collect { session ->
+            getSessionDataUseCase(SESSION_ID).collect { session ->
                 _state.update {
                     it.copy(
-                        xPlayer = session.xplayer!!.toPlayerUiState(),
-                        oPlayer = session.oplayer!!.toPlayerUiState(),
-                        turn = session.turn!!,
+                        players = session.players.map { player -> player.toPlayerUiState() },
+                        turn = session.turn,
                         playerId = PLAYER_ID,
-                        gameState = session.state!!,
-                        board = session.board ?: emptyList(),
-                        winPositions = session.winPositions ?: emptyList()
+                        gameState = session.state,
+                        board = session.board,
+                        winPositions = session.winPositions
                     )
                 }
             }
@@ -48,34 +46,32 @@ class GameViewModel @Inject constructor(
 
     fun updateGameState(index: Int, value: String) {
         viewModelScope.launch {
-            updateGameState(
-                _state.value.board,
-                index,
-                value,
-                _state.value.turn,
-                _state.value.xPlayer.id,
-                _state.value.oPlayer.id,
-                SESSION_ID
+            updateGameStateUseCase(
+                board = _state.value.board,
+                index = index,
+                value = value,
+                turn = _state.value.turn,
+                playersId = _state.value.players.map { it.id }.toSet(),
+                sessionId = SESSION_ID
             )
         }
     }
-     fun onClose(){
 
-     }
-     fun onPlayAgain(){
-         viewModelScope.launch {
-             updateGameState.onPlayAgain(SESSION_ID)
-         }
+    fun onClose() {
+
     }
 
-
+    fun onPlayAgain() {
+        viewModelScope.launch {
+        }
+    }
 
 
     private fun Player.toPlayerUiState(): GameUiState.Player {
         return GameUiState.Player(
-            id = this.id!!,
-            name = this.name!!,
-            score = this.score!!,
+            id = this.id,
+            name = this.name,
+            score = this.score,
             symbol = this.symbol!!
         )
     }

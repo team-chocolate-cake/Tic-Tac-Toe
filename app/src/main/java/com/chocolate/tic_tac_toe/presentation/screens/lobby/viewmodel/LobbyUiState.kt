@@ -1,10 +1,9 @@
 package com.chocolate.tic_tac_toe.presentation.screens.lobby.viewmodel
 
-import com.chocolate.tic_tac_toe.domain.model.Player
 
 data class LobbyUiState(
     val players: List<PlayerUiState> = emptyList(),
-    val player: PlayerUiState? = null,
+    val player: PlayerUiState = PlayerUiState(),
     val error: String? = null,
     val isEmpty: Boolean = false,
     val isLoading: Boolean = false,

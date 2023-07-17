@@ -3,8 +3,6 @@ package com.chocolate.tic_tac_toe.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.chocolate.tic_tac_toe.presentation.screens.entry.EntryScreen
-import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacToeTheme
 import androidx.core.view.WindowCompat
 import com.chocolate.tic_tac_toe.presentation.screens.composable.TikTacToeScaffold
 import com.chocolate.tic_tac_toe.presentation.screens.composable.TransparentSystemBars
@@ -17,9 +15,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
+            TransparentSystemBars()
             TicTacToeTheme {
-                TransparentSystemBars()
                 TikTacToeScaffold {
+                    TicTacToeNavGraph()
                 }
             }
         }

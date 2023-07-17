@@ -3,8 +3,7 @@ package com.chocolate.tic_tac_toe.presentation.screens.game.view_model
 import com.chocolate.tic_tac_toe.domain.model.GameState
 
 data class GameUiState(
-    val xPlayer: Player = Player(),
-    val oPlayer: Player = Player(),
+    val players: List<Player> = emptyList(),
     val turn: String = "",
     val playerId: String = "",
     val gameState: GameState = GameState.IN_PROGRESS,

@@ -1,4 +1,4 @@
-package com.chocolate.tic_tac_toe.domain.usecases
+package com.chocolate.tic_tac_toe.domain.usecase
 
 import com.chocolate.tic_tac_toe.data.repository.GameRepository
 import com.chocolate.tic_tac_toe.domain.model.Player

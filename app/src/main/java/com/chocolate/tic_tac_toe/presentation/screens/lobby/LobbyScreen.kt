@@ -6,6 +6,7 @@ import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -16,7 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.chocolate.tic_tac_toe.domain.model.Session
+import androidx.navigation.NavController
 import com.chocolate.tic_tac_toe.presentation.screens.composable.ButtonApp
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical12
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical24
@@ -33,7 +34,8 @@ import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground87
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun LobbyScreen(
-    viewModel: LobbyViewModel = hiltViewModel()
+    viewModel: LobbyViewModel = hiltViewModel(),
+    navController: NavController,
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -47,7 +49,7 @@ fun LobbyScreen(
 @Composable
 fun LobbyContent(
     state: LobbyUiState,
-    onClickCreateSession: (Session) -> Unit,
+    onClickCreateSession: () -> Unit,
     navigateToGameScreen: (String) -> Unit,
 ) {
     TikTacToeScaffold {
@@ -55,20 +57,24 @@ fun LobbyContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .systemBarsPadding()
                 .padding(it)
                 .scrollable(
                     state = scrollState, orientation = Orientation.Vertical
                 )
         ) {
 
-            if (state.player != null)
+
             PlayerContentHeader(player = state.player)
+
             SpacerVertical8()
-            TopThreePlayers(players = state.players)
+            if (state.players.isNotEmpty()) {
+                TopThreePlayers(players = state.players)
+            }
             SpacerVertical24()
-            Players(players = state.players , onClickPlayer = navigateToGameScreen)
+            Players(players = state.players, onClickPlayer = navigateToGameScreen)
             SpacerVertical24()
-            ButtonApp(text = "Create Game", onClick =  onClickCreateSession )
+            ButtonApp(text = "Create Game", onClick = onClickCreateSession)
 
         }
     }
@@ -86,9 +92,9 @@ private fun Players(
         color = DarkOnBackground87,
     )
     SpacerVertical8()
-    LazyColumn() {
+    LazyColumn {
         items(players) {
-            PlayerContent(player = it ,onClickPlayer = onClickPlayer)
+            PlayerContent(player = it, onClickPlayer = onClickPlayer)
             SpacerVertical12()
         }
     }

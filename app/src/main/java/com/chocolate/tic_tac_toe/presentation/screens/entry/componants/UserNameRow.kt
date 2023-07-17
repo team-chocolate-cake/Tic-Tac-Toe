@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkOnCard
-import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacCustomColors
-import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacToeTheme
+import com.chocolate.tic_tac_toe.presentation.theme.DarkOnCard
+import com.chocolate.tic_tac_toe.presentation.theme.TicTacCustomColors
+import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 
 @Composable
 fun UserNameRow(text: String, onNameChange: (String) -> Unit) {

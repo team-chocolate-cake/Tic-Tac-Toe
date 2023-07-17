@@ -5,10 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -22,11 +19,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameUiState
-import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkCard
-import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkOnCard
-import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkOnSecondary
-import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkSecondary
-import com.chocolate.tic_tac_toe.presentation.ui.theme.TicTacToeTheme
+import com.chocolate.tic_tac_toe.presentation.theme.DarkCard
+import com.chocolate.tic_tac_toe.presentation.theme.DarkOnCard
+import com.chocolate.tic_tac_toe.presentation.theme.DarkOnSecondary
+import com.chocolate.tic_tac_toe.presentation.theme.DarkSecondary
+import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 
 
 @Composable
@@ -61,10 +58,10 @@ fun LazyVerticalGridDemoContent(
                     )
                     .clickable {
                         if (state.turn == state.playerId) {
-                            if (state.playerId == state.xPlayer.id) {
-                                onClickBox(index, state.xPlayer.symbol)
+                            if (state.playerId == state.players.first().id) {
+                                onClickBox(index, state.players.first().symbol)
                             } else {
-                                onClickBox(index, state.oPlayer.symbol)
+                                onClickBox(index, state.players.last().symbol)
                             }
                         }
                     },
