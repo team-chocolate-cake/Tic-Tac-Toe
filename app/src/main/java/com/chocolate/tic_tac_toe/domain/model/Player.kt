@@ -5,6 +5,7 @@ data class Player(
     val name: String? = null,
     val previewsNames: List<String>? = null,
     val score: Int? = null,
+    val imageUrl: String,
     val symbol: String? = null,
     val createdSessionId: String? = null,
 )
