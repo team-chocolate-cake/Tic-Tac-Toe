@@ -7,6 +7,7 @@ import com.chocolate.tic_tac_toe.domain.model.GameState
 import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.model.Session
 import kotlinx.coroutines.flow.Flow
+import okhttp3.internal.wait
 import javax.inject.Inject
 
 class GameRepositoryImp @Inject constructor(
@@ -16,29 +17,30 @@ class GameRepositoryImp @Inject constructor(
 ) : GameRepository {
 
     // region Session
-    override suspend fun createSession(session:Session) {
+    override suspend fun createSession(session: Session) {
         firebaseSessionDatabase.createSession(session)
     }
     // endregion
 
     // region Player
-    override suspend fun createPlayer(player: Player): Boolean {
+    override suspend fun createPlayer(player: Player) {
         val playerId = storePlayerData.getPlayerId()
-        return if (playerId == null) {
-            val isCreated = firebasePlayerDatabase.createPlayer(player)
+        if (playerId == null) {
+            firebasePlayerDatabase.createPlayer(player)
             storePlayerData.savePlayerId(player.id)
-            isCreated
+
         } else {
             firebasePlayerDatabase.updatePlayerName(playerId, player.name)
         }
     }
 
-    override  fun getPlayers(): Flow<List<Player?>> {
+    override fun getPlayers(): Flow<List<Player?>> {
         return firebasePlayerDatabase.getPlayers()
     }
 
-    override suspend fun getPlayerById(id: String): Flow<Player?> {
-        return firebasePlayerDatabase.getPlayerById(id = id)
+    override suspend fun getPlayerById(): Player {
+        val id = storePlayerData.getPlayerId()!!
+        return firebasePlayerDatabase.getPlayerById(id)
     }
     //endregion
 
@@ -50,6 +52,7 @@ class GameRepositoryImp @Inject constructor(
             firebasePlayerDatabase.getPlayerData(playerId)
         }
     }
+
     // endregion
     override suspend fun updateBoard(board: List<String>, sessionId: String) {
         firebaseSessionDatabase.updateBoard(board, sessionId)
@@ -70,6 +73,10 @@ class GameRepositoryImp @Inject constructor(
 
     override suspend fun updateWinPositions(positions: List<Int>, sessionId: String) {
         firebaseSessionDatabase.updateWinPositions(positions, sessionId)
+    }
+
+    override suspend fun joinSession(sessionId: String, player: Player) {
+        firebaseSessionDatabase.joinSession(sessionId, player)
     }
 
 }

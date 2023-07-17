@@ -10,7 +10,6 @@ class PlayerUiStateMapper @Inject constructor() {
             name = input.name,
             score = input.score,
             imageUrl = input.imageUrl,
-            createdSessionId = input.createdSessionId!!,
         )
     }
 }

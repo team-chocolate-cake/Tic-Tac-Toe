@@ -20,12 +20,14 @@ interface GameRepository {
 
     suspend fun updateWinPositions(positions: List<Int>, sessionId: String)
 
+    suspend fun joinSession(sessionId: String, player: Player)
+
     // endregion
 
     // region Player
-    suspend fun createPlayer(player: Player): Boolean
+    suspend fun createPlayer(player: Player)
     suspend fun getPlayerData(): Player?
      fun getPlayers() : Flow<List<Player?>>
-    suspend fun getPlayerById(id: String) : Flow<Player?>
+    suspend fun getPlayerById() : Player
     // endregion
 }

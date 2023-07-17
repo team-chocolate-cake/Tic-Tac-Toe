@@ -33,7 +33,7 @@ fun PlayerContent(
 ) {
     Row(
         modifier = Modifier
-            .clickable { onClickPlayer(player.createdSessionId) }
+            .clickable { onClickPlayer(player.id) }
             .background(color = DarkCard87, shape = CircleShape)
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 8.dp),

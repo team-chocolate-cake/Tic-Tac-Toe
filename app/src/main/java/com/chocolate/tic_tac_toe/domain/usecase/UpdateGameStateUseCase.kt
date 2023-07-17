@@ -24,7 +24,7 @@ class UpdateGameStateUseCase @Inject constructor(
             }
         }
 
-        val updatedTurn = if (turn == playersId.first()) playersId.first() else playersId.last()
+        val updatedTurn = if (turn == playersId.first()) playersId.last() else playersId.first()
 
         checkGameState(updatedBoard, sessionId)
         gameRepository.updateBoard(updatedBoard, sessionId)

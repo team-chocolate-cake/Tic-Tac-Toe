@@ -1,6 +1,7 @@
 package com.chocolate.tic_tac_toe.data.remote
 
 import com.chocolate.tic_tac_toe.domain.model.GameState
+import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.model.Session
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -18,6 +19,11 @@ class FirebaseSessionDatabase @Inject constructor(
 ) {
     suspend fun updateBoard(board: List<String>, sessionId: String) {
         sessionDatabaseReference.child(sessionId).child("board").setValue(board).await()
+    }
+
+    suspend fun joinSession(sessionId: String, player: Player) {
+        sessionDatabaseReference.child(sessionId).child("players").child("1").setValue(player)
+            .await()
     }
 
     suspend fun updateTurn(turn: String, sessionId: String) {

@@ -7,7 +7,7 @@ import javax.inject.Inject
 class CreatePlayerUseCase @Inject constructor(
     private val gameRepository: GameRepository
 ) {
-    suspend operator fun invoke(name: String): Boolean {
+    suspend operator fun invoke(name: String) {
         val playerId = System.currentTimeMillis().toString()
 
         val player = Player(
@@ -16,6 +16,6 @@ class CreatePlayerUseCase @Inject constructor(
             previewsNames = listOf(name),
             score = 0,
         )
-       return gameRepository.createPlayer(player)
+        gameRepository.createPlayer(player)
     }
 }

@@ -5,7 +5,7 @@ data class Session(
     val players: List<Player> = List(2) { Player() },
     val board: List<String> = List(9) { "" },
     val turn: String = "",
-    val winner: Player = Player(),
+    val winner: Player? = null,
     val winPositions: List<Int> = List(3) { -1 },
     val state: GameState = GameState.IN_PROGRESS,
     val playerRequest: Player? = null

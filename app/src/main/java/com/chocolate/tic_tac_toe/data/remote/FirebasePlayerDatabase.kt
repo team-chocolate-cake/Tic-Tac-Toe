@@ -15,27 +15,22 @@ import javax.inject.Named
 class FirebasePlayerDatabase @Inject constructor(
     @Named("players") private val firebaseDatabase: DatabaseReference
 ) {
-    suspend fun createPlayer(player: Player): Boolean {
-        val task = firebaseDatabase.child(player.id).setValue(player)
-        task.await()
-        return task.isSuccessful
+    suspend fun createPlayer(player: Player) {
+        firebaseDatabase.child(player.id).setValue(player).await()
     }
 
-
-    suspend fun updatePlayerName(id: String, name: String): Boolean {
+    suspend fun updatePlayerName(id: String, name: String) {
         firebaseDatabase.child(id).child("name").setValue(name).await()
         val previousNames = firebaseDatabase.child(id).child("previewsNames").get().await()
 
         previousNames.children.forEach {
             if (it.value == name) {
-                return true
+                return
             }
         }
 
-        val task = firebaseDatabase.child(id).child("previewsNames")
+        firebaseDatabase.child(id).child("previewsNames")
             .child(previousNames.childrenCount.toString()).setValue(name)
-        task.await()
-        return task.isSuccessful
     }
 
     suspend fun getPlayerData(id: String): Player {
@@ -61,21 +56,7 @@ class FirebasePlayerDatabase @Inject constructor(
         awaitClose { firebaseDatabase.removeEventListener(valueEventListener) }
     }
 
-
-    suspend fun getPlayerById(id: String): Flow<Player?> = callbackFlow {
-
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val player = snapshot.getValue(Player::class.java)
-                trySend(player)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                close(error.toException())
-            }
-        }
-
-        firebaseDatabase.child(id).addValueEventListener(valueEventListener)
-        awaitClose { firebaseDatabase.removeEventListener(valueEventListener) }
+    suspend fun getPlayerById(id: String): Player {
+        return firebaseDatabase.child(id).get().await().getValue(Player::class.java)!!
     }
 }
