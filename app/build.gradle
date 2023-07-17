@@ -84,7 +84,6 @@ dependencies {
     // RealTime Database
     implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
     implementation("com.google.firebase:firebase-database-ktx")
-
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
-
 }
