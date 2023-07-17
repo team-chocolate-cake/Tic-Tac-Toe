@@ -53,12 +53,14 @@ fun GameScreenContent(
     Box {
         ImageForBackground()
         Column(modifier = Modifier.background(color = DarkBackground)) {
-            PlayersContent(
-                turn = state.turn,
-                xPLayer = state.players.first(),
-                oPLayer = state.players.last(),
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 32.dp)
-            )
+            if (state.players.isNotEmpty()){
+                PlayersContent(
+                    turn = state.turn,
+                    xPLayer = state.players.first(),
+                    oPLayer = state.players.last(),
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 32.dp)
+                )
+            }
 
             when (state.gameState) {
                 GameState.IN_PROGRESS -> {
