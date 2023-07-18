@@ -32,6 +32,10 @@ class FirebasePlayerDatabase @Inject constructor(
         }
     }
 
+    suspend fun updatePlayerState(playerId: String, playerState: Boolean) {
+        firebaseDatabase.child(playerId).child("waiting").setValue(playerState).await()
+    }
+
     fun getPlayers(): Flow<List<Player?>> = callbackFlow {
 
         val valueEventListener = object : ValueEventListener {

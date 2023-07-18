@@ -7,4 +7,5 @@ data class Player(
     val score: Int = 0,
     val symbol: String? = null,
     val imageUrl: String = "",
+    val waiting: Boolean = false,
 )

@@ -15,5 +15,6 @@ data class PlayerUiState(
     val id: String = "",
     val name: String = "",
     val score: Int = 0,
-    val imageUrl: String = ""
+    val imageUrl: String = "",
+    val isWaiting: Boolean = false,
 )

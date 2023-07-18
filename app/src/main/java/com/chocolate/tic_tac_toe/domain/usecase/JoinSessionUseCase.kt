@@ -7,21 +7,7 @@ import javax.inject.Inject
 class JoinSessionUseCase @Inject constructor(
     private val gameRepository: GameRepository
 ) {
-    suspend operator fun invoke(
-        id: String,
-        playerId: String,
-        playerName: String,
-        playerImageUrl: String,
-        playerScore: Int,
-    ) {
-        gameRepository.joinSession(id,
-            Player(
-                id = playerId,
-                name = playerName,
-                imageUrl = playerImageUrl,
-                score = playerScore,
-                symbol = "O",
-            )
-            )
+    suspend operator fun invoke(sessionId: String) {
+        gameRepository.joinSession(sessionId)
     }
 }

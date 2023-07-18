@@ -42,19 +42,21 @@ fun LobbyScreen(
     LobbyContent(
         state = state,
         onClickCreateSession = viewModel::onClickCreateSession,
-        onClickPlayer = viewModel::onClickPlayer,
+        onClickPlayer = {
+            viewModel.onClickPlayer(it)
+            navController.navigateToGame(it)
+        },
 
-    )
+        )
 
     if (state.isSessionCreated) {
         navController.navigateToGame(state.player.id)
         viewModel.clearIsSessionCreated()
     }
 
-    if(state.isSessionJoined) {
-        navController.navigateToGame("1689625209235")
-        viewModel.clearIsSessionJoined()
-    }
+//    if (state.isSessionJoined) {
+//        viewModel.clearIsSessionJoined()
+//    }
 }
 
 @Composable

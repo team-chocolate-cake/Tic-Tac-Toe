@@ -61,7 +61,6 @@ class LobbyViewModel @Inject constructor(
                 error = throwable.message
             )
         }
-        Log.i("TAG", "${throwable.message}")
     }
 
     private fun getPlayers() {
@@ -89,22 +88,12 @@ class LobbyViewModel @Inject constructor(
                 }
             }
         }
-
     }
-
 
     override fun onClickPlayer(sessionId: String) {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            call = {
-                joinSessionUseCase(
-                    sessionId,
-                    _state.value.player.id,
-                    _state.value.player.name,
-                    _state.value.player.imageUrl,
-                    _state.value.player.score
-                )
-            },
+            call = { joinSessionUseCase(sessionId) },
             onSuccess = ::onJoinSessionSuccess,
             onError = ::onJoinSessionError
         )
@@ -113,14 +102,7 @@ class LobbyViewModel @Inject constructor(
     override fun onClickCreateSession() {
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            call = {
-                createSessionUseCase(
-                    _state.value.player.id,
-                    _state.value.player.name,
-                    _state.value.player.imageUrl,
-                    _state.value.player.score
-                )
-            },
+            call = { createSessionUseCase() },
             onSuccess = ::onCreateSessionSuccess,
             onError = ::onCreateSessionError
         )
@@ -135,7 +117,7 @@ class LobbyViewModel @Inject constructor(
     }
 
     private fun onCreateSessionError(throwable: Throwable) {
-
+        _state.update { it.copy(isLoading = false, error = throwable.message) }
     }
 
 
@@ -144,7 +126,7 @@ class LobbyViewModel @Inject constructor(
     }
 
     private fun onJoinSessionError(throwable: Throwable) {
-
+        _state.update { it.copy(isLoading = false, error = throwable.message) }
     }
 
     /*    override fun navigateToGameScreen(sessionID: String) {
@@ -169,66 +151,4 @@ class LobbyViewModel @Inject constructor(
     fun clearIsSessionJoined() {
         _state.update { it.copy(isSessionJoined = false) }
     }
-
-
-//    private fun getPlayer1(id: String){
-//        _state.update { it.copy(isLoading = true) }
-//        tryToExecute(
-//            call = {
-//                getPlayerUseCase(id)
-//            },
-//            onSuccess = ::onGetPlayerSuccess,
-//            onError = ::onError
-//        )
-//    }
-//
-//    private fun onGetPlayerSuccess(item: Player) {
-//        _state.update {
-//            it.copy(
-//                player = item,
-//                isLoading = false,
-//                error = null,
-//            )
-//        }
-//    }
-//
-//    private fun getPlayers1(){
-//
-//    }
-//
-//
-//
-//    private fun onError(throwable: Throwable) {
-//        if (throwable == NoNetworkThrowable()) {
-//            showErrorWithSnackBar(throwable.message ?: "No Network Connection")
-//        } else if (throwable == SocketTimeoutException()) {
-//            showErrorWithSnackBar(throwable.message ?: "time out!")
-//        }
-//        _state.update {
-//            it.copy(
-//                error = throwable.message ?: "No Network Connection",
-//                isLoading = false
-//            )
-//        }
-//    }
-//
-//    private fun showErrorWithSnackBar(messages: String) {
-////        sendEvent(MyListDetailsUiEvent.ShowSnackBar(messages))
-//    }
-//
-//    private fun <T> tryToExecute(
-//        call: () -> T?,
-//        onSuccess: (T?) -> Unit,
-//        onError: (Throwable) -> Unit,
-//        dispatcher: CoroutineDispatcher = Dispatchers.IO
-//    ) {
-//        viewModelScope.launch(dispatcher) {
-//            try {
-//                call().also(onSuccess)
-//            } catch (th: Throwable) {
-//                onError(th)
-//            }
-//        }
-//    }
-
 }

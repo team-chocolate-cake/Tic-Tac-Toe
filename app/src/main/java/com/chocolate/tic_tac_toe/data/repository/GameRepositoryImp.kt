@@ -16,8 +16,17 @@ class GameRepositoryImp @Inject constructor(
 ) : GameRepository {
 
     // region Session
-    override suspend fun createSession(session: Session) {
-        firebaseSessionDatabase.createSession(session)
+    override suspend fun createSession() {
+        val playerId = storePlayerData.getPlayerId()!!
+        val player = firebasePlayerDatabase.getPlayerDataById(playerId)
+
+        firebaseSessionDatabase.createSession(
+            Session(
+                id = playerId,
+                turn = playerId,
+                players = listOf(player.copy(symbol = "X"))
+            )
+        )
     }
     // endregion
 
@@ -28,7 +37,7 @@ class GameRepositoryImp @Inject constructor(
             firebasePlayerDatabase.createPlayer(player)
             storePlayerData.savePlayerId(player.id)
         } else {
-            firebasePlayerDatabase.updatePlayerName(playerId, player.name)
+            firebasePlayerDatabase.updatePlayerName(playerId, player.name) // need to be removed
         }
     }
 
@@ -80,8 +89,16 @@ class GameRepositoryImp @Inject constructor(
         firebaseSessionDatabase.updateWinPositions(positions, sessionId)
     }
 
-    override suspend fun joinSession(sessionId: String, player: Player) {
-        firebaseSessionDatabase.joinSession(sessionId, player)
+    override suspend fun joinSession(sessionId: String) {
+        val playerId = storePlayerData.getPlayerId()!!
+        val player = firebasePlayerDatabase.getPlayerDataById(playerId)
+
+        firebaseSessionDatabase.joinSession(sessionId, player.copy(symbol = "O"))
+    }
+
+    override suspend fun updatePlayerState(playerState: Boolean) {
+        val playerId = storePlayerData.getPlayerId()!!
+        firebasePlayerDatabase.updatePlayerState(playerId, playerState)
     }
 
 }
