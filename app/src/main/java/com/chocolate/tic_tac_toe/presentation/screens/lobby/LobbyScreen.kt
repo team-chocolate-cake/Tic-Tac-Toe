@@ -52,7 +52,7 @@ fun LobbyScreen(
     }
 
     if(state.isSessionJoined) {
-        navController.navigateToGame("1689608768080")
+        navController.navigateToGame("1689625209235")
         viewModel.clearIsSessionJoined()
     }
 }

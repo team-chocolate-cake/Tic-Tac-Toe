@@ -22,19 +22,14 @@ class FirebasePlayerDatabase @Inject constructor(
     suspend fun updatePlayerName(id: String, name: String) {
         firebaseDatabase.child(id).child("name").setValue(name).await()
         val previousNames = firebaseDatabase.child(id).child("previewsNames").get().await()
-
-        previousNames.children.forEach {
-            if (it.value == name) {
-                return
-            }
-        }
-
         firebaseDatabase.child(id).child("previewsNames")
-            .child(previousNames.childrenCount.toString()).setValue(name)
+            .child(previousNames.childrenCount.toString()).setValue(name).await()
     }
 
-    suspend fun getPlayerData(id: String): Player {
-        return firebaseDatabase.child(id).get().await().getValue(Player::class.java)!!
+    suspend fun getPlayerPreviousNames(id: String): List<String> {
+        return firebaseDatabase.child(id).child("previousNames").get().await().children.map {
+            it.value as String
+        }
     }
 
     fun getPlayers(): Flow<List<Player?>> = callbackFlow {

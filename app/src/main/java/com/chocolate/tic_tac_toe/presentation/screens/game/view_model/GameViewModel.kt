@@ -1,6 +1,7 @@
 package com.chocolate.tic_tac_toe.presentation.screens.game.view_model
 
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,6 +31,7 @@ class GameViewModel @Inject constructor(
 
     init {
         getSessionData(args.id)
+        Log.i("GameViewModel", "init: ${args.id}")
     }
 
     private fun getSessionData(id: String) {
@@ -39,7 +41,7 @@ class GameViewModel @Inject constructor(
                     it.copy(
                         players = session.players.map { player -> player.toPlayerUiState() },
                         turn = session.turn,
-                        playerId = "1689622270790",
+                        playerId = "1689625101134",
                         gameState = session.state,
                         board = session.board,
                         winPositions = session.winPositions

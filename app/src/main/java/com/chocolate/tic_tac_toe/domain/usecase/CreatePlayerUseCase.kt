@@ -7,15 +7,25 @@ import javax.inject.Inject
 class CreatePlayerUseCase @Inject constructor(
     private val gameRepository: GameRepository
 ) {
-    suspend operator fun invoke(name: String) {
+    suspend operator fun invoke(
+        name: String,
+        playerPreviousNames: List<String>
+    ) {
         val playerId = System.currentTimeMillis().toString()
 
-        val player = Player(
-            id = playerId,
-            name = name,
-            previewsNames = listOf(name),
-            score = 0,
-        )
-        gameRepository.createPlayer(player)
+        if(playerPreviousNames.isNotEmpty()) {
+            gameRepository.updatePlayerName(name)
+        }else{
+            val player = Player(
+                id = playerId,
+                name = name,
+                previousNames = listOf(name),
+                score = 0,
+            )
+            gameRepository.createPlayer(player)
+        }
+
+
+
     }
 }

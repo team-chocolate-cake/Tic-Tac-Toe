@@ -7,7 +7,6 @@ import com.chocolate.tic_tac_toe.domain.model.GameState
 import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.model.Session
 import kotlinx.coroutines.flow.Flow
-import okhttp3.internal.wait
 import javax.inject.Inject
 
 class GameRepositoryImp @Inject constructor(
@@ -28,9 +27,15 @@ class GameRepositoryImp @Inject constructor(
         if (playerId == null) {
             firebasePlayerDatabase.createPlayer(player)
             storePlayerData.savePlayerId(player.id)
-
         } else {
             firebasePlayerDatabase.updatePlayerName(playerId, player.name)
+        }
+    }
+
+    override suspend fun updatePlayerName(name: String) {
+        val playerId = storePlayerData.getPlayerId()
+        if (playerId != null) {
+            firebasePlayerDatabase.updatePlayerName(playerId, name)
         }
     }
 
@@ -44,12 +49,12 @@ class GameRepositoryImp @Inject constructor(
     }
     //endregion
 
-    override suspend fun getPlayerData(): Player? {
+    override suspend fun getPlayerPreviousNames(): List<String>? {
         val playerId = storePlayerData.getPlayerId()
         return if (playerId == null) {
             null
         } else {
-            firebasePlayerDatabase.getPlayerData(playerId)
+            firebasePlayerDatabase.getPlayerPreviousNames(playerId)
         }
     }
 

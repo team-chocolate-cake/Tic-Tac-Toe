@@ -26,7 +26,8 @@ interface GameRepository {
 
     // region Player
     suspend fun createPlayer(player: Player)
-    suspend fun getPlayerData(): Player?
+    suspend fun getPlayerPreviousNames(): List<String>?
+    suspend fun updatePlayerName(name: String)
      fun getPlayers() : Flow<List<Player?>>
     suspend fun getPlayerById() : Player
     // endregion
