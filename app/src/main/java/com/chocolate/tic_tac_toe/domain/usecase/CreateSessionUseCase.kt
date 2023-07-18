@@ -8,6 +8,7 @@ class CreateSessionUseCase @Inject constructor(
 ) {
     suspend operator fun invoke() {
         gameRepository.createSession()
-        gameRepository.updatePlayerState(true)
+        val playerId = gameRepository.getPlayerId()
+        gameRepository.updatePlayerState(playerId, true)
     }
 }

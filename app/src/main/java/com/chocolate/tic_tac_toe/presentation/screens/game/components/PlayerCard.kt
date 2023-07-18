@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import com.chocolate.tic_tac_toe.R
 import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameUiState
 import com.chocolate.tic_tac_toe.presentation.theme.TicTacCustomColors
@@ -31,7 +33,6 @@ import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 @Composable
 fun CardPlayer(
     player: GameUiState.Player,
-    image: Int,
     colorType: Color,
     modifier: Modifier = Modifier,
     border: BorderStroke? = null,
@@ -50,12 +51,12 @@ fun CardPlayer(
 
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Image(
-                painter = painterResource(id = image),
+                painter = rememberAsyncImagePainter(model = player.imageUrl),
                 contentDescription = null,
             )
 
@@ -100,7 +101,6 @@ fun CardPlayer(
 fun CardPlayerPreview() {
     TicTacToeTheme {
         CardPlayer(
-            image = R.drawable.avatar_batman,
             player = GameUiState.Player(
                 name = "aboooodx3x",
                 score = 300

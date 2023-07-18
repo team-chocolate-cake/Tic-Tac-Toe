@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import com.chocolate.tic_tac_toe.R
 import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameUiState
 import com.chocolate.tic_tac_toe.presentation.theme.TicTacCustomColors
@@ -33,7 +34,6 @@ import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 @Composable
 fun WinnerCard(
     player: GameUiState.Player,
-    image: Int,
     onClickCLose: () -> Unit,
     onClickPlayAgain: () -> Unit,
     modifier: Modifier = Modifier,
@@ -51,7 +51,7 @@ fun WinnerCard(
             modifier = Modifier
                 .width(155.dp)
                 .height(168.dp),
-            painter = painterResource(id = image),
+            painter = rememberAsyncImagePainter(player.imageUrl),
             contentDescription = null,
         )
         Text(
@@ -116,7 +116,6 @@ fun CardWinnerPreview() {
                 symbol = "X",
                 score = 1,
             ),
-            image = R.drawable.avatar_batman,
             onClickCLose = {},
             onClickPlayAgain = {},
         )

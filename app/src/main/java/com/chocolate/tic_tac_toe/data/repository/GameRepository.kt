@@ -22,7 +22,9 @@ interface GameRepository {
 
     suspend fun joinSession(sessionId: String)
 
-    suspend fun updatePlayerState(playerState: Boolean)
+    suspend fun updatePlayerState(playerId: String, playerState: Boolean)
+
+    suspend fun getPlayerId(): String
 
     // endregion
 

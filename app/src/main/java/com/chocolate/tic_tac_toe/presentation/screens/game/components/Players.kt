@@ -22,8 +22,8 @@ import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 fun PlayersContent(
     turn: String,
     xPLayer: GameUiState.Player,
-    oPLayer: GameUiState.Player,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    oPLayer: GameUiState.Player? = null,
 ) {
     val color = TicTacCustomColors.current
 
@@ -33,24 +33,24 @@ fun PlayersContent(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         CardPlayer(
-            player = oPLayer,
-            image = R.drawable.avatar_batman,
-            colorType = color.darkSecondary,
-            border = if (turn == oPLayer.id) BorderStroke(2.dp, color.darkOnBorder) else null,
-        )
-
-        Text(
-            text = "VS", style = MaterialTheme.typography.bodyMedium,
-            color = TicTacCustomColors.current.darkOnPrimary,
-            textAlign = TextAlign.Justify, modifier = Modifier.padding(top = 214.dp / 2)
-        )
-
-        CardPlayer(
             player = xPLayer,
-            image = R.drawable.clown,
             colorType = color.darkOnSecondary,
             border = if (turn == xPLayer.id) BorderStroke(2.dp, color.darkOnBorder) else null,
         )
+
+        if (oPLayer != null) {
+            Text(
+                text = "VS", style = MaterialTheme.typography.bodyMedium,
+                color = TicTacCustomColors.current.darkOnPrimary,
+                textAlign = TextAlign.Justify, modifier = Modifier.padding(top = 214.dp / 2)
+            )
+
+            CardPlayer(
+                player = oPLayer,
+                colorType = color.darkSecondary,
+                border = if (turn == oPLayer.id) BorderStroke(2.dp, color.darkOnBorder) else null,
+            )
+        }
 
     }
 }

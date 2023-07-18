@@ -96,9 +96,13 @@ class GameRepositoryImp @Inject constructor(
         firebaseSessionDatabase.joinSession(sessionId, player.copy(symbol = "O"))
     }
 
-    override suspend fun updatePlayerState(playerState: Boolean) {
+    override suspend fun updatePlayerState(playerId: String, playerState: Boolean) {
         val playerId = storePlayerData.getPlayerId()!!
         firebasePlayerDatabase.updatePlayerState(playerId, playerState)
+    }
+
+    override suspend fun getPlayerId(): String {
+        return storePlayerData.getPlayerId()!!
     }
 
 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -52,13 +53,15 @@ fun GameScreenContent(
 ) {
     Box {
         ImageForBackground()
-        Column(modifier = Modifier.background(color = DarkBackground)) {
-            if (state.players.isNotEmpty()){
+        Column(modifier = Modifier
+            .background(color = DarkBackground)
+            .systemBarsPadding()) {
+            if (state.players.isNotEmpty()) {
                 PlayersContent(
                     turn = state.turn,
                     xPLayer = state.players.first(),
-                    oPLayer = state.players.last(),
-                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 32.dp)
+                    oPLayer = if (state.players.size > 1) state.players.last() else null,
+                    modifier = Modifier.padding(24.dp)
                 )
             }
 
@@ -77,7 +80,6 @@ fun GameScreenContent(
                         if (state.gameState == GameState.PLAYER_X_WON)
                             state.players.first()
                         else state.players.last(),
-                        image = R.drawable.clown,
                         modifier = Modifier.padding(horizontal = 16.dp),
                         onClickCLose = { onClickClose() },
                         onClickPlayAgain = { onClickPlayAgain() }

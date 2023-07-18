@@ -9,5 +9,6 @@ class JoinSessionUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(sessionId: String) {
         gameRepository.joinSession(sessionId)
+        gameRepository.updatePlayerState(sessionId, false)
     }
 }

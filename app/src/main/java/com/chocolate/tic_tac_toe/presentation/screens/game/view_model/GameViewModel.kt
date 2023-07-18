@@ -1,15 +1,18 @@
 package com.chocolate.tic_tac_toe.presentation.screens.game.view_model
 
-
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chocolate.tic_tac_toe.domain.model.Player
+import com.chocolate.tic_tac_toe.domain.model.Session
+import com.chocolate.tic_tac_toe.domain.usecase.GetPlayerIdUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.GetSessionDataUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.UpdateGameStateUseCase
 import com.chocolate.tic_tac_toe.presentation.screens.game.GameArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -19,6 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
+    private val getPlayerIdUseCase: GetPlayerIdUseCase,
     private val getSessionDataUseCase: GetSessionDataUseCase,
     private val updateGameStateUseCase: UpdateGameStateUseCase,
     savedStateHandle: SavedStateHandle
@@ -31,17 +35,28 @@ class GameViewModel @Inject constructor(
 
     init {
         getSessionData(args.id)
-        Log.i("GameViewModel", "init: ${args.id}")
     }
 
     private fun getSessionData(id: String) {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            call = { getSessionDataUseCase(id) },
+            onSuccess = ::onGetSessionDataSuccess,
+            onError = ::onGetSessionDataError
+        )
+    }
+
+    private fun onGetSessionDataSuccess(sessionFlow: Flow<Session>) {
+        _state.update { it.copy(isLoading = false, error = null) }
         viewModelScope.launch {
-            getSessionDataUseCase(id).collect { session ->
+            val playerId = getPlayerIdUseCase()
+
+            sessionFlow.collect { session ->
                 _state.update {
                     it.copy(
                         players = session.players.map { player -> player.toPlayerUiState() },
                         turn = session.turn,
-                        playerId = "1689625101134",
+                        playerId = playerId,
                         gameState = session.state,
                         board = session.board,
                         winPositions = session.winPositions
@@ -51,26 +66,42 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    fun updateGameState(index: Int, value: String) {
-        viewModelScope.launch {
-            updateGameStateUseCase(
-                board = _state.value.board,
-                index = index,
-                value = value,
-                turn = _state.value.turn,
-                playersId = _state.value.players.map { it.id }.toSet(),
-                sessionId = args.id
-            )
-        }
+    private fun onGetSessionDataError(throwable: Throwable) {
+        _state.update { it.copy(isLoading = false, error = throwable.message) }
     }
+
+    fun updateGameState(index: Int, value: String) {
+        _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            call = {
+                updateGameStateUseCase(
+                    board = _state.value.board,
+                    index = index,
+                    value = value,
+                    turn = _state.value.turn,
+                    playersId = _state.value.players.map { it.id }.toSet(),
+                    sessionId = args.id
+                )
+            },
+            onSuccess = ::onUpdateGameStateSuccess,
+            onError = ::onUpdateGameStateError
+        )
+    }
+
+    private fun onUpdateGameStateSuccess(unit: Unit) {
+        _state.update { it.copy(isLoading = false, error = null) }
+    }
+
+    private fun onUpdateGameStateError(throwable: Throwable) {
+        _state.update { it.copy(isLoading = false, error = throwable.message) }
+    }
+
 
     fun onClose() {
 
     }
 
     fun onPlayAgain() {
-        viewModelScope.launch {
-        }
     }
 
 
@@ -79,7 +110,24 @@ class GameViewModel @Inject constructor(
             id = this.id,
             name = this.name,
             score = this.score,
-            symbol = this.symbol ?: ""
+            symbol = this.symbol ?: "",
+            imageUrl = this.imageUrl
         )
+    }
+
+
+    private fun <T> tryToExecute(
+        call: suspend () -> T,
+        onSuccess: (T) -> Unit,
+        onError: (Throwable) -> Unit,
+        dispatcher: CoroutineDispatcher = Dispatchers.IO
+    ) {
+        viewModelScope.launch(dispatcher) {
+            try {
+                call().also(onSuccess)
+            } catch (throwable: Throwable) {
+                onError(throwable)
+            }
+        }
     }
 }
