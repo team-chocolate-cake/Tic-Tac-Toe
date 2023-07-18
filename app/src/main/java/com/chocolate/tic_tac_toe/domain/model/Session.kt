@@ -8,5 +8,6 @@ data class Session(
     val winner: Player? = null,
     val winPositions: List<Int> = List(3) { -1 },
     val state: GameState = GameState.IN_PROGRESS,
-    val playerRequest: Player? = null
+    val xPlayerPlayAgain: Boolean = false,
+    val oPlayerPlayAgain: Boolean = false,
 )

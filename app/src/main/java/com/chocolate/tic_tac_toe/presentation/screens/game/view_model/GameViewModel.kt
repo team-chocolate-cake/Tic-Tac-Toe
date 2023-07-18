@@ -9,6 +9,7 @@ import com.chocolate.tic_tac_toe.domain.model.Session
 import com.chocolate.tic_tac_toe.domain.usecase.GetPlayerIdUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.GetSessionDataUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.UpdateGameStateUseCase
+import com.chocolate.tic_tac_toe.domain.usecase.UpdateSessionState
 import com.chocolate.tic_tac_toe.presentation.screens.game.GameArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,6 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
+    private val updateSessionState: UpdateSessionState,
     private val getPlayerIdUseCase: GetPlayerIdUseCase,
     private val getSessionDataUseCase: GetSessionDataUseCase,
     private val updateGameStateUseCase: UpdateGameStateUseCase,
@@ -104,19 +106,23 @@ class GameViewModel @Inject constructor(
 
 
     fun onPlayAgain() {
-        viewModelScope.launch {
+        tryToExecute(
+            call = {
+                updateSessionState(
+                    args.id,
+                    _state.value.players.map { it.id }.toSet(),
+                    _state.value.gameState,
+                )
+            },
+            onSuccess = ::onPlayAgainSuccess,
+            onError = ::onPlayAgainError
+        )
+    }
 
-            getSessionDataUseCase(SESSION_ID).collect { session ->
-                if(PLAYER_CURRENT_STATE!=session.state&&session.state!=GameState.PLAYER_O_WON&&
-                    session.state!=GameState.PLAYER_X_WON ){
-                    updateGameStateUseCase.onPlayAgain(SESSION_ID)
-                }
-                else{
-                    updateGameStateUseCase.onWaitingForPlayAgain(SESSION_ID,PLAYER_CURRENT_STATE)
-                }
-            }
+    private fun onPlayAgainSuccess(unit: Unit) {
+    }
 
-        }
+    private fun onPlayAgainError(throwable: Throwable) {
     }
 
 
@@ -145,13 +151,4 @@ class GameViewModel @Inject constructor(
             }
         }
     }
-
-
-    companion object {
-        private const val SESSION_ID = "1689559013029"
-        private const val PLAYER_ID = "1689559013070"
-        private  val PLAYER_CURRENT_STATE = GameState.WAITING_PLAYER_O
-
-    }
-
 }

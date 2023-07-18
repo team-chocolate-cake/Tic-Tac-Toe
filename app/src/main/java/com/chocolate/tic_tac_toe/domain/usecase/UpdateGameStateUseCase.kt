@@ -30,18 +30,4 @@ class UpdateGameStateUseCase @Inject constructor(
         gameRepository.updateBoard(updatedBoard, sessionId)
         gameRepository.updateTurn(updatedTurn, sessionId)
     }
-
-
-    suspend fun onWaitingForPlayAgain(sessionId: String, playerType: GameState) {
-        gameRepository.updateBoard(listOf("", "", "", "", "", "", "", "", ""), sessionId)
-        gameRepository.updateGameState(playerType, sessionId)
-        gameRepository.updateWinPositions(emptyList(), sessionId)
-
-    }
-
-    suspend fun onPlayAgain(sessionId: String) {
-        gameRepository.updateGameState(GameState.IN_PROGRESS, sessionId)
-
-    }
-
 }
