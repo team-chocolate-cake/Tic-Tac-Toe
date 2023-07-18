@@ -3,6 +3,7 @@ package com.chocolate.tic_tac_toe.presentation.screens.game.view_model
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chocolate.tic_tac_toe.domain.model.GameState
 import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.model.Session
 import com.chocolate.tic_tac_toe.domain.usecase.GetPlayerIdUseCase
@@ -101,7 +102,21 @@ class GameViewModel @Inject constructor(
 
     }
 
+
     fun onPlayAgain() {
+        viewModelScope.launch {
+
+            getSessionDataUseCase(SESSION_ID).collect { session ->
+                if(PLAYER_CURRENT_STATE!=session.state&&session.state!=GameState.PLAYER_O_WON&&
+                    session.state!=GameState.PLAYER_X_WON ){
+                    updateGameStateUseCase.onPlayAgain(SESSION_ID)
+                }
+                else{
+                    updateGameStateUseCase.onWaitingForPlayAgain(SESSION_ID,PLAYER_CURRENT_STATE)
+                }
+            }
+
+        }
     }
 
 
@@ -130,4 +145,13 @@ class GameViewModel @Inject constructor(
             }
         }
     }
+
+
+    companion object {
+        private const val SESSION_ID = "1689559013029"
+        private const val PLAYER_ID = "1689559013070"
+        private  val PLAYER_CURRENT_STATE = GameState.WAITING_PLAYER_O
+
+    }
+
 }

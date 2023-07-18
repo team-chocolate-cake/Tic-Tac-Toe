@@ -74,7 +74,7 @@ fun GameScreenContent(
                     )
                 }
 
-                GameState.PLAYER_X_WON, GameState.PLAYER_O_WON -> {
+                GameState.PLAYER_X_WON, GameState.PLAYER_O_WON,GameState.WAITING_PLAYER_X,GameState.WAITING_PLAYER_O -> {
                     WinnerCard(
                         player =
                         if (state.gameState == GameState.PLAYER_X_WON)
