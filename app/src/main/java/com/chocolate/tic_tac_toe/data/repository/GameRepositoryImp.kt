@@ -97,7 +97,6 @@ class GameRepositoryImp @Inject constructor(
     }
 
     override suspend fun updatePlayerState(playerId: String, playerState: Boolean) {
-        val playerId = storePlayerData.getPlayerId()!!
         firebasePlayerDatabase.updatePlayerState(playerId, playerState)
     }
 
