@@ -38,7 +38,7 @@ class FirebasePlayerDatabase @Inject constructor(
             override fun onDataChange(snapshot: DataSnapshot) {
                 val players = snapshot.children.map {
                     it.getValue(Player::class.java)
-                }
+                }.sortedByDescending { it?.score }
                 trySend(players)
             }
 
@@ -51,7 +51,7 @@ class FirebasePlayerDatabase @Inject constructor(
         awaitClose { firebaseDatabase.removeEventListener(valueEventListener) }
     }
 
-    suspend fun getPlayerById(id: String): Player {
+    suspend fun getPlayerDataById(id: String): Player {
         return firebaseDatabase.child(id).get().await().getValue(Player::class.java)!!
     }
 }

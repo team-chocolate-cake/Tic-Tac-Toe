@@ -43,9 +43,9 @@ class GameRepositoryImp @Inject constructor(
         return firebasePlayerDatabase.getPlayers()
     }
 
-    override suspend fun getPlayerById(): Player {
+    override suspend fun getPlayerData(): Player {
         val id = storePlayerData.getPlayerId()!!
-        return firebasePlayerDatabase.getPlayerById(id)
+        return firebasePlayerDatabase.getPlayerDataById(id)
     }
     //endregion
 

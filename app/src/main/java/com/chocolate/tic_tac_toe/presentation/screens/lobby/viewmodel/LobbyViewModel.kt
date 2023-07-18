@@ -1,15 +1,17 @@
 package com.chocolate.tic_tac_toe.presentation.screens.lobby.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.usecase.CreateSessionUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.JoinSessionUseCase
-import com.chocolate.tic_tac_toe.domain.usecase.lobby.GetPlayerByIdUseCase
+import com.chocolate.tic_tac_toe.domain.usecase.lobby.GetPlayerDataUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.lobby.GetPlayersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -19,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LobbyViewModel @Inject constructor(
     private val joinSessionUseCase: JoinSessionUseCase,
-    private val getPlayerUseCase: GetPlayerByIdUseCase,
+    private val getPlayerDataUseCase: GetPlayerDataUseCase,
     private val getPlayersUseCase: GetPlayersUseCase,
     private val createSessionUseCase: CreateSessionUseCase,
     private val playerUiStateMapper: PlayerUiStateMapper,
@@ -29,19 +31,20 @@ class LobbyViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     init {
-        getPlayer()
+        getPlayerData()
         getPlayers()
     }
 
-    private fun getPlayer() {
+    private fun getPlayerData() {
+        _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            call = { getPlayerUseCase() },
-            onSuccess = ::onGetPlayerSuccess,
-            onError = ::onGetPlayerError
+            call = { getPlayerDataUseCase() },
+            onSuccess = ::onGetPlayerDataSuccess,
+            onError = ::onGetPlayerDataError
         )
     }
 
-    private fun onGetPlayerSuccess(player: Player) {
+    private fun onGetPlayerDataSuccess(player: Player) {
         _state.update {
             it.copy(
                 player = playerUiStateMapper.map(player),
@@ -51,42 +54,44 @@ class LobbyViewModel @Inject constructor(
         }
     }
 
-    private fun onGetPlayerError(throwable: Throwable) {
+    private fun onGetPlayerDataError(throwable: Throwable) {
         _state.update {
             it.copy(
                 isLoading = false,
-                error = throwable.toString()
+                error = throwable.message
             )
         }
+        Log.i("TAG", "${throwable.message}")
     }
 
     private fun getPlayers() {
         _state.update { it.copy(isLoading = true) }
+        tryToExecute(
+            call = { getPlayersUseCase() },
+            onSuccess = ::onGetPlayersSuccess,
+            onError = ::onGetPlayersError
+        )
+    }
+
+    private fun onGetPlayersError(throwable: Throwable) {
+        _state.update { it.copy(isLoading = false, error = throwable.message) }
+
+    }
+
+    private fun onGetPlayersSuccess(playersFlow: Flow<List<Player?>>) {
         viewModelScope.launch {
-            try {
-                getPlayersUseCase().collect { players ->
-                    _state.update {
-                        it.copy(
-                            players = players.map { players ->
-                                playerUiStateMapper.map(players!!)
-                            }.sortedByDescending { player ->
-                                player.score
-                            },
-                            isLoading = false,
-                            error = null,
-                        )
-                    }
-                }
-            } catch (throwable: Throwable) {
+            playersFlow.collect { players ->
                 _state.update {
                     it.copy(
                         isLoading = false,
-                        error = throwable.toString()
+                        players = players.map { player -> playerUiStateMapper.map(player!!) }
                     )
                 }
             }
         }
+
     }
+
 
     override fun onClickPlayer(sessionId: String) {
         _state.update { it.copy(isLoading = true) }
@@ -137,13 +142,14 @@ class LobbyViewModel @Inject constructor(
     private fun onJoinSessionSuccess(unit: Unit) {
         _state.update { it.copy(isLoading = false, isSessionJoined = true) }
     }
+
     private fun onJoinSessionError(throwable: Throwable) {
 
     }
 
-/*    override fun navigateToGameScreen(sessionID: String) {
+    /*    override fun navigateToGameScreen(sessionID: String) {
 
-    }*/
+        }*/
 
     private fun <T> tryToExecute(
         call: suspend () -> T,
