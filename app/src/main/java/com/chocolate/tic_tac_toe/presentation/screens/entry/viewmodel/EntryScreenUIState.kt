@@ -6,5 +6,5 @@ data class EntryScreenUIState(
     val isLoading : Boolean = false,
     val playerName: String = "",
     val previewsPlayerNames: List<String> = emptyList(),
-   @DrawableRes val userImage: Int = 0,
+    val playerImageUrl: String = "",
 )

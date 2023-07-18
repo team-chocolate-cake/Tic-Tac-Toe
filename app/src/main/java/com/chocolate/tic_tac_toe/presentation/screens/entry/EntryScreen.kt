@@ -1,29 +1,18 @@
 package com.chocolate.tic_tac_toe.presentation.screens.entry
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.chocolate.tic_tac_toe.R
 import com.chocolate.tic_tac_toe.presentation.screens.composable.ButtonApp
-import com.chocolate.tic_tac_toe.presentation.screens.entry.componants.EnterYourNameBox
+import com.chocolate.tic_tac_toe.presentation.screens.entry.componants.EnterUserNameBox
 import com.chocolate.tic_tac_toe.presentation.screens.entry.componants.GameTitle
 import com.chocolate.tic_tac_toe.presentation.screens.entry.viewmodel.EntryScreenUIState
 import com.chocolate.tic_tac_toe.presentation.screens.entry.viewmodel.EntryScreenViewModel
@@ -39,7 +28,8 @@ fun EntryScreen(
     EntryContent(
         state,
         onNameChange = viewModel::onNameChange,
-        onClickContinue = viewModel::createPlayer
+        onClickContinue = viewModel::createPlayer,
+        onDropDawnIconClick = viewModel::onNameChange
     )
 
 }
@@ -48,7 +38,8 @@ fun EntryScreen(
 fun EntryContent(
     state: EntryScreenUIState,
     onNameChange: (String) -> Unit,
-    onClickContinue: () -> Unit
+    onClickContinue: () -> Unit,
+    onDropDawnIconClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -58,7 +49,12 @@ fun EntryContent(
     ) {
         GameTitle()
 
-        EnterYourNameBox(state.playerName, onNameChange = onNameChange)
+        EnterUserNameBox(
+            state.playerName,
+            previousUserNames = state.previewsPlayerNames,
+            onNameChange = onNameChange,
+            onDropDawnIconClick = onDropDawnIconClick
+        )
 
         ButtonApp(
             text = "Continue",
@@ -76,8 +72,8 @@ fun EntryScreenPreview() {
         EntryContent(
             state = EntryScreenUIState(),
             onNameChange = {},
-            onClickContinue = {}
+            onClickContinue = {},
+            onDropDawnIconClick = {}
         )
     }
-
 }

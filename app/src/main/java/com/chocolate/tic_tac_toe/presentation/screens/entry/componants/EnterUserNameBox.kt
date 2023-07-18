@@ -14,23 +14,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chocolate.tic_tac_toe.R
 import com.chocolate.tic_tac_toe.presentation.theme.TicTacCustomColors
-import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 
 
 @Composable
-fun EnterYourNameBox(text: String, onNameChange: (String) -> Unit) {
+fun EnterUserNameBox(
+    text: String,
+    previousUserNames: List<String>,
+    onNameChange: (String) -> Unit,
+    onDropDawnIconClick: (String) -> Unit
+) {
 
     val colors = TicTacCustomColors.current
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 24.dp)
-            .background(color = colors.darkCard.copy(alpha = 0.6f), shape = RoundedCornerShape(20.dp))
+            .background(
+                color = colors.darkCard.copy(alpha = 0.6f),
+                shape = RoundedCornerShape(20.dp)
+            )
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -45,15 +51,12 @@ fun EnterYourNameBox(text: String, onNameChange: (String) -> Unit) {
                 fontSize = 24.sp,
                 color = colors.darkOnBackground87,
             )
-            UserNameRow(text = text, onNameChange = onNameChange)
+            UserNameRow(
+                text = text,
+                previousUserNames = previousUserNames,
+                onNameChange = onNameChange,
+                onDropDawnIconClick = onDropDawnIconClick
+            )
         }
-    }
-}
-
-@Preview
-@Composable
-fun EnterYourNameBoxPreview() {
-    TicTacToeTheme {
-        EnterYourNameBox(text = "Player 1", onNameChange = {})
     }
 }
