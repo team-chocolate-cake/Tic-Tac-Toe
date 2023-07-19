@@ -8,5 +8,6 @@ data class EntryScreenUIState(
     val playerName: String = "",
     val playerPreviousNames: List<String> = emptyList(),
     @DrawableRes val userImage: Int = 0,
-    val error: String? = null
+    val error: String? = null,
+    val playerImageUrl: String = "",
 )
