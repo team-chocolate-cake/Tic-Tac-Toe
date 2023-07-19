@@ -38,19 +38,14 @@ class CheckGameStateUseCase @Inject constructor(
                     "O" -> {
                         gameRepository.updateGameState(GameState.PLAYER_O_WON, sessionId)
                     }
-
-                    else -> throw IllegalStateException("Invalid player")
                 }
                 gameRepository.updateWinPositions(positions, sessionId)
             }
 
         }
 
-        if (board.contains("")) {
-            GameState.IN_PROGRESS
-        } else {
+        if (!board.contains("")) {
             gameRepository.updateGameState(GameState.DRAW, sessionId)
         }
-
     }
 }

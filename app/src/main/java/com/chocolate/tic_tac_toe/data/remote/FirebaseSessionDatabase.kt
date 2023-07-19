@@ -1,6 +1,7 @@
 package com.chocolate.tic_tac_toe.data.remote
 
 import com.chocolate.tic_tac_toe.domain.model.GameState
+import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.model.Session
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -20,6 +21,11 @@ class FirebaseSessionDatabase @Inject constructor(
         sessionDatabaseReference.child(sessionId).child("board").setValue(board).await()
     }
 
+    suspend fun joinSession(sessionId: String, player: Player) {
+        sessionDatabaseReference.child(sessionId).child("players").child("1").setValue(player)
+            .await()
+    }
+
     suspend fun updateTurn(turn: String, sessionId: String) {
         sessionDatabaseReference.child(sessionId).child("turn").setValue(turn).await()
     }
@@ -30,7 +36,12 @@ class FirebaseSessionDatabase @Inject constructor(
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val session = snapshot.getValue(Session::class.java)
-                trySend(session!!)
+                if(session!=null) {
+                    trySend(session)
+                }
+                else{
+                    close()
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -42,7 +53,7 @@ class FirebaseSessionDatabase @Inject constructor(
     }
 
     suspend fun createSession(session: Session) {
-        sessionDatabaseReference.child(session.id.toString()).setValue(session).await()
+        sessionDatabaseReference.child(session.id).setValue(session).await()
     }
 
     suspend fun updateGameState(gameState: GameState, sessionId: String) {
@@ -51,5 +62,8 @@ class FirebaseSessionDatabase @Inject constructor(
 
     suspend fun updateWinPositions(positions: List<Int>, sessionId: String) {
         sessionDatabaseReference.child(sessionId).child("winPositions").setValue(positions).await()
+    }
+    suspend fun deleteSession(sessionId: String) {
+        sessionDatabaseReference.child(sessionId).removeValue().await()
     }
 }

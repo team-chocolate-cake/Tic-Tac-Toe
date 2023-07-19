@@ -14,7 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.chocolate.tic_tac_toe.R
 import com.chocolate.tic_tac_toe.presentation.screens.composable.PlayerImage
@@ -33,8 +35,13 @@ fun PlayerContent(
 ) {
     Row(
         modifier = Modifier
-            .clickable { onClickPlayer(player.createdSessionId) }
-            .background(color = DarkCard87, shape = CircleShape)
+            .clickable { if (player.isWaiting) onClickPlayer(player.id) }
+            .background(
+                color = if (player.isWaiting)
+                    DarkCard87
+                else Color.Gray,
+                shape = CircleShape
+            )
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -111,4 +118,18 @@ fun PlayerContentHeader(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun PlayerContentPreview() {
+    PlayerContent(
+        player = PlayerUiState(
+            id = "1",
+            name = "Player 1",
+            score = 0,
+            imageUrl = "",
+            isWaiting = true
+        )
+    )
 }

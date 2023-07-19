@@ -24,16 +24,10 @@ class UpdateGameStateUseCase @Inject constructor(
             }
         }
 
-        val updatedTurn = if (turn == playersId.first()) playersId.first() else playersId.last()
+        val updatedTurn = if (turn == playersId.first()) playersId.last() else playersId.first()
 
         checkGameState(updatedBoard, sessionId)
         gameRepository.updateBoard(updatedBoard, sessionId)
         gameRepository.updateTurn(updatedTurn, sessionId)
-    }
-
-    suspend fun onPlayAgain(sessionId: String) {
-        gameRepository.updateBoard(emptyList(), sessionId)
-        gameRepository.updateGameState(GameState.IN_PROGRESS, sessionId)
-        gameRepository.updateWinPositions(emptyList(), sessionId)
     }
 }

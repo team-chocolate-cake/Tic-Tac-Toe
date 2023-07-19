@@ -16,6 +16,7 @@ import com.chocolate.tic_tac_toe.presentation.screens.entry.componants.EnterUser
 import com.chocolate.tic_tac_toe.presentation.screens.entry.componants.GameTitle
 import com.chocolate.tic_tac_toe.presentation.screens.entry.viewmodel.EntryScreenUIState
 import com.chocolate.tic_tac_toe.presentation.screens.entry.viewmodel.EntryScreenViewModel
+import com.chocolate.tic_tac_toe.presentation.screens.lobby.navigateToLobby
 import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 
 
@@ -31,6 +32,11 @@ fun EntryScreen(
         onClickContinue = viewModel::createPlayer,
         onDropDawnIconClick = viewModel::onNameChange
     )
+
+    if (state.isCreated) {
+        navController.navigateToLobby()
+        viewModel.clearIsCreated()
+    }
 
 }
 
