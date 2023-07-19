@@ -64,7 +64,7 @@ class GameViewModel @Inject constructor(
                         players = session.players.map { player -> player.toPlayerUiState() },
                         turn = session.turn,
                         playerId = playerId,
-                        gameState = determineGameState(session.players.size),
+                        gameState = session.state,
                         board = session.board,
                         winPositions = session.winPositions
                     )
@@ -73,13 +73,7 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    private fun determineGameState(playersSize: Int): GameState {
-        return if (playersSize == 2) {
-            GameState.IN_PROGRESS
-        } else {
-            GameState.WAITING_FOR_PLAYERS
-        }
-    }
+
 
     private fun onGetSessionDataError(throwable: Throwable) {
         _state.update { it.copy(isLoading = false, error = throwable.message) }

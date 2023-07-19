@@ -112,7 +112,7 @@ fun GameScreenContent(
 
                     } else if (state.playerId == state.players.last().id && state.gameState == GameState.WAITING_PLAYER_X) {
 
-                        WaitCard(text = state.players.last().name)
+                        WaitCard(text = state.players.first().name)
 
                     } else {
                         PlayAgainCard(onClickPlayAgain = onClickPlayAgain)
