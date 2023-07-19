@@ -123,6 +123,7 @@ private fun Players(
             ButtonApp(
                 text = "Create Game",
                 onClick = onClickCreateSession,
+                isLoading = state.isLoading
             )
         }
     }

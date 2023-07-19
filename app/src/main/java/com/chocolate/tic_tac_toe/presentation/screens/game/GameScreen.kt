@@ -2,14 +2,10 @@ package com.chocolate.tic_tac_toe.presentation.screens.game
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.Card
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,7 +20,9 @@ import com.chocolate.tic_tac_toe.domain.model.GameState
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.DrawCard
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.ImageForBackground
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.LazyVerticalGridDemoContent
+import com.chocolate.tic_tac_toe.presentation.screens.game.components.PlayAgainCard
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.PlayersContent
+import com.chocolate.tic_tac_toe.presentation.screens.game.components.WaitCard
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.WinnerCard
 import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameUiState
 import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameViewModel
@@ -95,18 +93,16 @@ fun GameScreenContent(
                     )
                 }
                 GameState.WAITING_PLAYER_X,GameState.WAITING_PLAYER_O -> {
-                    if(state.playerId == state.players.first().id && state.gameState == GameState.WAITING_PLAYER_O){
-                        Card(modifier = Modifier.size(200.dp)) {
-                            Text(text = "Wait ${state.players.last().name}")
-                        }
-                    }else if (state.playerId == state.players.last().id && state.gameState == GameState.WAITING_PLAYER_X){
-                        Card() {
-                            Text(text = "Wait ${state.players.last().name}")
-                        }
-                    }else{
-                        Card() {
-                            Text(text = "Play Again?", modifier = Modifier.clickable{onClickPlayAgain()})
-                        }
+                    if (state.playerId == state.players.first().id && state.gameState == GameState.WAITING_PLAYER_O) {
+
+                        WaitCard(text = state.players.last().name)
+
+                    } else if (state.playerId == state.players.last().id && state.gameState == GameState.WAITING_PLAYER_X) {
+
+                        WaitCard(text = state.players.last().name)
+
+                    } else {
+                        PlayAgainCard(onClickPlayAgain = onClickPlayAgain)
                     }
 
                 }
