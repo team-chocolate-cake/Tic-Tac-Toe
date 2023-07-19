@@ -17,6 +17,7 @@ interface GameRepository {
     suspend fun updateGameState(gameState: GameState, sessionId: String)
 
     suspend fun getSession(key: String): Flow<Session>
+    suspend fun deleteSession(key: String)
 
     suspend fun updateWinPositions(positions: List<Int>, sessionId: String)
 

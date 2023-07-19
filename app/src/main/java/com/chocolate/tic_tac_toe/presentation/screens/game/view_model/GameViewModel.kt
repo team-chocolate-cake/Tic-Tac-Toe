@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.chocolate.tic_tac_toe.domain.model.GameState
 import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.model.Session
+import com.chocolate.tic_tac_toe.domain.usecase.DeleteSessionUseCase
+import com.chocolate.tic_tac_toe.domain.usecase.EndGameStateUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.GetPlayerIdUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.GetSessionDataUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.UpdateGameStateUseCase
@@ -28,6 +30,8 @@ class GameViewModel @Inject constructor(
     private val getPlayerIdUseCase: GetPlayerIdUseCase,
     private val getSessionDataUseCase: GetSessionDataUseCase,
     private val updateGameStateUseCase: UpdateGameStateUseCase,
+    private val endGameStateUseCase: EndGameStateUseCase,
+    private val deleteSessionUseCase: DeleteSessionUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -99,12 +103,6 @@ class GameViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, error = throwable.message) }
     }
 
-
-    fun onClose() {
-
-    }
-
-
     fun onPlayAgain() {
         tryToExecute(
             call = {
@@ -119,10 +117,38 @@ class GameViewModel @Inject constructor(
         )
     }
 
+    fun onClose() {
+        tryToExecute(
+            call = {
+                endGameStateUseCase(args.id)
+            },
+            onSuccess = ::onDeleteSessionSuccess,
+            onError = ::onDeleteSessionError
+        )
+    }
+    fun onGameEnded() {
+        tryToExecute(
+            call = {
+                deleteSessionUseCase(args.id)
+            },
+            onSuccess = ::onDeleteSessionSuccess,
+            onError = ::onDeleteSessionError
+        )
+    }
+
+    private fun onDeleteSessionError(throwable: Throwable) {
+        _state.update { it.copy(isLoading = false, error = throwable.message) }
+    }
+
+    private fun onDeleteSessionSuccess(unit: Unit) {
+
+    }
+
     private fun onPlayAgainSuccess(unit: Unit) {
     }
 
     private fun onPlayAgainError(throwable: Throwable) {
+
     }
 
 

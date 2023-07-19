@@ -58,4 +58,7 @@ class FirebaseSessionDatabase @Inject constructor(
     suspend fun updateWinPositions(positions: List<Int>, sessionId: String) {
         sessionDatabaseReference.child(sessionId).child("winPositions").setValue(positions).await()
     }
+    suspend fun deleteSession(sessionId: String) {
+        sessionDatabaseReference.child(sessionId).removeValue().await()
+    }
 }

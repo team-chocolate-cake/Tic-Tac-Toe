@@ -84,6 +84,9 @@ class GameRepositoryImp @Inject constructor(
     override suspend fun getSession(key: String): Flow<Session> {
         return firebaseSessionDatabase.getSession(key)
     }
+    override suspend fun deleteSession(key: String) {
+        return firebaseSessionDatabase.deleteSession(key)
+    }
 
     override suspend fun updateWinPositions(positions: List<Int>, sessionId: String) {
         firebaseSessionDatabase.updateWinPositions(positions, sessionId)

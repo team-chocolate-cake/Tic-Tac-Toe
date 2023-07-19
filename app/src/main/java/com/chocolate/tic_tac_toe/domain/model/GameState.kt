@@ -7,5 +7,6 @@ enum class GameState {
     PLAYER_O_WON,
     DRAW,
     WAITING_PLAYER_X,
-    WAITING_PLAYER_O
+    WAITING_PLAYER_O,
+    END
 }
