@@ -7,6 +7,7 @@ import com.chocolate.tic_tac_toe.domain.model.GameState
 import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.model.Session
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 class GameRepositoryImp @Inject constructor(
@@ -52,9 +53,9 @@ class GameRepositoryImp @Inject constructor(
         return firebasePlayerDatabase.getPlayers()
     }
 
-    override suspend fun getPlayerData(): Player {
+    override suspend fun getPlayerData(): Flow<Player> {
         val id = storePlayerData.getPlayerId()!!
-        return firebasePlayerDatabase.getPlayerDataById(id)
+        return firebasePlayerDatabase.getFLowPlayerDataById(id)
     }
     //endregion
 

@@ -36,7 +36,12 @@ class FirebaseSessionDatabase @Inject constructor(
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val session = snapshot.getValue(Session::class.java)
-                trySend(session!!)
+                if(session!=null) {
+                    trySend(session)
+                }
+                else{
+                    close()
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {

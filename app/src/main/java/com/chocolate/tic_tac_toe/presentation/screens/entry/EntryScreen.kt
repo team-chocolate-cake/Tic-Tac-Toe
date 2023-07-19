@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.chocolate.tic_tac_toe.presentation.screens.composable.ButtonApp
-import com.chocolate.tic_tac_toe.presentation.screens.entry.componants.EnterYourNameBox
+import com.chocolate.tic_tac_toe.presentation.screens.entry.componants.EnterUserNameBox
 import com.chocolate.tic_tac_toe.presentation.screens.entry.componants.GameTitle
 import com.chocolate.tic_tac_toe.presentation.screens.entry.viewmodel.EntryScreenUIState
 import com.chocolate.tic_tac_toe.presentation.screens.entry.viewmodel.EntryScreenViewModel
@@ -29,7 +29,8 @@ fun EntryScreen(
     EntryContent(
         state,
         onNameChange = viewModel::onNameChange,
-        onClickContinue = viewModel::createPlayer
+        onClickContinue = viewModel::createPlayer,
+        onDropDawnIconClick = viewModel::onNameChange
     )
 
     if (state.isCreated) {
@@ -43,7 +44,8 @@ fun EntryScreen(
 fun EntryContent(
     state: EntryScreenUIState,
     onNameChange: (String) -> Unit,
-    onClickContinue: () -> Unit
+    onClickContinue: () -> Unit,
+    onDropDawnIconClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -53,7 +55,12 @@ fun EntryContent(
     ) {
         GameTitle()
 
-        EnterYourNameBox(state.playerName, onNameChange = onNameChange)
+        EnterUserNameBox(
+            state.playerName,
+            previousUserNames = state.playerPreviousNames,
+            onNameChange = onNameChange,
+            onDropDawnIconClick = onDropDawnIconClick
+        )
 
         ButtonApp(
             text = "Continue",
@@ -72,8 +79,8 @@ fun EntryScreenPreview() {
         EntryContent(
             state = EntryScreenUIState(),
             onNameChange = {},
-            onClickContinue = {}
+            onClickContinue = {},
+            onDropDawnIconClick = {}
         )
     }
-
 }

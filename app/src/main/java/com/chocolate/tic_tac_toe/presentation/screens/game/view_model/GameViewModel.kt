@@ -1,5 +1,6 @@
 package com.chocolate.tic_tac_toe.presentation.screens.game.view_model
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -57,7 +58,6 @@ class GameViewModel @Inject constructor(
         _state.update { it.copy(isLoading = false, error = null) }
         viewModelScope.launch {
             val playerId = getPlayerIdUseCase()
-
             sessionFlow.collect { session ->
                 _state.update {
                     it.copy(
@@ -143,7 +143,7 @@ class GameViewModel @Inject constructor(
     }
 
     private fun onDeleteSessionSuccess(unit: Unit) {
-
+        _state.update { it.copy(gameState = GameState.IN_PROGRESS) }
     }
 
     private fun onPlayAgainSuccess(unit: Unit) {
@@ -152,7 +152,6 @@ class GameViewModel @Inject constructor(
     private fun onPlayAgainError(throwable: Throwable) {
 
     }
-
 
     private fun Player.toPlayerUiState(): GameUiState.Player {
         return GameUiState.Player(
@@ -163,7 +162,6 @@ class GameViewModel @Inject constructor(
             imageUrl = this.imageUrl
         )
     }
-
 
     private fun <T> tryToExecute(
         call: suspend () -> T,
