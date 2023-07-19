@@ -100,21 +100,15 @@ fun GameScreenContent(
                 }
 
                 GameState.PLAYER_X_WON, GameState.PLAYER_O_WON -> {
-                    DrawCard(
-                        image = R.drawable.avatar_batman,
+                    WinnerCard(
+                        player =
+                        if (state.gameState == GameState.PLAYER_X_WON)
+                            state.players.first()
+                        else state.players.last(),
                         modifier = Modifier.padding(horizontal = 16.dp),
                         onClickCLose = onClickClose,
                         onClickPlayAgain = onClickPlayAgain
                     )
-//                    WinnerCard(
-//                        player =
-//                        if (state.gameState == GameState.PLAYER_X_WON)
-//                            state.players.first()
-//                        else state.players.last(),
-//                        modifier = Modifier.padding(horizontal = 16.dp),
-//                        onClickCLose = onClickClose,
-//                        onClickPlayAgain = onClickPlayAgain
-//                    )
                 }
                 GameState.WAITING_PLAYER_X,GameState.WAITING_PLAYER_O -> {
                     if (state.playerId == state.players.first().id && state.gameState == GameState.WAITING_PLAYER_O) {
@@ -136,17 +130,8 @@ fun GameScreenContent(
                 }
 
                 else -> {
-//                    DrawCard(
-//                        image = R.drawable.avatar_batman,
-//                        modifier = Modifier.padding(horizontal = 16.dp),
-//                        onClickCLose = onClickClose,
-//                        onClickPlayAgain = onClickPlayAgain
-//                    )
-                    WinnerCard(
-                        player =
-                        if (state.gameState == GameState.PLAYER_X_WON)
-                            state.players.first()
-                        else state.players.last(),
+                    DrawCard(
+                        image = R.drawable.avatar_batman,
                         modifier = Modifier.padding(horizontal = 16.dp),
                         onClickCLose = onClickClose,
                         onClickPlayAgain = onClickPlayAgain
