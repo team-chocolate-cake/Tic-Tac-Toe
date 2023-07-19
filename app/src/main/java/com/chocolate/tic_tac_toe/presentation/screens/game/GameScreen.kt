@@ -1,6 +1,7 @@
 package com.chocolate.tic_tac_toe.presentation.screens.game
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -28,6 +29,7 @@ import com.chocolate.tic_tac_toe.presentation.screens.game.components.PlayersCon
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.WinnerCard
 import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameUiState
 import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameViewModel
+import com.chocolate.tic_tac_toe.presentation.screens.lobby.navigateToLobby
 import com.chocolate.tic_tac_toe.presentation.theme.DarkBackground
 import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 
@@ -42,12 +44,13 @@ fun GameScreen(
 
     GameScreenContent(
         state = state,
-        onGameEnded= {
-            viewModel.onGameEnded()
-            navController.popBackStack()
+        onGameEnded = {
+            viewModel.onGameEnded().also { navController.navigateToLobby() }
         },
         onClickBox = viewModel::updateGameState,
-        onClickClose = viewModel::onClose,
+        onClickClose = {
+            viewModel.onClose().also { navController.navigateToLobby() }
+        },
         onClickPlayAgain = viewModel::onPlayAgain,
     )
 }
@@ -56,15 +59,17 @@ fun GameScreen(
 fun GameScreenContent(
     state: GameUiState,
     onClickBox: (Int, String) -> Unit,
-    onGameEnded:()->Unit,
+    onGameEnded: () -> Unit,
     onClickClose: () -> Unit = {},
     onClickPlayAgain: () -> Unit = {},
 ) {
     Box {
         ImageForBackground()
-        Column(modifier = Modifier
-            .background(color = DarkBackground)
-            .systemBarsPadding()) {
+        Column(
+            modifier = Modifier
+                .background(color = DarkBackground)
+                .systemBarsPadding()
+        ) {
             if (state.players.isNotEmpty()) {
                 PlayersContent(
                     turn = state.turn,
@@ -94,25 +99,28 @@ fun GameScreenContent(
                         onClickPlayAgain = onClickPlayAgain
                     )
                 }
-                GameState.WAITING_PLAYER_X,GameState.WAITING_PLAYER_O -> {
-                    if(state.playerId == state.players.first().id && state.gameState == GameState.WAITING_PLAYER_O){
+
+                GameState.WAITING_PLAYER_X, GameState.WAITING_PLAYER_O -> {
+                    if (state.playerId == state.players.first().id && state.gameState == GameState.WAITING_PLAYER_O) {
                         Card(modifier = Modifier.size(200.dp)) {
                             Text(text = "Wait ${state.players.last().name}")
                         }
-                    }else if (state.playerId == state.players.last().id && state.gameState == GameState.WAITING_PLAYER_X){
+                    } else if (state.playerId == state.players.last().id && state.gameState == GameState.WAITING_PLAYER_X) {
                         Card() {
                             Text(text = "Wait ${state.players.last().name}")
                         }
-                    }else{
+                    } else {
                         Card() {
-                            Text(text = "Play Again?", modifier = Modifier.clickable{onClickPlayAgain()})
+                            Text(
+                                text = "Play Again?",
+                                modifier = Modifier.clickable { onClickPlayAgain() })
                         }
                     }
 
                 }
 
                 GameState.END -> {
-
+                    onGameEnded()
                 }
 
                 else -> {
