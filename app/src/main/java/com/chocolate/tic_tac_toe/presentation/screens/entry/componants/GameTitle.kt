@@ -3,7 +3,6 @@ package com.chocolate.tic_tac_toe.presentation.screens.entry.componants
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -11,9 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkOnSecondary
-import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkPrimary
-import com.chocolate.tic_tac_toe.presentation.ui.theme.DarkSecondary
+import com.chocolate.tic_tac_toe.presentation.theme.DarkOnSecondary
+import com.chocolate.tic_tac_toe.presentation.theme.DarkPrimary
+import com.chocolate.tic_tac_toe.presentation.theme.DarkSecondary
 
 @Preview
 @Composable

@@ -14,10 +14,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.chocolate.tic_tac_toe.R
-import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.presentation.screens.composable.PlayerImage
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerHorizontal4
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerHorizontal8
@@ -25,18 +26,22 @@ import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical4
 import com.chocolate.tic_tac_toe.presentation.screens.lobby.viewmodel.PlayerUiState
 import com.chocolate.tic_tac_toe.presentation.theme.DarkCard87
 import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground38
-import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground60
 import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground87
 
 @Composable
 fun PlayerContent(
     player: PlayerUiState,
-    onClickPlayer: ((String) -> Unit)? = null,
+    onClickPlayer: ((String) -> Unit) = {},
 ) {
     Row(
         modifier = Modifier
-            .clickable { onClickPlayer }
-            .background(color = DarkCard87, shape = CircleShape)
+            .clickable { if (player.isWaiting) onClickPlayer(player.id) }
+            .background(
+                color = if (player.isWaiting)
+                    DarkCard87
+                else Color.Gray,
+                shape = CircleShape
+            )
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -88,7 +93,7 @@ fun PlayerContentHeader(
         SpacerHorizontal8()
 
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.Start
         ) {
             Text(
                 text = player.name,
@@ -101,7 +106,6 @@ fun PlayerContentHeader(
             Row {
                 Text(
                     text = player.score.toString(),
-                    modifier = Modifier.padding(start = 4.dp, end = 4.dp),
                     style = MaterialTheme.typography.bodySmall,
                     color = DarkOnBackground38,
                 )
@@ -114,4 +118,18 @@ fun PlayerContentHeader(
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun PlayerContentPreview() {
+    PlayerContent(
+        player = PlayerUiState(
+            id = "1",
+            name = "Player 1",
+            score = 0,
+            imageUrl = "",
+            isWaiting = true
+        )
+    )
 }
