@@ -7,7 +7,7 @@ data class Session(
     val turn: String = "",
     val winner: Player? = null,
     val winPositions: List<Int> = List(3) { -1 },
-    val state: GameState = GameState.IN_PROGRESS,
+    val state: GameState = GameState.WAITING_FOR_PLAYERS,
     val xPlayerPlayAgain: Boolean = false,
     val oPlayerPlayAgain: Boolean = false,
 )
