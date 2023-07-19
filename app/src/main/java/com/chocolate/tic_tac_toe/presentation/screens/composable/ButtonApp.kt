@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +20,7 @@ import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 
 @Composable
 fun ButtonApp(
+    isLoading: Boolean,
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -29,6 +31,7 @@ fun ButtonApp(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp)
+            .clickable { onClick() }
             .background(
                 brush = Brush.horizontalGradient(
                     colors = listOf(
@@ -37,17 +40,22 @@ fun ButtonApp(
                         Color(0xffb82f89)
                     ),
                 ), shape = CircleShape
-            ).clickable { onClick() },
+            ),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent,
             disabledContainerColor = Color.Transparent,
         ),
         enabled = enabled
     ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyMedium
-        )
+        if (isLoading) {
+            CircularProgressIndicator()
+        } else {
+            Text(
+                text = text,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
     }
 }
 
@@ -55,6 +63,6 @@ fun ButtonApp(
 @Composable
 fun ButtonAppPreview() {
     TicTacToeTheme {
-        ButtonApp(text = "Button", onClick = {})
+        ButtonApp(text = "Button", onClick = {}, isLoading = false)
     }
 }
