@@ -9,32 +9,22 @@ class CreatePlayerUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         name: String,
-        playerPreviousNames: List<String>
+        playerPreviousNames: List<String>,
+        imageUrl: String
     ) {
-    suspend operator fun invoke(name: String, imageUrl: String): Boolean {
         val playerId = System.currentTimeMillis().toString()
 
-        if(playerPreviousNames.isNotEmpty()) {
+        if (playerPreviousNames.isNotEmpty()) {
             gameRepository.updatePlayerName(name)
-        }else{
+        } else {
             val player = Player(
                 id = playerId,
                 name = name,
                 previousNames = listOf(name),
                 score = 0,
+                imageUrl = imageUrl
             )
             gameRepository.createPlayer(player)
         }
-
-
-
-        val player = Player(
-            id = playerId,
-            name = name,
-            previewsNames = listOf(name),
-            score = 0,
-            imageUrl = imageUrl,
-        )
-        return gameRepository.createPlayer(player)
     }
 }

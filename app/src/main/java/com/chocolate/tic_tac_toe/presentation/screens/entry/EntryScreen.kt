@@ -57,7 +57,7 @@ fun EntryContent(
 
         EnterUserNameBox(
             state.playerName,
-            previousUserNames = state.previewsPlayerNames,
+            previousUserNames = state.playerPreviousNames,
             onNameChange = onNameChange,
             onDropDawnIconClick = onDropDawnIconClick
         )
