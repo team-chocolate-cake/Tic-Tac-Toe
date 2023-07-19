@@ -7,7 +7,7 @@ data class GameUiState(
     val players: List<Player> = emptyList(),
     val turn: String = "",
     val playerId: String = "",
-    val gameState: GameState = GameState.IN_PROGRESS,
+    val gameState: GameState = GameState.WAITING_FOR_PLAYERS,
     val winPositions: List<Int> = emptyList(),
     val board: List<String> = emptyList(),
     val error: String? = null,

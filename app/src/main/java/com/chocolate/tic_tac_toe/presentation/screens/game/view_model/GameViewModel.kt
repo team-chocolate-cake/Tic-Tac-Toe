@@ -64,12 +64,20 @@ class GameViewModel @Inject constructor(
                         players = session.players.map { player -> player.toPlayerUiState() },
                         turn = session.turn,
                         playerId = playerId,
-                        gameState = session.state,
+                        gameState = determineGameState(session.players.size),
                         board = session.board,
                         winPositions = session.winPositions
                     )
                 }
             }
+        }
+    }
+
+    private fun determineGameState(playersSize: Int): GameState {
+        return if (playersSize == 2) {
+            GameState.IN_PROGRESS
+        } else {
+            GameState.WAITING_FOR_PLAYERS
         }
     }
 
