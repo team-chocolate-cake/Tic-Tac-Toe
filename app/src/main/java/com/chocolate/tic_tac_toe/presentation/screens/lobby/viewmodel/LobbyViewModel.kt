@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -44,14 +45,19 @@ class LobbyViewModel @Inject constructor(
         )
     }
 
-    private fun onGetPlayerDataSuccess(player: Player) {
-        _state.update {
-            it.copy(
-                player = playerUiStateMapper.map(player),
-                isLoading = false,
-                error = null,
-            )
+    private fun onGetPlayerDataSuccess(player: Flow<Player>) {
+        viewModelScope.launch {
+            player.collect{ player ->
+                _state.update {
+                    it.copy(
+                        player = playerUiStateMapper.map(player),
+                        isLoading = false,
+                        error = null,
+                    )
+                }
+            }
         }
+
     }
 
     private fun onGetPlayerDataError(throwable: Throwable) {
