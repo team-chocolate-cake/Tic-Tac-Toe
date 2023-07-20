@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
@@ -14,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import com.chocolate.tic_tac_toe.presentation.theme.TicTacCustomColors
@@ -31,7 +33,8 @@ fun UserNameDropDownMenu(
     Text(
         modifier = modifier
             .rotate(-90f)
-            .clickable() { isContextMenuVisible = true }
+            .clip(CircleShape)
+            .clickable { isContextMenuVisible = true }
             .padding(12.dp),
         text = "<",
         style = MaterialTheme.typography.bodyLarge,
