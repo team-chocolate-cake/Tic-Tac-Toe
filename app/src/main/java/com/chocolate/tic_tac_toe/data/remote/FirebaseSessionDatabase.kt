@@ -55,6 +55,10 @@ class FirebaseSessionDatabase @Inject constructor(
         sessionDatabaseReference.child(session.id).setValue(session).await()
     }
 
+    suspend fun updateWinner(sessionId: String, winnerId: String) {
+        sessionDatabaseReference.child(sessionId).child("winner").setValue(winnerId).await()
+    }
+
     suspend fun updateGameState(sessionId: String, gameState: GameState) {
         sessionDatabaseReference.child(sessionId).child("state").setValue(gameState).await()
     }

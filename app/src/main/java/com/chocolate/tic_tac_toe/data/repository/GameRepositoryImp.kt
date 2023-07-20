@@ -29,10 +29,9 @@ class GameRepositoryImp @Inject constructor(
         if (playerId == null) {
             firebasePlayerDatabase.createPlayer(player)
             storePlayerData.savePlayerId(player.id)
-        } else {
-            firebasePlayerDatabase.updatePlayerName(playerId, player.name) // need to be removed
         }
     }
+
 
     override suspend fun updatePlayerName(name: String) {
         val playerId = storePlayerData.getPlayerId()
@@ -40,6 +39,7 @@ class GameRepositoryImp @Inject constructor(
             firebasePlayerDatabase.updatePlayerName(playerId, name)
         }
     }
+
 
     override suspend fun getPlayers(): Flow<List<Player?>> {
         return firebasePlayerDatabase.getPlayers()
@@ -50,8 +50,17 @@ class GameRepositoryImp @Inject constructor(
         return firebasePlayerDatabase.getFLowPlayerDataById(id)
     }
 
+    override suspend fun updatePlayerPreviousNames(name: String) {
+        val id = storePlayerData.getPlayerId()!!
+        firebasePlayerDatabase.updatePlayerPreviousNames(id, name)
+    }
+
     override fun getPlayerAvatars(): List<String> {
         return playerAvatars.getPlayerAvatars()
+    }
+
+    override suspend fun updateWinner(sessionId: String, winnerId: String) {
+        firebaseSessionDatabase.updateWinner(sessionId, winnerId)
     }
     //endregion
 
