@@ -3,6 +3,8 @@ package com.chocolate.tic_tac_toe.presentation.screens.lobby
 import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
@@ -94,6 +96,7 @@ fun LobbyContent(
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun Players(
     state: LobbyUiState,
@@ -123,8 +126,8 @@ private fun Players(
             SpacerVertical8()
         }
 
-        items(state.players) {
-            PlayerContent(player = it, onClickPlayer = onClickPlayer)
+        items(state.players, key = {it.id}) {
+            PlayerContent(player = it, onClickPlayer = onClickPlayer, modifier = Modifier.animateItemPlacement())
             SpacerVertical12()
         }
 

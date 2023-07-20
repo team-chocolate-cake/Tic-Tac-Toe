@@ -32,9 +32,10 @@ import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground87
 fun PlayerContent(
     player: PlayerUiState,
     onClickPlayer: ((String) -> Unit) = {},
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .clickable { if (player.isWaiting) onClickPlayer(player.id) }
             .background(
                 color = if (player.isWaiting)
