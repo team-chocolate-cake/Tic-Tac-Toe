@@ -4,12 +4,14 @@ import com.chocolate.tic_tac_toe.data.repository.GameRepository
 import com.chocolate.tic_tac_toe.domain.model.GameState
 import javax.inject.Inject
 
-class CheckGameStateUseCase @Inject constructor(
-    private val gameRepository: GameRepository
+class UpdateWinnerUseCase @Inject constructor(
+    private val gameRepository: GameRepository,
+    private val updateSessionStateUseCase: UpdateSessionStateUseCase
 ) {
     suspend operator fun invoke(
-        board: List<String>, sessionId: String,
-        playersID: Set<String>
+        board: List<String>,
+        playersId: List<String>,
+        sessionId: String,
     ) {
         val winningPositions = listOf(
             // Horizontal
@@ -31,14 +33,14 @@ class CheckGameStateUseCase @Inject constructor(
             if (board[a] != "" && board[a] == board[b] && board[a] == board[c]) {
                 when (board[a]) {
                     "X" -> {
-                        gameRepository.updateGameState(
-                             sessionId,GameState.PLAYER_X_WON
-                        )
+                        updateSessionStateUseCase(sessionId, GameState.PLAYER_X_WON)
+                        gameRepository.updateWinner(sessionId, playersId[0])
                         gameRepository.updateScore(playersID.first(),10)
                     }
 
                     "O" -> {
-                        gameRepository.updateGameState(sessionId,GameState.PLAYER_O_WON)
+                        updateSessionStateUseCase(sessionId, GameState.PLAYER_O_WON)
+                        gameRepository.updateWinner(sessionId, playersId[1])
                         gameRepository.updateScore(playersID.last(),10)
                     }
                 }
@@ -48,7 +50,7 @@ class CheckGameStateUseCase @Inject constructor(
         }
 
         if (!board.contains("")) {
-            gameRepository.updateGameState(sessionId,GameState.DRAW)
+            updateSessionStateUseCase(sessionId, GameState.DRAW)
         }
     }
 }

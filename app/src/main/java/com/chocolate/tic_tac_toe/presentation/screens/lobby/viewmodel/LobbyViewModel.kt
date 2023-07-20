@@ -8,8 +8,8 @@ import com.chocolate.tic_tac_toe.domain.usecase.CreateSessionUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.JoinSessionUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.UpdatePlayerStateUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.UpdateSessionStateUseCase
-import com.chocolate.tic_tac_toe.domain.usecase.lobby.GetPlayerDataUseCase
-import com.chocolate.tic_tac_toe.domain.usecase.lobby.GetPlayersUseCase
+import com.chocolate.tic_tac_toe.domain.usecase.GetPlayerDataUseCase
+import com.chocolate.tic_tac_toe.domain.usecase.GetPlayersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

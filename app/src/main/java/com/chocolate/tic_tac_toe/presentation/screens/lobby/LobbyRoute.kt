@@ -8,8 +8,8 @@ private const val Route = "lobby"
 
 
 fun NavController.navigateToLobby() {
-    navigate(Route){
-        popUpTo("game") {
+    navigate(Route) {
+        popUpTo(Route) {
             inclusive = true
         }
     }

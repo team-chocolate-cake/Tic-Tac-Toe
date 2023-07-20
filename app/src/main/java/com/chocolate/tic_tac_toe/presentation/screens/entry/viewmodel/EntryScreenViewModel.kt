@@ -72,7 +72,7 @@ class EntryScreenViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                playerName = previousNames.first(),
+                playerName = previousNames.last(),
                 playerPreviousNames = previousNames
             )
         }

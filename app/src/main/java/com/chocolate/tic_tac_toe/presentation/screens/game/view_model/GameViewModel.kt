@@ -1,18 +1,18 @@
 package com.chocolate.tic_tac_toe.presentation.screens.game.view_model
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chocolate.tic_tac_toe.domain.usecase.UpdateTurnUseCase
 import com.chocolate.tic_tac_toe.domain.model.GameState
-import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.model.Session
 import com.chocolate.tic_tac_toe.domain.usecase.DeleteSessionUseCase
-import com.chocolate.tic_tac_toe.domain.usecase.EndGameStateUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.GetPlayerIdUseCase
 import com.chocolate.tic_tac_toe.domain.usecase.GetSessionDataUseCase
-import com.chocolate.tic_tac_toe.domain.usecase.UpdateGameStateUseCase
-import com.chocolate.tic_tac_toe.domain.usecase.UpdateSessionState
+import com.chocolate.tic_tac_toe.domain.usecase.UpdateBoardUseCase
+import com.chocolate.tic_tac_toe.domain.usecase.UpdateSessionPlayAgainUseCase
+import com.chocolate.tic_tac_toe.domain.usecase.UpdateSessionStateUseCase
+import com.chocolate.tic_tac_toe.domain.usecase.UpdateWinnerUseCase
 import com.chocolate.tic_tac_toe.presentation.screens.game.GameArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -27,22 +27,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
-    private val updateSessionState: UpdateSessionState,
-    private val getPlayerIdUseCase: GetPlayerIdUseCase,
     private val getSessionDataUseCase: GetSessionDataUseCase,
-    private val updateGameStateUseCase: UpdateGameStateUseCase,
-    private val endGameStateUseCase: EndGameStateUseCase,
+    private val updateSessionPlayAgainUseCase: UpdateSessionPlayAgainUseCase,
+    private val updateTurnUseCase: UpdateTurnUseCase,
+    private val updateWinnerUseCase: UpdateWinnerUseCase,
+    private val getPlayerIdUseCase: GetPlayerIdUseCase,
+    private val updateBoardUseCase: UpdateBoardUseCase,
+    private val updateSessionStateUseCase: UpdateSessionStateUseCase,
     private val deleteSessionUseCase: DeleteSessionUseCase,
+    private val playerUiStateMapper: PlayerUiStateMapper,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(GameUiState())
     val state = _state.asStateFlow()
 
-    private val args = GameArgs(savedStateHandle = savedStateHandle)
+    private val sessionId = GameArgs(savedStateHandle = savedStateHandle).id
 
     init {
-        getSessionData(args.id)
+        getSessionData(sessionId)
     }
 
     private fun getSessionData(id: String) {
@@ -61,7 +64,9 @@ class GameViewModel @Inject constructor(
             sessionFlow.collect { session ->
                 _state.update {
                     it.copy(
-                        players = session.players.map { player -> player.toPlayerUiState() },
+                        players = session.players.map { player ->
+                            playerUiStateMapper.map(player)
+                        },
                         turn = session.turn,
                         playerId = playerId,
                         gameState = session.state,
@@ -81,13 +86,21 @@ class GameViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         tryToExecute(
             call = {
-                updateGameStateUseCase(
+                updateBoardUseCase(
                     board = _state.value.board,
                     index = index,
                     value = value,
+                    sessionId = sessionId
+                )
+                updateTurnUseCase(
                     turn = _state.value.turn,
-                    playersId = _state.value.players.map { it.id }.toSet(),
-                    sessionId = args.id
+                    playersId = _state.value.players.map { it.id },
+                    sessionId = sessionId
+                )
+                updateWinnerUseCase(
+                    board = _state.value.board,
+                    playersId = _state.value.players.map { it.id },
+                    sessionId = sessionId
                 )
             },
             onSuccess = ::onUpdateGameStateSuccess,
@@ -104,12 +117,14 @@ class GameViewModel @Inject constructor(
     }
 
     fun onPlayAgain() {
+        _state.update { it.copy(isLoading = true) }
         tryToExecute(
             call = {
-                updateSessionState(
-                    args.id,
-                    _state.value.players.map { it.id }.toSet(),
-                    _state.value.gameState,
+                updateSessionPlayAgainUseCase(
+                    playerId = _state.value.playerId,
+                    sessionId = sessionId,
+                    playersId = _state.value.players.map { it.id },
+                    gameState = _state.value.gameState
                 )
             },
             onSuccess = ::onPlayAgainSuccess,
@@ -118,19 +133,18 @@ class GameViewModel @Inject constructor(
     }
 
     fun onClose() {
+        _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            call = {
-                endGameStateUseCase(args.id)
-            },
+            call = { updateSessionStateUseCase(sessionId, GameState.END) },
             onSuccess = ::onDeleteSessionSuccess,
             onError = ::onDeleteSessionError
         )
     }
+
     fun onGameEnded() {
+        _state.update { it.copy(isLoading = true) }
         tryToExecute(
-            call = {
-                deleteSessionUseCase(args.id)
-            },
+            call = { deleteSessionUseCase(sessionId) },
             onSuccess = ::onDeleteSessionSuccess,
             onError = ::onDeleteSessionError
         )
@@ -141,7 +155,7 @@ class GameViewModel @Inject constructor(
     }
 
     private fun onDeleteSessionSuccess(unit: Unit) {
-        _state.update { it.copy(gameState = GameState.END) }
+        _state.update { it.copy(isLoading = false) }
     }
 
     private fun onPlayAgainSuccess(unit: Unit) {
@@ -150,17 +164,6 @@ class GameViewModel @Inject constructor(
 
     private fun onPlayAgainError(throwable: Throwable) {
         _state.update { it.copy(isLoading = false, error = throwable.message) }
-
-    }
-
-    private fun Player.toPlayerUiState(): GameUiState.Player {
-        return GameUiState.Player(
-            id = this.id,
-            name = this.name,
-            score = this.score,
-            symbol = this.symbol ?: "",
-            imageUrl = this.imageUrl
-        )
     }
 
     private fun <T> tryToExecute(
