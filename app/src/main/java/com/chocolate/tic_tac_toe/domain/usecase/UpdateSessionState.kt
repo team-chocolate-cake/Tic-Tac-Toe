@@ -14,12 +14,12 @@ class UpdateSessionState @Inject constructor(
             playerId == playersId.last() && gameState == GameState.WAITING_PLAYER_O
         ) {
             gameRepository.updateBoard(List(9) { "" }, sessionId)
-            gameRepository.updateGameState(GameState.IN_PROGRESS, sessionId)
+            gameRepository.updateGameState(sessionId,GameState.IN_PROGRESS)
             gameRepository.updateWinPositions(List(3) { -1 }, sessionId)
         } else if (playerId == playersId.first()) {
-            gameRepository.updateGameState(GameState.WAITING_PLAYER_O, sessionId)
+            gameRepository.updateGameState(sessionId,GameState.WAITING_PLAYER_O)
         } else {
-            gameRepository.updateGameState(GameState.WAITING_PLAYER_X, sessionId)
+            gameRepository.updateGameState(sessionId, GameState.WAITING_PLAYER_X)
         }
     }
 }

@@ -36,10 +36,9 @@ class FirebaseSessionDatabase @Inject constructor(
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val session = snapshot.getValue(Session::class.java)
-                if(session!=null) {
+                if (session != null) {
                     trySend(session)
-                }
-                else{
+                } else {
                     close()
                 }
             }
@@ -56,13 +55,14 @@ class FirebaseSessionDatabase @Inject constructor(
         sessionDatabaseReference.child(session.id).setValue(session).await()
     }
 
-    suspend fun updateGameState(gameState: GameState, sessionId: String) {
+    suspend fun updateGameState(sessionId: String, gameState: GameState) {
         sessionDatabaseReference.child(sessionId).child("state").setValue(gameState).await()
     }
 
     suspend fun updateWinPositions(positions: List<Int>, sessionId: String) {
         sessionDatabaseReference.child(sessionId).child("winPositions").setValue(positions).await()
     }
+
     suspend fun deleteSession(sessionId: String) {
         sessionDatabaseReference.child(sessionId).removeValue().await()
     }

@@ -8,20 +8,20 @@ import kotlinx.coroutines.flow.Flow
 
 interface GameRepository {
     // region Session
-    suspend fun createSession()
+    suspend fun createSession(session:Session)
 
     suspend fun updateBoard(board: List<String>, sessionId: String)
 
     suspend fun updateTurn(turn: String, sessionId: String)
 
-    suspend fun updateGameState(gameState: GameState, sessionId: String)
+    suspend fun updateGameState(sessionId: String, gameState: GameState)
 
     suspend fun getSession(key: String): Flow<Session>
     suspend fun deleteSession(key: String)
 
     suspend fun updateWinPositions(positions: List<Int>, sessionId: String)
 
-    suspend fun joinSession(sessionId: String)
+    suspend fun joinSession(sessionId: String, player: Player)
 
     suspend fun updatePlayerState(playerId: String, playerState: Boolean)
 
@@ -33,8 +33,10 @@ interface GameRepository {
     suspend fun createPlayer(player: Player)
     suspend fun getPlayerPreviousNames(): List<String>?
     suspend fun updatePlayerName(name: String)
-    fun getPlayers(): Flow<List<Player?>>
+    suspend fun getPlayers(): Flow<List<Player?>>
     suspend fun getPlayerData(): Flow<Player>
+
+    suspend fun getPlayerDataById(playerId: String): Player
     // endregion
 
     fun getPlayerAvatars(): List<String>
