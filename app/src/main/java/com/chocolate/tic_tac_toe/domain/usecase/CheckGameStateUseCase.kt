@@ -9,6 +9,7 @@ class CheckGameStateUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         board: List<String>, sessionId: String,
+        playersID: Set<String>
     ) {
         val winningPositions = listOf(
             // Horizontal
@@ -33,10 +34,12 @@ class CheckGameStateUseCase @Inject constructor(
                         gameRepository.updateGameState(
                             GameState.PLAYER_X_WON, sessionId
                         )
+                        gameRepository.updateScore(playersID.first(),10)
                     }
 
                     "O" -> {
                         gameRepository.updateGameState(GameState.PLAYER_O_WON, sessionId)
+                        gameRepository.updateScore(playersID.last(),10)
                     }
                 }
                 gameRepository.updateWinPositions(positions, sessionId)

@@ -59,6 +59,10 @@ class GameRepositoryImp @Inject constructor(
         return firebasePlayerDatabase.getFLowPlayerDataById(id)
     }
 
+    override suspend fun updateScore(playerId: String, score: Int) {
+        firebasePlayerDatabase.updateScore(playerId,score)
+    }
+
     override fun getPlayerAvatars(): List<String> {
         return playerAvatars.getPlayerAvatars()
     }

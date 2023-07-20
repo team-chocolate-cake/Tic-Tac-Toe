@@ -35,6 +35,7 @@ interface GameRepository {
     suspend fun updatePlayerName(name: String)
     fun getPlayers(): Flow<List<Player?>>
     suspend fun getPlayerData(): Flow<Player>
+    suspend fun updateScore(playerId: String,score: Int)
     // endregion
 
     fun getPlayerAvatars(): List<String>

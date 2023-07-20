@@ -4,6 +4,7 @@ import com.chocolate.tic_tac_toe.domain.model.Player
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -30,6 +31,10 @@ class FirebasePlayerDatabase @Inject constructor(
         return firebaseDatabase.child(id).child("previousNames").get().await().children.map {
             it.value as String
         }
+    }
+
+    suspend fun updateScore(id: String,score: Int){
+        firebaseDatabase.child(id).child("score").setValue(ServerValue.increment(score.toLong())).await()
     }
 
     suspend fun updatePlayerState(playerId: String, playerState: Boolean) {
