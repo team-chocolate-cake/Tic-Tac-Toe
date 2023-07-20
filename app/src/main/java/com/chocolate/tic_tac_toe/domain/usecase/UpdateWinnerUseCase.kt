@@ -35,13 +35,13 @@ class UpdateWinnerUseCase @Inject constructor(
                     "X" -> {
                         updateSessionStateUseCase(sessionId, GameState.PLAYER_X_WON)
                         gameRepository.updateWinner(sessionId, playersId[0])
-                        gameRepository.updateScore(playersID.first(),10)
+                        gameRepository.updateScore(playersId.first(),10)
                     }
 
                     "O" -> {
                         updateSessionStateUseCase(sessionId, GameState.PLAYER_O_WON)
                         gameRepository.updateWinner(sessionId, playersId[1])
-                        gameRepository.updateScore(playersID.last(),10)
+                        gameRepository.updateScore(playersId.last(),10)
                     }
                 }
                 gameRepository.updateWinPositions(positions, sessionId)

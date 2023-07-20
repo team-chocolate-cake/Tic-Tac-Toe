@@ -113,4 +113,8 @@ class GameRepositoryImp @Inject constructor(
         return firebasePlayerDatabase.getPlayerDataById(playerId)
     }
 
+    override suspend fun updateScore(playerId: String, score: Int) {
+        firebasePlayerDatabase.updateScore(playerId,score)
+    }
+
 }
