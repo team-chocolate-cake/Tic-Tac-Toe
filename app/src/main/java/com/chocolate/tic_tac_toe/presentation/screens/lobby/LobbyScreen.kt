@@ -1,6 +1,10 @@
 package com.chocolate.tic_tac_toe.presentation.screens.lobby
 
 import android.annotation.SuppressLint
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
@@ -16,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -38,13 +43,20 @@ fun LobbyScreen(
     navController: NavController,
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
 
     LobbyContent(
         state = state,
         onClickCreateSession = viewModel::onClickCreateSession,
-        onClickPlayer = {
-            viewModel.onClickPlayer(it)
-            navController.navigateToGame(it)
+        onClickPlayer = { sessionId ->
+            if (state.player.id != sessionId) {
+                viewModel.onClickPlayer(sessionId)
+                navController.navigateToGame(sessionId)
+            } else {
+                Toast.makeText(context, "Rejoining the game is not allowed", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
         },
 
         )
@@ -84,6 +96,7 @@ fun LobbyContent(
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun Players(
     state: LobbyUiState,
@@ -113,8 +126,8 @@ private fun Players(
             SpacerVertical8()
         }
 
-        items(state.players) {
-            PlayerContent(player = it, onClickPlayer = onClickPlayer)
+        items(state.players, key = {it.id}) {
+            PlayerContent(player = it, onClickPlayer = onClickPlayer, modifier = Modifier.animateItemPlacement())
             SpacerVertical12()
         }
 
@@ -123,6 +136,7 @@ private fun Players(
             ButtonApp(
                 text = "Create Game",
                 onClick = onClickCreateSession,
+                isLoading = state.isLoading
             )
         }
     }

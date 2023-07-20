@@ -71,6 +71,7 @@ fun EntryContent(
             text = "Continue",
             onClick = onClickContinue,
             enabled = state.playerName.isNotBlank(),
+            isLoading = state.isLoading
         )
     }
 

@@ -33,7 +33,7 @@ import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 
 @Composable
 fun WinnerCard(
-    player: GameUiState.Player,
+    player: GameUiState.Player = GameUiState.Player(),
     onClickCLose: () -> Unit,
     onClickPlayAgain: () -> Unit,
     modifier: Modifier = Modifier,
@@ -62,7 +62,7 @@ fun WinnerCard(
 
             )
         Text(
-            text = "+${player.score} Score",
+            text = "+10 Score",
             style = MaterialTheme.typography.titleLarge.copy(fontSize = 30.sp),
             color = color.darkOnBackground87,
             maxLines = 1,

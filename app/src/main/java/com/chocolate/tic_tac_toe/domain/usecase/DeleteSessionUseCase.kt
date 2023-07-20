@@ -9,5 +9,6 @@ class DeleteSessionUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(sessionId:String) {
         gameRepository.deleteSession(sessionId)
+        gameRepository.updatePlayerState(sessionId, false)
     }
 }

@@ -2,18 +2,18 @@ package com.chocolate.tic_tac_toe.presentation.screens.game
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.Card
-import androidx.compose.material3.Text
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,7 +25,9 @@ import com.chocolate.tic_tac_toe.domain.model.GameState
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.DrawCard
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.ImageForBackground
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.LazyVerticalGridDemoContent
+import com.chocolate.tic_tac_toe.presentation.screens.game.components.PlayAgainCard
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.PlayersContent
+import com.chocolate.tic_tac_toe.presentation.screens.game.components.WaitCard
 import com.chocolate.tic_tac_toe.presentation.screens.game.components.WinnerCard
 import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameUiState
 import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameViewModel
@@ -53,6 +55,10 @@ fun GameScreen(
         },
         onClickPlayAgain = viewModel::onPlayAgain,
     )
+
+    BackHandler {
+        viewModel.onGameEnded().also { navController.navigateToLobby() }
+    }
 }
 
 @Composable
@@ -80,6 +86,16 @@ fun GameScreenContent(
             }
 
             when (state.gameState) {
+                GameState.WAITING_FOR_PLAYERS -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
                 GameState.IN_PROGRESS -> {
                     LazyVerticalGridDemoContent(
                         state = state,
@@ -99,22 +115,17 @@ fun GameScreenContent(
                         onClickPlayAgain = onClickPlayAgain
                     )
                 }
-
-                GameState.WAITING_PLAYER_X, GameState.WAITING_PLAYER_O -> {
+                GameState.WAITING_PLAYER_X,GameState.WAITING_PLAYER_O -> {
                     if (state.playerId == state.players.first().id && state.gameState == GameState.WAITING_PLAYER_O) {
-                        Card(modifier = Modifier.size(200.dp)) {
-                            Text(text = "Wait ${state.players.last().name}")
-                        }
+
+                        WaitCard(text = state.players.last().name)
+
                     } else if (state.playerId == state.players.last().id && state.gameState == GameState.WAITING_PLAYER_X) {
-                        Card() {
-                            Text(text = "Wait ${state.players.last().name}")
-                        }
+
+                        WaitCard(text = state.players.first().name)
+
                     } else {
-                        Card() {
-                            Text(
-                                text = "Play Again?",
-                                modifier = Modifier.clickable { onClickPlayAgain() })
-                        }
+                        PlayAgainCard(onClickPlayAgain = onClickPlayAgain)
                     }
 
                 }
@@ -126,7 +137,9 @@ fun GameScreenContent(
                 else -> {
                     DrawCard(
                         image = R.drawable.avatar_batman,
-                        modifier = Modifier.padding(horizontal = 16.dp)
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        onClickCLose = onClickClose,
+                        onClickPlayAgain = onClickPlayAgain
                     )
                 }
             }

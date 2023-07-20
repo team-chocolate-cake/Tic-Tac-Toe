@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +17,7 @@ import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 
 @Composable
 fun ButtonApp(
+    isLoading: Boolean,
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -40,10 +42,15 @@ fun ButtonApp(
         ),
         enabled = enabled
     ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyMedium
-        )
+        if (isLoading) {
+            CircularProgressIndicator()
+        } else {
+            Text(
+                text = text,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
     }
 }
 
@@ -51,6 +58,6 @@ fun ButtonApp(
 @Composable
 fun ButtonAppPreview() {
     TicTacToeTheme {
-        ButtonApp(text = "Button", onClick = {})
+        ButtonApp(text = "Button", onClick = {}, isLoading = false)
     }
 }

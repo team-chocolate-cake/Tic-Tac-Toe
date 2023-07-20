@@ -2,6 +2,7 @@ package com.chocolate.tic_tac_toe.presentation.screens.game.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,8 @@ import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 fun DrawCard(
     image: Int,
     modifier: Modifier = Modifier,
+    onClickCLose: () -> Unit,
+    onClickPlayAgain: () -> Unit,
 ) {
     val color = TicTacCustomColors.current
     Column(
@@ -69,8 +72,9 @@ fun DrawCard(
                 color = color.darkOnSecondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.clickable { onClickCLose() }
             )
-            Box{
+            Box(modifier = Modifier.clickable { onClickPlayAgain() }){
                 Text(
                     modifier = Modifier.rotate(60f).offset(x = (-12).dp,y = (-20).dp),
                     text = "<",
@@ -93,6 +97,8 @@ fun CardPreview() {
     TicTacToeTheme() {
         DrawCard(
             image = R.drawable.avatar_batman,
+            onClickPlayAgain = {},
+            onClickCLose = {}
         )
     }
 }
