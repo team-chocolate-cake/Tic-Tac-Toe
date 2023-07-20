@@ -1,5 +1,6 @@
 package com.chocolate.tic_tac_toe.presentation.screens.lobby.components
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,9 +13,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,23 +29,27 @@ import com.chocolate.tic_tac_toe.presentation.screens.lobby.viewmodel.PlayerUiSt
 import com.chocolate.tic_tac_toe.presentation.theme.DarkCard87
 import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground38
 import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground87
+import com.chocolate.tic_tac_toe.presentation.theme.DarkOnCard
 
 @Composable
 fun PlayerContent(
     player: PlayerUiState,
+    modifier: Modifier = Modifier,
     onClickPlayer: ((String) -> Unit) = {},
-    modifier: Modifier = Modifier
 ) {
+    val colorAnimation by animateColorAsState(
+        targetValue = if (player.isWaiting) DarkCard87 else DarkOnCard,
+        label = "colorAnimation"
+    )
+
     Row(
         modifier = modifier
-            .clickable { if (player.isWaiting) onClickPlayer(player.id) }
+            .clip(CircleShape)
             .background(
-                color = if (player.isWaiting)
-                    DarkCard87
-                else Color.Gray,
-                shape = CircleShape
+                color = colorAnimation,
             )
             .fillMaxWidth()
+            .clickable { if (player.isWaiting) onClickPlayer(player.id) }
             .padding(horizontal = 12.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -84,9 +90,10 @@ fun PlayerContent(
 @Composable
 fun PlayerContentHeader(
     player: PlayerUiState,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {

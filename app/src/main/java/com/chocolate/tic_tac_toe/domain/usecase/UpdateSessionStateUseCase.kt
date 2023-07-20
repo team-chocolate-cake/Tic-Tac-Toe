@@ -4,10 +4,10 @@ import com.chocolate.tic_tac_toe.data.repository.GameRepository
 import com.chocolate.tic_tac_toe.domain.model.GameState
 import javax.inject.Inject
 
-class EndGameStateUseCase @Inject constructor(
+class UpdateSessionStateUseCase @Inject constructor(
     private val gameRepository: GameRepository
 ) {
-    suspend operator fun invoke(sessionId:String) {
-        gameRepository.updateGameState(sessionId,GameState.END)
+    suspend operator fun invoke(sessionId: String, sessionState: GameState) {
+        gameRepository.updateGameState(sessionId, sessionState)
     }
 }
