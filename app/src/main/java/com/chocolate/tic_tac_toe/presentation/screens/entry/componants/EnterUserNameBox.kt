@@ -32,7 +32,6 @@ fun EnterUserNameBox(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 24.dp)
             .background(
                 color = colors.darkCard.copy(alpha = 0.6f),
                 shape = RoundedCornerShape(20.dp)

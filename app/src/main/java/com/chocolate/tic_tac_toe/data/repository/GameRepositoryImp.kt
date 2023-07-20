@@ -1,5 +1,6 @@
 package com.chocolate.tic_tac_toe.data.repository
 
+import com.chocolate.tic_tac_toe.data.local.PlayerAvatars
 import com.chocolate.tic_tac_toe.data.local.StorePlayerId
 import com.chocolate.tic_tac_toe.data.remote.FirebasePlayerDatabase
 import com.chocolate.tic_tac_toe.data.remote.FirebaseSessionDatabase
@@ -7,10 +8,10 @@ import com.chocolate.tic_tac_toe.domain.model.GameState
 import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.model.Session
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 class GameRepositoryImp @Inject constructor(
+    private val playerAvatars: PlayerAvatars,
     private val storePlayerData: StorePlayerId,
     private val firebaseSessionDatabase: FirebaseSessionDatabase,
     private val firebasePlayerDatabase: FirebasePlayerDatabase
@@ -56,6 +57,10 @@ class GameRepositoryImp @Inject constructor(
     override suspend fun getPlayerData(): Flow<Player> {
         val id = storePlayerData.getPlayerId()!!
         return firebasePlayerDatabase.getFLowPlayerDataById(id)
+    }
+
+    override fun getPlayerAvatars(): List<String> {
+        return playerAvatars.getPlayerAvatars()
     }
     //endregion
 

@@ -36,4 +36,6 @@ interface GameRepository {
     fun getPlayers(): Flow<List<Player?>>
     suspend fun getPlayerData(): Flow<Player>
     // endregion
+
+    fun getPlayerAvatars(): List<String>
 }
