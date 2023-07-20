@@ -31,12 +31,12 @@ class CheckGameStateUseCase @Inject constructor(
                 when (board[a]) {
                     "X" -> {
                         gameRepository.updateGameState(
-                            GameState.PLAYER_X_WON, sessionId
+                            sessionId, GameState.PLAYER_X_WON
                         )
                     }
 
                     "O" -> {
-                        gameRepository.updateGameState(GameState.PLAYER_O_WON, sessionId)
+                        gameRepository.updateGameState(sessionId, GameState.PLAYER_O_WON)
                     }
                 }
                 gameRepository.updateWinPositions(positions, sessionId)
@@ -45,7 +45,7 @@ class CheckGameStateUseCase @Inject constructor(
         }
 
         if (!board.contains("")) {
-            gameRepository.updateGameState(GameState.DRAW, sessionId)
+            gameRepository.updateGameState(sessionId, GameState.DRAW)
         }
     }
 }

@@ -18,17 +18,8 @@ class GameRepositoryImp @Inject constructor(
 ) : GameRepository {
 
     // region Session
-    override suspend fun createSession() {
-        val playerId = storePlayerData.getPlayerId()!!
-        val player = firebasePlayerDatabase.getPlayerDataById(playerId)
-
-        firebaseSessionDatabase.createSession(
-            Session(
-                id = playerId,
-                turn = playerId,
-                players = listOf(player.copy(symbol = "X"))
-            )
-        )
+    override suspend fun createSession(session: Session) {
+        firebaseSessionDatabase.createSession(session)
     }
     // endregion
 
@@ -50,7 +41,7 @@ class GameRepositoryImp @Inject constructor(
         }
     }
 
-    override fun getPlayers(): Flow<List<Player?>> {
+    override suspend fun getPlayers(): Flow<List<Player?>> {
         return firebasePlayerDatabase.getPlayers()
     }
 
@@ -82,14 +73,15 @@ class GameRepositoryImp @Inject constructor(
         firebaseSessionDatabase.updateTurn(turn, sessionId)
     }
 
-    override suspend fun updateGameState(gameState: GameState, sessionId: String) {
-        firebaseSessionDatabase.updateGameState(gameState, sessionId)
+    override suspend fun updateGameState(sessionId: String, gameState: GameState) {
+        firebaseSessionDatabase.updateGameState(sessionId, gameState)
     }
 
 
     override suspend fun getSession(key: String): Flow<Session> {
         return firebaseSessionDatabase.getSession(key)
     }
+
     override suspend fun deleteSession(key: String) {
         return firebaseSessionDatabase.deleteSession(key)
     }
@@ -98,11 +90,8 @@ class GameRepositoryImp @Inject constructor(
         firebaseSessionDatabase.updateWinPositions(positions, sessionId)
     }
 
-    override suspend fun joinSession(sessionId: String) {
-        val playerId = storePlayerData.getPlayerId()!!
-        val player = firebasePlayerDatabase.getPlayerDataById(playerId)
-
-        firebaseSessionDatabase.joinSession(sessionId, player.copy(symbol = "O"))
+    override suspend fun joinSession(sessionId: String, player: Player) {
+        firebaseSessionDatabase.joinSession(sessionId, player)
     }
 
     override suspend fun updatePlayerState(playerId: String, playerState: Boolean) {
@@ -111,6 +100,10 @@ class GameRepositoryImp @Inject constructor(
 
     override suspend fun getPlayerId(): String {
         return storePlayerData.getPlayerId()!!
+    }
+
+    override suspend fun getPlayerDataById(playerId: String): Player {
+        return firebasePlayerDatabase.getPlayerDataById(playerId)
     }
 
 }

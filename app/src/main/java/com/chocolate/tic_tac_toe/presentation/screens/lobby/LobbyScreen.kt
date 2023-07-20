@@ -2,21 +2,17 @@ package com.chocolate.tic_tac_toe.presentation.screens.lobby
 
 import android.annotation.SuppressLint
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -25,9 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.chocolate.tic_tac_toe.presentation.screens.composable.ButtonApp
-import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical12
-import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical24
-import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical8
 import com.chocolate.tic_tac_toe.presentation.screens.game.navigateToGame
 import com.chocolate.tic_tac_toe.presentation.screens.lobby.components.PlayerContent
 import com.chocolate.tic_tac_toe.presentation.screens.lobby.components.PlayerContentHeader
@@ -56,88 +49,79 @@ fun LobbyScreen(
                 Toast.makeText(context, "Rejoining the game is not allowed", Toast.LENGTH_SHORT)
                     .show()
             }
+        }
+    )
 
-        },
-
-        )
-
-    if (state.isSessionCreated) {
-        navController.navigateToGame(state.player.id)
-        viewModel.clearIsSessionCreated()
+    DisposableEffect(key1 = state.isSessionCreated) {
+        if (state.isSessionCreated) {
+            navController.navigateToGame(state.player.id)
+        }
+        onDispose { viewModel.clearIsSessionCreated() }
     }
-
-//    if (state.isSessionJoined) {
-//        viewModel.clearIsSessionJoined()
-//    }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LobbyContent(
     state: LobbyUiState,
     onClickCreateSession: () -> Unit,
     onClickPlayer: (String) -> Unit,
 ) {
-    val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()
-            .padding(horizontal = 24.dp)
-            .scrollable(
-                state = scrollState, orientation = Orientation.Vertical
-            )
+            .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
     ) {
-        Players(
-            state = state,
-            onClickPlayer = onClickPlayer,
-            onClickCreateSession = onClickCreateSession
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f)
+        ) {
+            item {
+                PlayerContentHeader(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    player = state.player
+                )
+            }
+
+            item {
+                if (state.players.isNotEmpty()) {
+                    TopThreePlayers(
+                        modifier = Modifier
+                            .padding(vertical = 8.dp),
+                        players = state.players
+                    )
+                }
+            }
+
+            item {
+                Text(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    text = "Players",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = DarkOnBackground87,
+                )
+            }
+
+            items(state.players, key = { it.id }) {
+                PlayerContent(
+                    player = it,
+                    onClickPlayer = onClickPlayer,
+                    modifier = Modifier
+                        .animateItemPlacement()
+                        .padding(bottom = 8.dp)
+                )
+            }
+        }
+
+        ButtonApp(
+            modifier = Modifier
+                .padding(top = 8.dp),
+            text = "Create Game",
+            onClick = onClickCreateSession,
+            isLoading = state.isLoading
         )
     }
 }
 
 
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun Players(
-    state: LobbyUiState,
-    onClickPlayer: (String) -> Unit,
-    onClickCreateSession: () -> Unit,
-) {
-    LazyColumn {
-
-        item {
-            PlayerContentHeader(player = state.player)
-            SpacerVertical8()
-        }
-
-        item {
-            if (state.players.isNotEmpty()) {
-                TopThreePlayers(players = state.players)
-            }
-            SpacerVertical24()
-        }
-
-        item {
-            Text(
-                text = "Players",
-                style = MaterialTheme.typography.bodyLarge,
-                color = DarkOnBackground87,
-            )
-            SpacerVertical8()
-        }
-
-        items(state.players, key = {it.id}) {
-            PlayerContent(player = it, onClickPlayer = onClickPlayer, modifier = Modifier.animateItemPlacement())
-            SpacerVertical12()
-        }
-
-        item {
-            SpacerVertical24()
-            ButtonApp(
-                text = "Create Game",
-                onClick = onClickCreateSession,
-                isLoading = state.isLoading
-            )
-        }
-    }
-}
