@@ -59,7 +59,7 @@ fun GameScreen(
     )
 
     BackHandler {
-        //viewModel.onGameEnded().also { navController.navigateToLobby() }
+        viewModel.onGameEnded().also { navController.navigateToLobby() }
     }
 
     LaunchedEffect(key1 = state.gameState) {

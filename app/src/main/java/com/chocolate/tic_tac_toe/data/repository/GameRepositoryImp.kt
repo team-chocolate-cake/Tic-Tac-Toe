@@ -29,8 +29,6 @@ class GameRepositoryImp @Inject constructor(
         if (playerId == null) {
             firebasePlayerDatabase.createPlayer(player)
             storePlayerData.savePlayerId(player.id)
-        } else {
-            firebasePlayerDatabase.updatePlayerName(playerId, player.name) // need to be removed
         }
     }
 
@@ -42,6 +40,7 @@ class GameRepositoryImp @Inject constructor(
         }
     }
 
+
     override suspend fun getPlayers(): Flow<List<Player?>> {
         return firebasePlayerDatabase.getPlayers()
     }
@@ -49,6 +48,11 @@ class GameRepositoryImp @Inject constructor(
     override suspend fun getPlayerData(): Flow<Player> {
         val id = storePlayerData.getPlayerId()!!
         return firebasePlayerDatabase.getFLowPlayerDataById(id)
+    }
+
+    override suspend fun updatePlayerPreviousNames(name: String) {
+        val id = storePlayerData.getPlayerId()!!
+        firebasePlayerDatabase.updatePlayerPreviousNames(id, name)
     }
 
     override fun getPlayerAvatars(): List<String> {

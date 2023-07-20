@@ -21,9 +21,12 @@ class FirebasePlayerDatabase @Inject constructor(
 
     suspend fun updatePlayerName(id: String, name: String) {
         firebaseDatabase.child(id).child("name").setValue(name).await()
-        val previousNames = firebaseDatabase.child(id).child("previousNames").get().await()
-        firebaseDatabase.child(id).child("previousNames")
-            .child(previousNames.childrenCount.toString()).setValue(name).await()
+    }
+
+    suspend fun updatePlayerPreviousNames(playerId: String, name:String) {
+        val oldPreviousNames = firebaseDatabase.child(playerId).child("previousNames").get().await()
+        firebaseDatabase.child(playerId).child("previousNames")
+            .child(oldPreviousNames.childrenCount.toString()).setValue(name).await()
     }
 
     suspend fun getPlayerPreviousNames(id: String): List<String> {
@@ -42,7 +45,7 @@ class FirebasePlayerDatabase @Inject constructor(
             override fun onDataChange(snapshot: DataSnapshot) {
                 val players = snapshot.children.map {
                     it.getValue(Player::class.java)
-                }.sortedByDescending { it?.score }
+                }
                 trySend(players)
             }
 

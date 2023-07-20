@@ -12,11 +12,14 @@ class CreatePlayerUseCase @Inject constructor(
         playerPreviousNames: List<String>,
         imageUrl: String
     ) {
-        val playerId = System.currentTimeMillis().toString()
-
-        if (playerPreviousNames.isNotEmpty() && !playerPreviousNames.contains(name)){
+        if (playerPreviousNames.isNotEmpty() && playerPreviousNames.contains(name)) {
             gameRepository.updatePlayerName(name)
-        } else if(playerPreviousNames.isEmpty()){
+        } else if (playerPreviousNames.isNotEmpty() && !playerPreviousNames.contains(name)) {
+            gameRepository.updatePlayerName(name)
+            gameRepository.updatePlayerPreviousNames(name)
+        } else {
+            val playerId = System.currentTimeMillis().toString()
+
             val player = Player(
                 id = playerId,
                 name = name,
