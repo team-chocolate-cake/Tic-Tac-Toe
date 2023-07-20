@@ -40,4 +40,6 @@ interface GameRepository {
     // endregion
 
     fun getPlayerAvatars(): List<String>
+
+    suspend fun updateWinner(sessionId: String, winnerId: String)
 }

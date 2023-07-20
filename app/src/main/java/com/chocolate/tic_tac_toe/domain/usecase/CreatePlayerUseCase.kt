@@ -14,9 +14,9 @@ class CreatePlayerUseCase @Inject constructor(
     ) {
         val playerId = System.currentTimeMillis().toString()
 
-        if (playerPreviousNames.isNotEmpty()) {
+        if (playerPreviousNames.isNotEmpty() && !playerPreviousNames.contains(name)){
             gameRepository.updatePlayerName(name)
-        } else {
+        } else if(playerPreviousNames.isEmpty()){
             val player = Player(
                 id = playerId,
                 name = name,

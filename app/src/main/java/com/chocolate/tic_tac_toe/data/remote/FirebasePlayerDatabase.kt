@@ -21,8 +21,8 @@ class FirebasePlayerDatabase @Inject constructor(
 
     suspend fun updatePlayerName(id: String, name: String) {
         firebaseDatabase.child(id).child("name").setValue(name).await()
-        val previousNames = firebaseDatabase.child(id).child("previewsNames").get().await()
-        firebaseDatabase.child(id).child("previewsNames")
+        val previousNames = firebaseDatabase.child(id).child("previousNames").get().await()
+        firebaseDatabase.child(id).child("previousNames")
             .child(previousNames.childrenCount.toString()).setValue(name).await()
     }
 

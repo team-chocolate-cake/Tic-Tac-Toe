@@ -34,6 +34,7 @@ class GameRepositoryImp @Inject constructor(
         }
     }
 
+
     override suspend fun updatePlayerName(name: String) {
         val playerId = storePlayerData.getPlayerId()
         if (playerId != null) {
@@ -52,6 +53,10 @@ class GameRepositoryImp @Inject constructor(
 
     override fun getPlayerAvatars(): List<String> {
         return playerAvatars.getPlayerAvatars()
+    }
+
+    override suspend fun updateWinner(sessionId: String, winnerId: String) {
+        firebaseSessionDatabase.updateWinner(sessionId, winnerId)
     }
     //endregion
 
