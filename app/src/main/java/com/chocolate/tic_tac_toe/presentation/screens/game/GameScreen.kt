@@ -2,6 +2,7 @@ package com.chocolate.tic_tac_toe.presentation.screens.game
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,6 +55,10 @@ fun GameScreen(
         },
         onClickPlayAgain = viewModel::onPlayAgain,
     )
+
+    BackHandler {
+        viewModel.onGameEnded().also { navController.navigateToLobby() }
+    }
 }
 
 @Composable
