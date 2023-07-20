@@ -32,14 +32,12 @@ class GameRepositoryImp @Inject constructor(
         }
     }
 
-
     override suspend fun updatePlayerName(name: String) {
         val playerId = storePlayerData.getPlayerId()
         if (playerId != null) {
             firebasePlayerDatabase.updatePlayerName(playerId, name)
         }
     }
-
 
     override suspend fun getPlayers(): Flow<List<Player?>> {
         return firebasePlayerDatabase.getPlayers()
@@ -113,6 +111,10 @@ class GameRepositoryImp @Inject constructor(
 
     override suspend fun getPlayerDataById(playerId: String): Player {
         return firebasePlayerDatabase.getPlayerDataById(playerId)
+    }
+
+    override suspend fun updateScore(playerId: String, score: Int) {
+        firebasePlayerDatabase.updateScore(playerId,score)
     }
 
 }

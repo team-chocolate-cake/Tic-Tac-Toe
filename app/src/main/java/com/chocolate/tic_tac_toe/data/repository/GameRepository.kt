@@ -39,6 +39,7 @@ interface GameRepository {
     suspend fun updatePlayerPreviousNames(name: String)
 
     suspend fun getPlayerDataById(playerId: String): Player
+    suspend fun updateScore(playerId: String,score: Int)
     // endregion
 
     fun getPlayerAvatars(): List<String>

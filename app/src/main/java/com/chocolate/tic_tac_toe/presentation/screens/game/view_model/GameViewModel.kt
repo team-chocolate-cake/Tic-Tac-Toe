@@ -78,7 +78,6 @@ class GameViewModel @Inject constructor(
         }
     }
 
-
     private fun onGetSessionDataError(throwable: Throwable) {
         _state.update { it.copy(isLoading = false, error = throwable.message) }
     }
@@ -160,7 +159,7 @@ class GameViewModel @Inject constructor(
     }
 
     private fun onPlayAgainSuccess(unit: Unit) {
-
+        _state.update { it.copy(isLoading = false, error = null) }
     }
 
     private fun onPlayAgainError(throwable: Throwable) {
