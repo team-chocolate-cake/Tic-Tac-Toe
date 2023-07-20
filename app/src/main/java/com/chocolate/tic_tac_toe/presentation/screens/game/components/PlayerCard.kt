@@ -76,22 +76,6 @@ fun CardPlayer(
                 )
             )
 
-            Row {
-                Text(
-                    text = player.score.toString(),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = TicTacCustomColors.current.darkOnBackground87
-                )
-
-                Spacer(modifier = Modifier.width(4.dp))
-
-                Image(
-                    painter = painterResource(id = R.drawable.fire),
-                    contentDescription = "icon fire",
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                )
-            }
         }
     }
 }
