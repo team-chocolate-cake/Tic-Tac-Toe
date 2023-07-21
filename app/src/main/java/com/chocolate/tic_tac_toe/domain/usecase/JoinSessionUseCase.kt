@@ -8,6 +8,9 @@ class JoinSessionUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(sessionId: String, playerId: String) {
         val player = gameRepository.getPlayerDataById(playerId)
-        gameRepository.joinSession(sessionId, player.copy(symbol = "O"))
+        gameRepository.joinSession(
+            sessionId,
+            player?.copy(symbol = "O") ?: throw Throwable("Player not found")
+        )
     }
 }

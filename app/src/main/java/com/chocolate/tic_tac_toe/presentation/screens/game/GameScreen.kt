@@ -3,6 +3,7 @@ package com.chocolate.tic_tac_toe.presentation.screens.game
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
@@ -70,6 +71,7 @@ fun GameScreen(
 
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun GameScreenContent(
     state: GameUiState,
@@ -107,7 +109,7 @@ fun GameScreenContent(
                         .padding(16.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator()
+                    WaitCard(text = "another player to join")
                 }
             }
 
@@ -146,13 +148,9 @@ fun GameScreenContent(
                 exit = scaleOut(),
             ) {
                 if (state.playerId == state.players.first().id && state.gameState == GameState.WAITING_PLAYER_O) {
-
                     WaitCard(text = state.players.last().name)
-
                 } else if (state.playerId == state.players.last().id && state.gameState == GameState.WAITING_PLAYER_X) {
-
                     WaitCard(text = state.players.first().name)
-
                 } else {
                     PlayAgainCard(onClickPlayAgain = onClickPlayAgain)
                 }

@@ -1,7 +1,7 @@
 package com.chocolate.tic_tac_toe.data.repository
 
 import com.chocolate.tic_tac_toe.data.local.PlayerAvatars
-import com.chocolate.tic_tac_toe.data.local.StorePlayerId
+import com.chocolate.tic_tac_toe.data.local.PlayerDataStorage
 import com.chocolate.tic_tac_toe.data.remote.FirebasePlayerDatabase
 import com.chocolate.tic_tac_toe.data.remote.FirebaseSessionDatabase
 import com.chocolate.tic_tac_toe.domain.model.GameState
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class GameRepositoryImp @Inject constructor(
     private val playerAvatars: PlayerAvatars,
-    private val storePlayerData: StorePlayerId,
+    private val storePlayerData: PlayerDataStorage,
     private val firebaseSessionDatabase: FirebaseSessionDatabase,
     private val firebasePlayerDatabase: FirebasePlayerDatabase
 ) : GameRepository {
@@ -20,6 +20,38 @@ class GameRepositoryImp @Inject constructor(
     // region Session
     override suspend fun createSession(session: Session) {
         firebaseSessionDatabase.createSession(session)
+    }
+
+    override suspend fun getSession(id: String): Flow<Session> {
+        return firebaseSessionDatabase.getSession(id)
+    }
+
+    override suspend fun joinSession(id: String, player: Player) {
+        firebaseSessionDatabase.joinSession(id, player)
+    }
+
+    override suspend fun updateBoard(id: String, board: List<String>) {
+        firebaseSessionDatabase.updateBoard(id, board)
+    }
+
+    override suspend fun updateTurn(id: String, turn: String) {
+        firebaseSessionDatabase.updateTurn(id, turn)
+    }
+
+    override suspend fun updateWinner(id: String, winnerId: String) {
+        firebaseSessionDatabase.updateWinner(id, winnerId)
+    }
+
+    override suspend fun updateGameState(id: String, gameState: GameState) {
+        firebaseSessionDatabase.updateGameState(id, gameState)
+    }
+
+    override suspend fun updateWinPositions(id: String, positions: List<Int>) {
+        firebaseSessionDatabase.updateWinPositions(id, positions)
+    }
+
+    override suspend fun deleteSession(id: String) {
+        return firebaseSessionDatabase.deleteSession(id)
     }
     // endregion
 
@@ -32,35 +64,28 @@ class GameRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun updatePlayerName(name: String) {
-        val playerId = storePlayerData.getPlayerId()
-        if (playerId != null) {
-            firebasePlayerDatabase.updatePlayerName(playerId, name)
-        }
+    override suspend fun updatePlayerPreviousNames(name: String) {
+        val id = storePlayerData.getPlayerId()!!
+        firebasePlayerDatabase.updatePlayerPreviousNames(id, name)
+    }
+
+    override suspend fun getPlayerId(): String {
+        return storePlayerData.getPlayerId()!!
     }
 
     override suspend fun getPlayers(): Flow<List<Player?>> {
         return firebasePlayerDatabase.getPlayers()
     }
 
-    override suspend fun getPlayerData(): Flow<Player> {
+    override suspend fun getPlayerData(): Flow<Player?> {
         val id = storePlayerData.getPlayerId()!!
-        return firebasePlayerDatabase.getFLowPlayerDataById(id)
+        return firebasePlayerDatabase.getPlayerFLowById(id)
     }
 
-    override suspend fun updatePlayerPreviousNames(name: String) {
-        val id = storePlayerData.getPlayerId()!!
-        firebasePlayerDatabase.updatePlayerPreviousNames(id, name)
+    override suspend fun updatePlayerName(name: String) {
+        val playerId = storePlayerData.getPlayerId()!!
+        firebasePlayerDatabase.updatePlayerName(playerId, name)
     }
-
-    override fun getPlayerAvatars(): List<String> {
-        return playerAvatars.getPlayerAvatars()
-    }
-
-    override suspend fun updateWinner(sessionId: String, winnerId: String) {
-        firebaseSessionDatabase.updateWinner(sessionId, winnerId)
-    }
-    //endregion
 
     override suspend fun getPlayerPreviousNames(): List<String>? {
         val playerId = storePlayerData.getPlayerId()
@@ -71,50 +96,20 @@ class GameRepositoryImp @Inject constructor(
         }
     }
 
-    // endregion
-    override suspend fun updateBoard(board: List<String>, sessionId: String) {
-        firebaseSessionDatabase.updateBoard(board, sessionId)
-    }
-
-    override suspend fun updateTurn(turn: String, sessionId: String) {
-        firebaseSessionDatabase.updateTurn(turn, sessionId)
-    }
-
-    override suspend fun updateGameState(sessionId: String, gameState: GameState) {
-        firebaseSessionDatabase.updateGameState(sessionId, gameState)
-    }
-
-
-    override suspend fun getSession(key: String): Flow<Session> {
-        return firebaseSessionDatabase.getSession(key)
-    }
-
-    override suspend fun deleteSession(key: String) {
-        return firebaseSessionDatabase.deleteSession(key)
-    }
-
-    override suspend fun updateWinPositions(positions: List<Int>, sessionId: String) {
-        firebaseSessionDatabase.updateWinPositions(positions, sessionId)
-    }
-
-    override suspend fun joinSession(sessionId: String, player: Player) {
-        firebaseSessionDatabase.joinSession(sessionId, player)
+    override suspend fun updateScore(playerId: String, score: Int) {
+        firebasePlayerDatabase.updatePlayerScore(playerId, score)
     }
 
     override suspend fun updatePlayerState(playerId: String, playerState: Boolean) {
         firebasePlayerDatabase.updatePlayerState(playerId, playerState)
     }
 
-    override suspend fun getPlayerId(): String {
-        return storePlayerData.getPlayerId()!!
+    override suspend fun getPlayerDataById(playerId: String): Player? {
+        return firebasePlayerDatabase.getPlayerById(playerId)
     }
 
-    override suspend fun getPlayerDataById(playerId: String): Player {
-        return firebasePlayerDatabase.getPlayerDataById(playerId)
+    override fun getPlayerAvatars(): List<String> {
+        return playerAvatars.getPlayerAvatars()
     }
-
-    override suspend fun updateScore(playerId: String, score: Int) {
-        firebasePlayerDatabase.updateScore(playerId,score)
-    }
-
+    //endregion
 }

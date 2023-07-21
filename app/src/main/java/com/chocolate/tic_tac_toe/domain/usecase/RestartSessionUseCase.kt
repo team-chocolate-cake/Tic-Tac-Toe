@@ -8,11 +8,11 @@ class RestartSessionUseCase @Inject constructor(
     private val gameRepository: GameRepository,
 ) {
     suspend operator fun invoke(
-        sessionId: String,
+        id: String,
     ) {
-        gameRepository.updateBoard(List(9) { "" }, sessionId)
-        gameRepository.updateGameState(sessionId, GameState.IN_PROGRESS)
-        gameRepository.updateWinPositions(List(3) { -1 }, sessionId)
-        gameRepository.updateWinner(sessionId, "")
+        gameRepository.updateBoard(id, List(9) { "" })
+        gameRepository.updateGameState(id, GameState.IN_PROGRESS)
+        gameRepository.updateWinPositions(id, List(3) { -1 })
+        gameRepository.updateWinner(id, "")
     }
 }

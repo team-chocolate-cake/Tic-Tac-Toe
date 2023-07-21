@@ -7,18 +7,18 @@ class UpdateBoardUseCase @Inject constructor(
     private val gameRepository: GameRepository,
 ) {
     suspend operator fun invoke(
+        id: String,
         board: List<String>,
         index: Int,
-        value: String,
-        sessionId: String,
+        value: String
     ) {
         val updatedBoard = board.toMutableList().also {
-            if (it[index] == "") {
+            if (it[index].isBlank()) {
                 it[index] = value
             } else {
                 return
             }
         }
-        gameRepository.updateBoard(updatedBoard, sessionId)
+        gameRepository.updateBoard(id, updatedBoard)
     }
 }

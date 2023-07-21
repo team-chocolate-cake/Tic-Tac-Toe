@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetPlayerDataUseCase @Inject constructor(
     private val gameRepository: GameRepository
 ) {
-    suspend operator fun invoke(): Flow<Player> {
+    suspend operator fun invoke(): Flow<Player?> {
         return gameRepository.getPlayerData()
     }
 }

@@ -6,7 +6,7 @@ import javax.inject.Inject
 class UpdatePlayerStateUseCase @Inject constructor(
     private val gameRepository: GameRepository
 ) {
-    suspend operator fun invoke(playerId: String, isWaiting: Boolean) {
-        gameRepository.updatePlayerState(playerId, isWaiting)
+    suspend operator fun invoke(id: String, isWaiting: Boolean) {
+        gameRepository.updatePlayerState(id, isWaiting)
     }
 }

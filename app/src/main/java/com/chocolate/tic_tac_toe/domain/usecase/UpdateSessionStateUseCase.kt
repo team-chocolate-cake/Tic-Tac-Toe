@@ -7,7 +7,7 @@ import javax.inject.Inject
 class UpdateSessionStateUseCase @Inject constructor(
     private val gameRepository: GameRepository
 ) {
-    suspend operator fun invoke(sessionId: String, sessionState: GameState) {
-        gameRepository.updateGameState(sessionId, sessionState)
+    suspend operator fun invoke(id: String, sessionState: GameState) {
+        gameRepository.updateGameState(id, sessionState)
     }
 }

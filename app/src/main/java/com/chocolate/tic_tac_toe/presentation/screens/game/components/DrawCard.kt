@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +42,7 @@ fun DrawCard(
         modifier = modifier
             .clip(RoundedCornerShape(24.dp))
             .background(color.darkCard)
-            .padding(vertical = 24.dp, horizontal = 32.dp),
+            .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -63,20 +64,25 @@ fun DrawCard(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Text(
-                text = "X",
-                style = MaterialTheme.typography.titleLarge.copy(fontSize = 64.sp),
-                color = color.darkOnSecondary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.clickable { onClickCLose() }
-            )
-            Box(modifier = Modifier.clickable { onClickPlayAgain() }){
+            TextButton(
+                onClick =  onClickCLose,
+            ) {
                 Text(
-                    modifier = Modifier.rotate(60f).offset(x = (-12).dp,y = (-20).dp),
+                    text = "X",
+                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 64.sp),
+                    color = color.darkOnSecondary,
+                )
+            }
+
+            TextButton(
+                onClick = onClickPlayAgain,
+            ) {
+                Text(
+                    modifier = Modifier
+                        .rotate(60f)
+                        .offset(x = 5.dp, y = (-60).dp),
                     text = "<",
                     style = MaterialTheme.typography.titleLarge.copy(fontSize = 64.sp),
                     color = color.darkSecondary,

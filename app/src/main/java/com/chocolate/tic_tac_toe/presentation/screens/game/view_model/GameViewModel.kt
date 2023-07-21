@@ -79,7 +79,13 @@ class GameViewModel @Inject constructor(
     }
 
     private fun onGetSessionDataError(throwable: Throwable) {
-        _state.update { it.copy(isLoading = false, error = throwable.message) }
+        _state.update {
+            it.copy(
+                isLoading = false,
+                isSessionClosed = true,
+                error = throwable.message
+            )
+        }
     }
 
     fun updateGameState(index: Int, value: String) {
@@ -87,10 +93,10 @@ class GameViewModel @Inject constructor(
         tryToExecute(
             call = {
                 updateBoardUseCase(
+                    id = sessionId,
                     board = _state.value.board,
                     index = index,
                     value = value,
-                    sessionId = sessionId
                 )
                 updateTurnUseCase(
                     turn = _state.value.turn,
