@@ -59,9 +59,13 @@ class GameRepositoryImp @Inject constructor(
     override suspend fun createPlayer(player: Player) {
         val playerId = storePlayerData.getPlayerId()
         if (playerId == null) {
-            firebasePlayerDatabase.createPlayer(player)
+            storePlayerData.savePlayerId(player.id)
+        }else{
+            storePlayerData.clearPlayerId()
             storePlayerData.savePlayerId(player.id)
         }
+
+        firebasePlayerDatabase.createPlayer(player)
     }
 
     override suspend fun updatePlayerPreviousNames(name: String) {
