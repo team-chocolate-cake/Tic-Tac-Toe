@@ -22,8 +22,6 @@
 
 - Dagger Hilt: For dependency injection to maintain a clean and modular codebase.
 
-- Retrofit: For making network requests to communicate with the backend server.
-
 - Google's Recommended Architecture: Following the best practices and architecture guidelines provided by Google to ensure a scalable and maintainable codebase.
 
 # Screenshots
