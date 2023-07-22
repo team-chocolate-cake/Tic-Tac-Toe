@@ -5,44 +5,49 @@ import com.chocolate.tic_tac_toe.domain.model.Player
 import com.chocolate.tic_tac_toe.domain.model.Session
 import kotlinx.coroutines.flow.Flow
 
-
 interface GameRepository {
+
     // region Session
     suspend fun createSession(session: Session)
 
-    suspend fun updateBoard(board: List<String>, sessionId: String)
+    suspend fun getSession(id: String): Flow<Session>
 
-    suspend fun updateTurn(turn: String, sessionId: String)
+    suspend fun joinSession(id: String, player: Player)
 
-    suspend fun updateGameState(sessionId: String, gameState: GameState)
+    suspend fun updateBoard(id: String, board: List<String>)
 
-    suspend fun getSession(key: String): Flow<Session>
-    suspend fun deleteSession(key: String)
+    suspend fun updateTurn(id: String,turn: String)
 
-    suspend fun updateWinPositions(positions: List<Int>, sessionId: String)
+    suspend fun updateWinner(id: String, winnerId: String)
 
-    suspend fun joinSession(sessionId: String, player: Player)
+    suspend fun updateGameState(id: String, gameState: GameState)
 
-    suspend fun updatePlayerState(playerId: String, playerState: Boolean)
+    suspend fun updateWinPositions(id: String,positions: List<Int>)
 
-    suspend fun getPlayerId(): String
-
+    suspend fun deleteSession(id: String)
     // endregion
 
     // region Player
     suspend fun createPlayer(player: Player)
+
     suspend fun getPlayerPreviousNames(): List<String>?
-    suspend fun updatePlayerName(name: String)
+
+    suspend fun getPlayerId(): String
+
     suspend fun getPlayers(): Flow<List<Player?>>
-    suspend fun getPlayerData(): Flow<Player>
+
+    suspend fun getPlayerData(): Flow<Player?>
+
+    suspend fun updatePlayerName(name: String)
 
     suspend fun updatePlayerPreviousNames(name: String)
 
-    suspend fun getPlayerDataById(playerId: String): Player
-    suspend fun updateScore(playerId: String,score: Int)
-    // endregion
+    suspend fun updateScore(playerId: String, score: Int)
+
+    suspend fun updatePlayerState(playerId: String, playerState: Boolean)
+
+    suspend fun getPlayerDataById(playerId: String): Player?
 
     fun getPlayerAvatars(): List<String>
-
-    suspend fun updateWinner(sessionId: String, winnerId: String)
+    // region Player
 }

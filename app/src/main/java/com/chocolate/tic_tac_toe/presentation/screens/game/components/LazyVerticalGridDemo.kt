@@ -1,8 +1,12 @@
 package com.chocolate.tic_tac_toe.presentation.screens.game.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +35,7 @@ import com.chocolate.tic_tac_toe.presentation.theme.DarkSecondary
 import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun LazyVerticalGridDemoContent(
     state: GameUiState,
@@ -48,16 +54,22 @@ fun LazyVerticalGridDemoContent(
         contentPadding = PaddingValues(all = 12.dp)
     ) {
         itemsIndexed(state.board) { index, item ->
+
+            val targetColor =
+                if (state.winPositions.isNotEmpty() && state.winPositions.contains(index)) {
+                    if (item == "X") DarkSecondary else DarkOnSecondary
+                } else {
+                    DarkOnCard
+                }
+
+            val currentColor by animateColorAsState(
+                targetValue = targetColor, label = "",
+            )
             Box(
                 modifier = Modifier
                     .size(100.dp)
                     .background(
-                        color = if (
-                            state.winPositions.isNotEmpty() &&
-                            state.winPositions.contains(index)
-                        ) {
-                            if (item == "X") DarkSecondary else DarkOnSecondary
-                        } else DarkOnCard,
+                        color = currentColor,
                         shape = RoundedCornerShape(size = 8.dp)
                     )
                     .clickable {
@@ -73,8 +85,8 @@ fun LazyVerticalGridDemoContent(
             ) {
                 AnimatedVisibility(
                     visible = item.isNotBlank(),
-                    enter = fadeIn(),
-                    exit = fadeOut()
+                    enter = scaleIn(),
+                    exit = scaleOut(),
                 ) {
                     Text(
                         text = item,

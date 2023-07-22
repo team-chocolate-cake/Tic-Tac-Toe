@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,7 +23,11 @@ import androidx.compose.ui.unit.dp
 import com.chocolate.tic_tac_toe.R
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical12
 import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical16
+import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical24
+import com.chocolate.tic_tac_toe.presentation.screens.composable.SpacerVertical64
+import com.chocolate.tic_tac_toe.presentation.theme.DarkOnBackground87
 import com.chocolate.tic_tac_toe.presentation.theme.TicTacCustomColors
+import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 
 @Composable
 fun WaitCard(
@@ -32,43 +37,48 @@ fun WaitCard(
     val color = TicTacCustomColors.current
 
     Row(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier,
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Card(modifier = Modifier.wrapContentSize(), colors = CardDefaults.cardColors(color.darkCard)) {
-            SpacerVertical12()
+        Card(
+            modifier = Modifier.wrapContentSize(),
+            colors = CardDefaults.cardColors(color.darkCard)
+        ) {
+            SpacerVertical24()
             Image(
                 modifier = Modifier.fillMaxWidth(),
                 painter = painterResource(id = R.drawable.wait),
                 contentDescription = "icon wait",
 
-            )
+                )
             SpacerVertical16()
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Wait $text",
+                text = "Waiting For $text",
                 color = color.darkOnBackground87,
                 textAlign = TextAlign.Center
             )
-
-
             SpacerVertical16()
             CircularProgressIndicator(
                 modifier = Modifier
                     .wrapContentSize()
                     .align(Alignment.CenterHorizontally)
-                    .padding(top = 16.dp), color = color.darkBackground
+                    .padding(top = 16.dp),
+                color = DarkOnBackground87
             )
             SpacerVertical16()
         }
     }
 
 }
+
 @Preview
 @Composable
-fun WaitCardPreview(){
-    WaitCard(
-        text="Ahmed"
-    )
+fun WaitCardPreview() {
+    TicTacToeTheme {
+        WaitCard(
+            text = "Ahmed"
+        )
+    }
 }

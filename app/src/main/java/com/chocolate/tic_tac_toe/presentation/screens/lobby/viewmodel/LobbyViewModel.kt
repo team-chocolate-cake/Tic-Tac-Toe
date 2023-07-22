@@ -48,12 +48,12 @@ class LobbyViewModel @Inject constructor(
         )
     }
 
-    private fun onGetPlayerDataSuccess(player: Flow<Player>) {
+    private fun onGetPlayerDataSuccess(player: Flow<Player?>) {
         viewModelScope.launch {
             player.collect { player ->
                 _state.update {
                     it.copy(
-                        player = playerUiStateMapper.map(player),
+                        player = playerUiStateMapper.map(player!!),
                         isLoading = false,
                         error = null,
                     )

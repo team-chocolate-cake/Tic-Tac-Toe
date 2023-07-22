@@ -11,6 +11,7 @@ data class GameUiState(
     val winPositions: List<Int> = emptyList(),
     val board: List<String> = emptyList(),
     val error: String? = null,
+    val isSessionClosed: Boolean = false,
 ) {
     data class Player(
         val id: String = "",

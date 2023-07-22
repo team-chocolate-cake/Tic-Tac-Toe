@@ -34,17 +34,17 @@ class UpdateWinnerUseCase @Inject constructor(
                 when (board[a]) {
                     "X" -> {
                         updateSessionStateUseCase(sessionId, GameState.PLAYER_X_WON)
-                        gameRepository.updateWinner(sessionId, playersId[0])
-                        gameRepository.updateScore(playersId.first(),10)
+                        gameRepository.updateWinner(sessionId, playersId.first())
+                        gameRepository.updateScore(playersId.first(), 10)
                     }
 
                     "O" -> {
                         updateSessionStateUseCase(sessionId, GameState.PLAYER_O_WON)
-                        gameRepository.updateWinner(sessionId, playersId[1])
-                        gameRepository.updateScore(playersId.last(),10)
+                        gameRepository.updateWinner(sessionId, playersId.last())
+                        gameRepository.updateScore(playersId.last(), 10)
                     }
                 }
-                gameRepository.updateWinPositions(positions, sessionId)
+                gameRepository.updateWinPositions(sessionId, positions)
             }
 
         }

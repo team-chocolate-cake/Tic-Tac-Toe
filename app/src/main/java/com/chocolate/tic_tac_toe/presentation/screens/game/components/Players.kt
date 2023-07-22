@@ -1,6 +1,7 @@
 package com.chocolate.tic_tac_toe.presentation.screens.game.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
@@ -20,6 +21,7 @@ import com.chocolate.tic_tac_toe.presentation.screens.game.view_model.GameUiStat
 import com.chocolate.tic_tac_toe.presentation.theme.TicTacCustomColors
 import com.chocolate.tic_tac_toe.presentation.theme.TicTacToeTheme
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun PlayersContent(
     turn: String,

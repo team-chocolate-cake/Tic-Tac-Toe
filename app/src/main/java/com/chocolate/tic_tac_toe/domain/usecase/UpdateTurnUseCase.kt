@@ -13,6 +13,6 @@ class UpdateTurnUseCase @Inject constructor(
     ) {
         val updatedTurn = if (turn == playersId.first()) playersId.last() else playersId.first()
 
-        gameRepository.updateTurn(updatedTurn, sessionId)
+        gameRepository.updateTurn(sessionId, updatedTurn)
     }
 }

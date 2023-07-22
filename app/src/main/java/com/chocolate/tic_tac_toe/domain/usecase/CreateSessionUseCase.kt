@@ -14,7 +14,7 @@ class CreateSessionUseCase @Inject constructor(
                 id = playerId,
                 turn = playerId,
                 players = listOf(
-                    player.copy(symbol = "X")
+                    player?.copy(symbol = "X") ?: throw Throwable("Player not found"),
                 )
             )
         )

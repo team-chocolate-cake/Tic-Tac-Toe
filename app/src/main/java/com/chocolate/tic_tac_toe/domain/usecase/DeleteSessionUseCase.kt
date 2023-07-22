@@ -7,8 +7,8 @@ import javax.inject.Inject
 class DeleteSessionUseCase @Inject constructor(
     private val gameRepository: GameRepository
 ) {
-    suspend operator fun invoke(sessionId:String) {
-        gameRepository.deleteSession(sessionId)
-        gameRepository.updatePlayerState(sessionId, false)
+    suspend operator fun invoke(id:String) {
+        gameRepository.deleteSession(id)
+        gameRepository.updatePlayerState(id, false)
     }
 }

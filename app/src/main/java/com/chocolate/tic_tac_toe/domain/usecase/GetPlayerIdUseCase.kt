@@ -5,8 +5,8 @@ import javax.inject.Inject
 
 class GetPlayerIdUseCase @Inject constructor(
     val gameRepository: GameRepository
-){
-    suspend operator fun invoke(): String{
+) {
+    suspend operator fun invoke(): String {
         return gameRepository.getPlayerId()
     }
 }
