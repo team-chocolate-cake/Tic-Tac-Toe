@@ -1,4 +1,4 @@
-# Tic Tac Toe Online Multiplayer Game (XO Game)
+![5](https://github.com/team-chocolate-cake/Tic-Tac-Toe/assets/87489620/3a6778d3-557b-4874-985c-006d9932cfa7)![2](https://github.com/team-chocolate-cake/Tic-Tac-Toe/assets/87489620/2255886b-152c-4358-a37a-a775c1ad2a85)# Tic Tac Toe Online Multiplayer Game (XO Game)
 
 ### Welcome to the Tic Tac Toe Online Multiplayer Game! This is a simple XO game that allows two players to compete against each other in real-time. The game is built using Jetpack Compose for the user interface, Firebase for real-time database functionality and Firestore for data storage, Dagger Hilt for dependency injection, Retrofit for network communication, and follows the recommended architecture from Google.
 
@@ -25,6 +25,14 @@
 - Retrofit: For making network requests to communicate with the backend server.
 
 - Google's Recommended Architecture: Following the best practices and architecture guidelines provided by Google to ensure a scalable and maintainable codebase.
+
+# Screenshots
+1- ![1](https://github.com/team-chocolate-cake/Tic-Tac-Toe/assets/87489620/4025d79f-13f3-40ea-b248-546b5d9760c8)
+2- ![2](https://github.com/team-chocolate-cake/Tic-Tac-Toe/assets/87489620/c3934ef1-eb9e-4db8-970e-37dbaa7d10c0)
+3- ![3](https://github.com/team-chocolate-cake/Tic-Tac-Toe/assets/87489620/21cbb2ad-2105-4bb2-a610-c4a003b99c28)
+4- ![4](https://github.com/team-chocolate-cake/Tic-Tac-Toe/assets/87489620/f3e5650b-47a6-405f-8d43-a9b8a4bdb568)
+5- ![5](https://github.com/team-chocolate-cake/Tic-Tac-Toe/assets/87489620/2bef795f-7fd2-4629-b641-ce16dc25ab8e)
+6- ![6](https://github.com/team-chocolate-cake/Tic-Tac-Toe/assets/87489620/b9278030-4490-490f-93a9-ecd9f15de621)
 
 ## Getting Started
 
