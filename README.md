@@ -32,8 +32,6 @@ Welcome to the Tic Tac Toe Online Multiplayer Game! 🎉 This is a simple and ex
 
 - **Firebase Real-time Database:** For handling real-time data synchronization between players during gameplay.
 
-- **Firebase Firestore:** For storing and retrieving player scores and leaderboard data.
-
 - **Dagger Hilt:** For dependency injection to maintain a clean and modular codebase.
 
 - **Google's Recommended Architecture:** Following the best practices and architecture guidelines provided by Google to ensure a scalable and maintainable codebase.
