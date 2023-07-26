@@ -21,7 +21,7 @@ class FirebasePlayerDatabaseImp @Inject constructor(
         firebaseDatabase.child(player.id).setValue(player).await()
     }
 
-    override suspend fun getPlayerPreviousNames(id: String): List<String> {
+    override suspend fun getPreviousPlayerNames(id: String): List<String> {
         return firebaseDatabase.child(id).child(PREVIOUS_NAMES).get().await().children.map {
             it.value as String
         }
@@ -70,7 +70,7 @@ class FirebasePlayerDatabaseImp @Inject constructor(
         firebaseDatabase.child(id).child(NAME).setValue(name).await()
     }
 
-    override suspend fun updatePlayerPreviousNames(id: String, name: String) {
+    override suspend fun updatePreviousPlayerNames(id: String, name: String) {
         val oldPreviousNames = firebaseDatabase.child(id).child(PREVIOUS_NAMES).get().await()
         firebaseDatabase.child(id).child(PREVIOUS_NAMES)
             .child(oldPreviousNames.childrenCount.toString()).setValue(name).await()
