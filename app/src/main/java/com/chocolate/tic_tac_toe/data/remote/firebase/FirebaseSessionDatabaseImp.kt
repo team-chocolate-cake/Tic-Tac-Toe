@@ -29,8 +29,7 @@ class FirebaseSessionDatabaseImp @Inject constructor(
             override fun onDataChange(snapshot: DataSnapshot) {
                 val session = snapshot.getValue(Session::class.java)
                 if (session == null) close()
-                else
-                    trySend(session)
+                else trySend(session)
             }
 
             override fun onCancelled(error: DatabaseError) {

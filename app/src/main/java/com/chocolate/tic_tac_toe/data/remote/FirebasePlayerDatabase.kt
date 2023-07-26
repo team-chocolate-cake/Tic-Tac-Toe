@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface FirebasePlayerDatabase {
     suspend fun createPlayer(player: Player)
 
-    suspend fun getPlayerPreviousNames(id: String): List<String>
+    suspend fun getPreviousPlayerNames(id: String): List<String>
 
     suspend fun getPlayerById(id: String): Player?
 
@@ -16,7 +16,7 @@ interface FirebasePlayerDatabase {
 
     suspend fun updatePlayerName(id: String, name: String)
 
-    suspend fun updatePlayerPreviousNames(id: String, name: String)
+    suspend fun updatePreviousPlayerNames(id: String, name: String)
 
     suspend fun updatePlayerScore(id: String, score: Int)
 

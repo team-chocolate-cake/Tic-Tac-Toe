@@ -70,7 +70,7 @@ class GameRepositoryImp @Inject constructor(
 
     override suspend fun updatePlayerPreviousNames(name: String) {
         val id = storePlayerData.getPlayerId()!!
-        firebasePlayerDatabase.updatePlayerPreviousNames(id, name)
+        firebasePlayerDatabase.updatePreviousPlayerNames(id, name)
     }
 
     override suspend fun getPlayerId(): String {
@@ -96,7 +96,7 @@ class GameRepositoryImp @Inject constructor(
         return if (playerId == null) {
             null
         } else {
-            firebasePlayerDatabase.getPlayerPreviousNames(playerId)
+            firebasePlayerDatabase.getPreviousPlayerNames(playerId)
         }
     }
 
